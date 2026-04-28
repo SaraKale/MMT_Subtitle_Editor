@@ -1,0 +1,72 @@
+<suki:SukiWindow
+    x:Class="MMTGui.About"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    Title="关于"
+    Width="520"
+    Height="340"
+    MinWidth="460"
+    MinHeight="300"
+    CanResize="False"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner">
+
+     <!-- 帮助-关于 界面 -->
+
+    <Border Padding="22">
+
+        <Grid RowDefinitions="*,Auto">
+
+                <StackPanel Spacing="14">
+                    <Border Width="72"
+                            Height="72"
+                            CornerRadius="36"
+                            Background="#1D4ED8"
+                            HorizontalAlignment="Center">
+                        <!-- 图标 -->
+                        <Image Source="/Assets/MMTicon.png" Stretch="Uniform" />
+                    </Border>
+
+                     <!-- MMT Subtitle Editor 标题栏 -->
+                    <StackPanel Spacing="4">
+                        <TextBlock Text="MMT Subtitle Editor"
+                                   FontSize="24"
+                                   FontWeight="SemiBold"
+                                   Foreground="#000"
+                                   HorizontalAlignment="Center" />
+                        <!-- MikuMikuTelop 字幕特效编辑器 -->
+                        <TextBlock Text="MikuMikuTelop 字幕特效编辑器"
+                                   FontSize="14"
+                                   Foreground="#000"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+
+                    <!-- 边框 -->
+                        <!-- 用于编辑、预览和导出 MMTScript 字幕脚本。 -->
+                        <StackPanel Spacing="8">
+                            <TextBlock Text="用于编辑、预览和导出 MMTScript 字幕脚本。"
+                                       TextWrapping="Wrap" 
+                                       HorizontalAlignment="Center"/>
+                             <!-- 当前版本：1.0.0 -->
+                            <TextBlock Text="当前版本：1.0.0" HorizontalAlignment="Center"/>
+                             <!-- 作者：SaraKale -->
+                            <TextBlock Text="作者：SaraKale" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    
+                </StackPanel>
+
+             <!-- 确定按钮 
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,-20">
+                <Button Content="确定"
+                        Click="OnConfirm"
+                        Classes="Outlined" />
+            </StackPanel>
+            -->
+        </Grid>
+    </Border>
+
+</suki:SukiWindow>

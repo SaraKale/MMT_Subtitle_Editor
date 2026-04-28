@@ -1,0 +1,31 @@
+﻿<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MMTGui.Avalonia.App"
+             xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
+             RequestedThemeVariant="Default">
+
+    <Application.Styles>
+        <sukiUi:SukiTheme ThemeColor="Blue" />
+        
+        <!-- 自定义按钮样式 -->
+        <!-- 粉色自定义边框按钮样式 -->
+        <Style Selector="Button.Outlined.Pink">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#DB7093"/>
+            <Setter Property="BorderBrush" Value="#DB7093"/>
+        </Style>
+        <!-- 粉色自定义边框按钮悬停样式 -->
+        <Style Selector="Button.Outlined.Pink:pointerover">
+            <Setter Property="Background" Value="#DB7093"/>
+            <Setter Property="Foreground" Value="white"/>
+             <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+        <!-- 粉色自定义边框按钮按下样式 -->
+        <Style Selector="Button.Outlined.Pink:pressed">
+            <Setter Property="Background" Value="#DB7093"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+        </Style>
+
+    </Application.Styles>
+</Application>

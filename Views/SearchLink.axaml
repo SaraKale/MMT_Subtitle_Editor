@@ -1,0 +1,128 @@
+﻿<suki:SukiWindow
+    x:Class="MMTGui.SearchLink"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+    x:CompileBindings="False"
+    Title="歌词搜索"
+    Width="980"
+    Height="700"
+    MinWidth="860"
+    MinHeight="620"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner">
+
+    <!-- 歌词搜索界面 -->
+
+    <suki:SukiWindow.Styles>
+        <Style Selector="TextBlock.section-title">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#0F172A" />
+        </Style>
+    </suki:SukiWindow.Styles>
+
+    <Border Padding="20">
+        <Grid RowDefinitions="Auto,*,220,Auto" RowSpacing="16">
+            <Border Grid.Row="0"
+                    Padding="16"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid ColumnDefinitions="*,120" ColumnSpacing="12">
+                     <!-- 请输入歌曲链接、歌曲 ID 或关键字 -->
+                    <TextBox x:Name="TxtSearchInput"
+                             Watermark="请输入歌曲链接、歌曲 ID 或关键字" />
+                     <!-- 搜索按钮 -->
+                    <Button Grid.Column="1"
+                            Content="搜索"
+                            Classes="Outlined"
+                            Click="OnSearch" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Padding="12"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid RowDefinitions="Auto,*" RowSpacing="10">
+                    <!-- 搜索结果 -->
+                    <TextBlock Text="搜索结果"
+                               Classes="section-title" />
+                    <!-- 表格 -->
+                    <dg:DataGrid x:Name="SearchResultsGrid"
+                                 Grid.Row="1"
+                                 AutoGenerateColumns="False"
+                                 IsReadOnly="True"
+                                 CanUserSortColumns="True"
+                                 CanUserReorderColumns="False"
+                                 HeadersVisibility="Column"
+                                 GridLinesVisibility="Horizontal"
+                                 RowHeight="36"
+                                 SelectionChanged="OnSearchResultSelectionChanged">
+                        <dg:DataGrid.Columns>
+                            <!-- 歌曲源 -->
+                            <dg:DataGridTextColumn Header="歌曲源"
+                                                   Width="110"
+                                                   Binding="{Binding SongSource}" />
+                             <!-- 歌曲名称 -->
+                            <dg:DataGridTextColumn Header="歌曲名称"
+                                                   Width="2*"
+                                                   Binding="{Binding SongName}" />
+                            <!-- 歌手 -->
+                            <dg:DataGridTextColumn Header="歌手"
+                                                   Width="1.5*"
+                                                   Binding="{Binding Singer}" />
+                             <!-- 专辑 -->
+                            <dg:DataGridTextColumn Header="专辑"
+                                                   Width="1.5*"
+                                                   Binding="{Binding Album}" />
+                            <!-- 歌曲时长 -->
+                            <dg:DataGridTextColumn Header="歌曲时长"
+                                                   Width="120"
+                                                   Binding="{Binding SongDuration}" />
+                        </dg:DataGrid.Columns>
+                    </dg:DataGrid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="2"
+                    Padding="16"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid RowDefinitions="Auto,*" RowSpacing="10">
+                     <!-- 歌词 -->
+                    <TextBlock Text="歌词"
+                               Classes="section-title" />
+                     <!-- 歌词面板 -->
+                    <TextBox x:Name="TxtLyricsPreview"
+                             Grid.Row="1"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="12">
+                 <!-- 确定按钮 -->
+                <Button x:Name="BtnConfirm"
+                        Content="确定"
+                        Classes="Outlined"
+                        IsEnabled="False"
+                        Click="OnConfirm" />
+                 <!-- 取消按钮 -->
+                <Button Content="取消"
+                        Classes="Standard"
+                        Click="OnCancel" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</suki:SukiWindow>

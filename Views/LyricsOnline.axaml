@@ -1,0 +1,214 @@
+<suki:SukiWindow
+    x:Class="MMTGui.LyricsOnline"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    x:CompileBindings="False"
+    Title="在线歌词"
+    Width="720"
+    Height="700"
+    MinWidth="500"
+    MinHeight="400"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner"
+    SizeToContent="Width">
+
+    <!-- 在线歌词搜索界面 -->
+    <suki:SukiWindow.Styles>
+        <Style Selector="TextBlock.section-title">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#0F172A" />
+        </Style>
+    </suki:SukiWindow.Styles>
+
+    <Border Padding="20">
+        <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+             <!-- 边框 -->
+            <Border Grid.Row="0"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
+                    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="12">
+                         <!-- 来源 -->
+                        <TextBlock Grid.Column="0" Text="来源"
+                                   VerticalAlignment="Center"
+                                   Foreground="#0F172A" />
+                        <ComboBox x:Name="CmbSource"
+                                  Grid.Column="1"
+                                  SelectedIndex="0">
+                             <!-- 网易云 -->
+                            <ComboBoxItem Content="网易云" Tag="netease" />
+                             <!-- QQ音乐 -->
+                            <ComboBoxItem Content="QQ音乐" Tag="qq" />
+                        </ComboBox>
+
+                         <!-- 模式 -->
+                        <TextBlock Grid.Column="2"
+                                   Text="模式"
+                                   VerticalAlignment="Center"
+                                   Foreground="#0F172A" />
+                        <ComboBox x:Name="CmbDisplayMode"
+                                  Grid.Column="3"
+                                  SelectedIndex="0"
+                                  SelectionChanged="OnDisplayModeChanged">
+                             <!-- 原文+译文 -->
+                            <ComboBoxItem Content="原文+译文" />
+                             <!-- 仅原文 -->
+                            <ComboBoxItem Content="仅原文" />
+                             <!-- 仅译文 -->
+                            <ComboBoxItem Content="仅译文" />
+                        </ComboBox>
+
+                        <!-- 格式 -->
+                        <TextBlock Grid.Column="4"
+                                   Text="格式"
+                                   VerticalAlignment="Center"
+                                   Foreground="#0F172A" />
+                        <ComboBox x:Name="LrcAnalysis"
+                                  Grid.Column="5"
+                                  SelectedIndex="0"
+                                  SelectionChanged="OnLyricsFormatChanged">
+                             <!-- 混合 -->
+                            <ComboBoxItem Content="混合" />
+                            <!-- 合并 -->
+                            <ComboBoxItem Content="合并" />
+                            <!-- 独立 -->
+                            <ComboBoxItem Content="独立" />
+                        </ComboBox>
+
+
+                    </Grid>
+
+                     <!-- 歌曲链接框 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="*,120" ColumnSpacing="12">
+                         <!-- 请输入歌曲链接、歌曲ID 或 关键字 -->
+                        <TextBox x:Name="TxtSongLink"
+                                 Watermark="请输入歌曲链接、歌曲ID 或 关键字" />
+                         <!-- 搜索按钮 -->
+                        <Button Grid.Column="1"
+                                Content="搜索"
+                                Classes="Outlined"
+                                Click="OnOpenSearchLink" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="1"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid RowDefinitions="Auto,Auto" RowSpacing="10">
+                    <!-- 
+                    <TextBlock Text="歌曲详情信息"
+                               Classes="section-title" />
+                    -->
+                    <Border Grid.Row="0"
+                            Padding="12"
+                            Background="#F8FAFC"
+                            CornerRadius="8">
+                        <StackPanel Spacing="6">
+                            <!-- 歌曲名称 未选择歌曲 -->
+                            <TextBlock x:Name="TxtSongName"
+                                       Text="未选择歌曲"
+                                       FontSize="24"
+                                       FontWeight="SemiBold"
+                                       TextTrimming="CharacterEllipsis" />
+                           
+                            <WrapPanel ItemSpacing="14">
+                                 <!-- 歌手 -->
+                                <TextBlock x:Name="TxtSinger"
+                                           Text="歌手: -"
+                                           Foreground="#475467" />
+                                 <!-- 专辑 -->
+                                <TextBlock x:Name="TxtAlbum"
+                                           Text="专辑: -"
+                                           Foreground="#475467" />
+                            </WrapPanel>
+
+                            <WrapPanel ItemSpacing="14">
+                                 <!-- 时长 -->
+                                <TextBlock x:Name="TxtDuration"
+                                           Text="时长: -"
+                                           Foreground="#667085" />
+                                <!-- 发行日期： -->
+                                <TextBlock x:Name="TxtPublishDate"
+                                           Text="发行日期: -"
+                                           Foreground="#667085" />
+                                 <!-- 源 -->
+                                <TextBlock x:Name="TxtSongSource"
+                                           Text="源: -"
+                                           Foreground="#667085" />
+                            </WrapPanel>
+
+                            <!--
+                            <TextBlock x:Name="TxtSongLinkDetail"
+                                       Text="直链: -"
+                                       Foreground="#667085"
+                                       TextTrimming="CharacterEllipsis" />
+                            -->
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+             <!-- 歌词面板 -->
+            <Border Grid.Row="2"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10" >
+                <Grid RowDefinitions="Auto,*" RowSpacing="10">
+                    <!--
+                    <TextBlock Text="歌词"
+                               Classes="section-title" />
+                     -->
+                    <TextBox x:Name="TxtLyrics"
+                             Grid.Row="1"
+                             MinHeight="180"
+                             FontSize="14"
+                             IsReadOnly="True"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="3"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="12">
+                     <!-- 时间码格式 -->
+                        <TextBlock Grid.Column="1" Text="MMT时间码格式"
+                                   Classes="section-title"  VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbTimeCodeFormat" Grid.Column="2"
+                                  SelectedIndex="0">
+                            <!-- 标准时间 -->
+                            <ComboBoxItem Content="标准时间" />
+                            <!-- 秒数 -->
+                            <ComboBoxItem Content="秒数" />
+                        </ComboBox>
+
+                    <!-- 保存Lrc歌词按钮 -->
+                    <Button Grid.Column="3" 
+                            Content="保存Lrc歌词" 
+                            Classes="Outlined"
+                            VerticalAlignment="Center"
+                            Click="OnSaveLyrics" />
+                     <!-- 插入到脚本按钮 -->
+                    <Button Grid.Column="4" 
+                            Content="插入到脚本"
+                            Classes="Outlined"
+                            VerticalAlignment="Center"
+                            Click="OnInsertToScript" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</suki:SukiWindow>

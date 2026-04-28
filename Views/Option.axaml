@@ -1,0 +1,113 @@
+﻿<suki:SukiWindow
+    x:Class="MMTGui.Option"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    Title="选项"
+    Width="520"
+    Height="400"
+    MinWidth="460"
+    MinHeight="400"
+    CanResize="False"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner">
+
+    <!-- 工具-选项 功能 -->
+
+    <Border  Padding="20">
+        <!-- 预览画布选项标题 -->
+        <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+            <TextBlock Grid.Row="0"
+                       Text="预览画布选项"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       />
+            <!-- 
+            提示文本 
+            这些设置只影响编辑器中的预览画布，不会修改导出的字幕 PNG。
+            -->
+            <TextBlock Grid.Row="1"
+                       Text="这些设置只影响编辑器中的预览画布，不会修改导出的字幕 PNG。"
+                       TextWrapping="Wrap"
+                       Foreground="#808080" />
+
+            <!-- 画布颜色 -->
+            <StackPanel Grid.Row="2" Spacing="14">
+                <Border BorderBrush="#334155" BorderThickness="1" CornerRadius="8" Padding="14">
+                    <Grid ColumnDefinitions="88,Auto,*" ColumnSpacing="12">
+                        <TextBlock Grid.Column="0"
+                                   Text="画布颜色"
+                                   VerticalAlignment="Center"
+                                   />
+                        <!-- 边框 -->
+                        <Border Grid.Column="1"
+                                x:Name="CanvasColorSwatch"
+                                Width="48"
+                                Height="28"
+                                CornerRadius="6"
+                                BorderBrush="#475569"
+                                BorderThickness="1"
+                                Background="#16213E" />
+                        <!-- 选择颜色按钮 -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">
+                            <TextBlock x:Name="CanvasColorValue"
+                                       VerticalAlignment="Center"/>
+                            <Button Content="选择颜色" 
+                                    Click="OnChooseCanvasColor"
+                                    Classes="Outlined" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- 背景图片 -->
+                <Border BorderBrush="#334155" BorderThickness="1" CornerRadius="8" Padding="14">
+                    <Grid ColumnDefinitions="88,*" RowDefinitions="Auto,Auto" ColumnSpacing="12" RowSpacing="10">
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="背景图片"
+                                   VerticalAlignment="Center" />
+
+                        <!-- 图片路径 -->
+                        <TextBox Grid.Row="0"
+                                 Grid.Column="1"
+                                 x:Name="TxtBackgroundImagePath"
+                                 IsReadOnly="True"
+                                 Watermark="未选择图片" />
+
+                        <!-- 画布颜色 -->
+                        <StackPanel Grid.Row="1"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Spacing="10">
+                            <!-- 导入图片按钮 -->
+                            <Button Content="导入图片"
+                                    Click="OnBrowseBackgroundImage"
+                                    Classes="Outlined" />
+                            <!-- 清除图片按钮 -->
+                            <Button Content="清除图片"
+                                    Click="OnClearBackgroundImage"
+                                    Classes="Outlined" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+
+            <!-- 按钮组 -->
+            <StackPanel Grid.Row="3"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="10">
+                <!-- 取消 -->
+                <Button Content="取消"
+                        Click="OnCancel"
+                        Classes="Standard" />
+                <!-- 确定按钮 -->
+                <Button Content="确定"
+                        Click="OnConfirm"
+                        Classes="Success" />
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</suki:SukiWindow>

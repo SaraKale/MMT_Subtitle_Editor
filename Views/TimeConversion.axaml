@@ -1,0 +1,83 @@
+﻿<suki:SukiWindow
+    x:Class="MMTGui.TimeConversion"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    Title="时间换算"
+    Width="520"
+    Height="310"
+    MinWidth="460"
+    MinHeight="310"
+    CanResize="False"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner">
+
+    <!-- 时间换算界面 -->
+
+    <Border Padding="20">
+        <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+            <!-- 时间换算标题 -->
+            <TextBlock Grid.Row="0"
+                       Text="时间换算"
+                       FontSize="20"
+                       FontWeight="SemiBold"
+                       Foreground="#000" />
+            <!-- 支持时间码与 30fps 帧数互相换算。帧数框也支持输入 1800F、1800 或 @1800F,90F / @60,3.0 这类 MMT 时间写法。 -->
+            <TextBlock Grid.Row="1"
+                       Text="支持时间码与 30fps 帧数互相换算。帧数框也支持输入 1800F、1800 或 @1800F,90F / @60,3.0 这类 MMT 时间写法。"
+                       TextWrapping="Wrap"
+                       Foreground="Gray" />
+
+            <StackPanel Grid.Row="2" Spacing="14">
+                <Grid ColumnDefinitions="80,*" ColumnSpacing="12">
+                    <!-- 时间码 -->
+                    <TextBlock Grid.Column="0"
+                               Text="时间码"
+                               VerticalAlignment="Center"
+                               Foreground="#000" />
+                    <!-- 时间码输入框 -->
+                    <TextBox Grid.Column="1"
+                             x:Name="TxtTimeCode"
+                             Text="00:01:00.000"
+                             Watermark="00:01:00.000"
+                             TextChanged="OnTimeCodeChanged"
+                             LostFocus="OnTimeCodeLostFocus"
+                             KeyDown="OnTimeCodeKeyDown" />
+                </Grid>
+
+                <Grid ColumnDefinitions="80,*" ColumnSpacing="12">
+                     <!-- 时间帧 -->
+                    <TextBlock Grid.Column="0"
+                               Text="时间帧"
+                               VerticalAlignment="Center"
+                               Foreground="#000" />
+                   <!-- 时间帧输入框 -->
+                    <TextBox Grid.Column="1"
+                             x:Name="TxtFrameValue"
+                             Text="1800F"
+                             Watermark="1800F 或 @1800F,90F"
+                             TextChanged="OnFrameValueChanged"
+                             LostFocus="OnFrameValueLostFocus"
+                             KeyDown="OnFrameValueKeyDown" />
+                </Grid>
+
+                <TextBlock x:Name="TxtSecondsHint"
+                           Foreground="Gray" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="3"
+                        Margin="0,0,0,-5"
+                        Orientation="Horizontal" Spacing="10"
+                        HorizontalAlignment="Right">
+                <!-- 计算按钮 -->
+                <Button Content="计算" 
+                        Click="OnCalculate"
+                        Classes="Outlined" />
+                <!-- 关闭按钮 -->
+                <Button Content="关闭"
+                        Click="OnClose"
+                        Classes="Outlined" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</suki:SukiWindow>

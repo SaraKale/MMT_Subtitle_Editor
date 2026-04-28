@@ -1,0 +1,95 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <AssemblyName>MMT Subtitle Editor</AssemblyName>
+    <Title>MMT Subtitle Editor</Title>
+    <Authors>SaraKale</Authors>
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <ApplicationIcon>Assets\MMTicon.ico</ApplicationIcon>
+    <StartupObject>MMTGui.Avalonia.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+<ItemGroup>
+  <None Update="example\**\*">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </None>
+  <None Update="HelpDOC\image\**\*">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </None>
+  <None Update="HelpDOC\*.html">
+    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+
+
+  <ItemGroup>
+    <AvaloniaXaml Remove="HelpDOC\**" />
+    <AvaloniaXaml Remove="备份\**" />
+    <Compile Remove="HelpDOC\**" />
+    <Compile Remove="备份\**" />
+    <EmbeddedResource Remove="HelpDOC\**" />
+    <EmbeddedResource Remove="备份\**" />
+    <EmbeddedResource Remove="Resources\_test.resx" />
+    <None Remove="HelpDOC\**" />
+    <None Remove="备份\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="README.md" />
+    <None Remove="README_JP.md" />
+    <None Remove="README_SC.md" />
+    <None Remove="README_TC.md" />
+    <None Remove="多平台框架编译.bat" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\MMTicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.3.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.3.4" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.4" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.3.4" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.3.4">
+      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.0" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="SukiUI" Version="6.0.3" />
+    <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>

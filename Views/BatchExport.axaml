@@ -1,0 +1,126 @@
+﻿<suki:SukiWindow
+    x:Class="MMTGui.BatchExport"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    xmlns:dg="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.DataGrid"
+    x:CompileBindings="False"
+    Title="批量导出"
+    Width="860"
+    Height="580"
+    MinWidth="760"
+    MinHeight="520"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner">
+
+    <!-- 文件-批量导出 界面 -->
+    <Border Padding="20">
+        <Grid RowDefinitions="Auto,Auto,*,Auto,Auto" RowSpacing="16">
+            <!-- 批量导出标题 -->
+            <TextBlock Grid.Row="0"
+                       Text="批量导出"
+                       FontSize="22"
+                       FontWeight="SemiBold"
+                       Foreground="#000" />
+            <!-- 边框 -->
+            <Border Grid.Row="1"
+                    x:Name="DropBorder"
+                    BorderBrush="#475569"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="22"
+                    DragDrop.AllowDrop="True"
+                    DragDrop.DragOver="OnDropZoneDragOver"
+                    DragDrop.Drop="OnDropZoneDrop">
+                <StackPanel Spacing="6" HorizontalAlignment="Center">
+                    <!-- 拖放区域 -->
+                    <TextBlock Text="📂 拖放区域"
+                               FontSize="20"
+                               HorizontalAlignment="Center"/>
+                    <!-- 将 .mmt / .txt 文件拖到此处 -->
+                    <TextBlock Text="将 .mmt / .txt 文件拖到此处"
+                               HorizontalAlignment="Center"/>
+                     <!-- 已添加 0 个文件 -->
+                    <TextBlock x:Name="TxtFileCount"
+                               Text="已添加 0 个文件"
+                               HorizontalAlignment="Center"
+                               Foreground="Blue" />
+                </StackPanel>
+            </Border>
+
+            <!-- 边框 -->
+            <Border Grid.Row="2"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="12">
+                <!-- 数据表格 -->
+                <dg:DataGrid x:Name="FilesGrid"
+                             AutoGenerateColumns="False"
+                             IsReadOnly="True"
+                             CanUserSortColumns="False"
+                             HeadersVisibility="Column"
+                             GridLinesVisibility="Horizontal"
+                             RowHeight="34">
+                    <dg:DataGrid.Columns>
+                        <!-- 文件 -->
+                        <dg:DataGridTextColumn Header="文件"
+                                               Width="3*"
+                                               Binding="{Binding FileDisplayName}" />
+                        <!-- 字幕数 -->
+                        <dg:DataGridTextColumn Header="字幕数"
+                                               Width="1.2*"
+                                               Binding="{Binding SubtitleCountText}" />
+                        <!-- 状态 -->
+                        <dg:DataGridTextColumn Header="状态"
+                                               Width="1.5*"
+                                               Binding="{Binding Status}" />
+                    </dg:DataGrid.Columns>
+                </dg:DataGrid>
+            </Border>
+
+            <!-- 边框 -->
+            <Border Grid.Row="3"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Padding="14">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                    <!-- 输出目录 -->
+                    <TextBlock Grid.Column="0"
+                               Text="输出目录:"
+                               VerticalAlignment="Center"
+                               Foreground="#000" />
+                    <!-- 请选择输出目录 -->
+                    <TextBox Grid.Column="1"
+                             x:Name="TxtOutputDirectory"
+                             Watermark="请选择输出目录" />
+                     <!-- 浏览按钮 -->
+                    <Button Grid.Column="2"
+                            Content="浏览"
+                            Click="OnBrowseOutputDirectory"
+                            Classes="Outlined" />
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Row="4"
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="10">
+                <!-- 准备就绪状态 -->
+                <TextBlock x:Name="TxtStatus"
+                           VerticalAlignment="Center"
+                           Foreground="Green" />
+                <!-- 关闭按钮 -->
+                <Button Content="关闭"
+                        Click="OnClose" BorderBrush="Gray"
+                        Classes="Standard" />
+               <!-- 开始批量导出按钮 -->
+                <Button x:Name="BtnStartBatchExport"
+                        Content="开始批量导出"
+                        Click="OnStartBatchExport"
+                        Classes="Outlined" />
+            </StackPanel>
+        </Grid>
+    </Border>
+</suki:SukiWindow>

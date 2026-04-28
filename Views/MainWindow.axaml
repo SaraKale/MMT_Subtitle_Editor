@@ -1,0 +1,1057 @@
+﻿<!-- ============================================================ -->
+<!-- MMT Subtitle Editor - 主窗口布局                              -->
+<!-- ============================================================ -->
+<!-- 布局结构：                                                     -->
+<!--   DockPanel                                                   -->
+<!--     ├── Menu（菜单栏：文件/编辑/视图/预设/工具/帮助）          -->
+<!--     ├── Border（工具栏：新建/打开/保存/撤销/重做/预设/预览）    -->
+<!--     ├── Border（状态栏：状态/预设/字幕数/画面/时间）           -->
+<!--     └── Grid（主内容区，5列布局）                              -->
+<!--           ├── Column 0: 属性面板（字体/颜色/位置/对齐/时间/画面）-->
+<!--           ├── Column 1: GridSplitter（可拖拽分隔条）            -->
+<!--           ├── Column 2: 中央区域（预览+字幕列表）              -->
+<!--           ├── Column 3: GridSplitter（可拖拽分隔条）            -->
+<!--           └── Column 4: 脚本编辑器（MMTScript代码编辑）        -->
+<!-- ============================================================ -->
+<suki:SukiWindow
+    x:Class="MMTGui.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    xmlns:theme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+    xmlns:ctrl="clr-namespace:MMTGui.Controls;assembly=MMT Subtitle Editor"
+    xmlns:svg="clr-namespace:Avalonia.Svg.Skia;assembly=Svg.Controls.Skia.Avalonia"
+    x:CompileBindings="False"
+    Title="MMT Subtitle Editor"
+    Width="1280" Height="800"
+    MinWidth="960" MinHeight="600"
+    WindowStartupLocation="CenterScreen"
+    CanPin="True"
+    BackgroundStyle="Flat"
+    IsMenuVisible="False"
+    CanFullScreen="True">
+
+
+    <!-- 窗口标题栏Logo：使用MMT图标图片 -->
+    <suki:SukiWindow.LogoContent>
+        <Image Source="/Assets/MMTicon.png" Width="20" Height="20" Margin="0,0,6,0" Stretch="Uniform" />
+    </suki:SukiWindow.LogoContent>
+
+    <!-- 菜单栏图标占位符 -->
+    <suki:SukiWindow.Styles>
+        <Style Selector="MenuItem">
+            <Setter Property="Icon" Value="{x:Null}" />
+        </Style>
+    </suki:SukiWindow.Styles>
+
+    <!-- 快捷键绑定 -->
+    <suki:SukiWindow.KeyBindings>
+        <KeyBinding Gesture="Ctrl+N" Command="{Binding NewFileCommand}" /> <!-- 新建文件 -->
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding OpenFileCommand}" /> <!-- 打开文件 -->
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveFileCommand}" /> <!-- 保存文件 -->
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}" /> <!-- 撤销 -->
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}" /> <!-- 重做 -->
+        <KeyBinding Gesture="Ctrl+X" Command="{Binding CutCommand}" /> <!-- 剪切 -->
+        <KeyBinding Gesture="Ctrl+C" Command="{Binding CopyCommand}" /> <!-- 复制 -->
+        <KeyBinding Gesture="Ctrl+V" Command="{Binding PasteCommand}" /> <!-- 粘贴 -->
+        <KeyBinding Gesture="F11" Command="{Binding FullScreenCommand}" /> <!-- 全屏 -->
+    </suki:SukiWindow.KeyBindings>
+
+    <DockPanel>
+
+        <!-- ==================== 菜单栏 ==================== -->
+        <!-- 包含：文件、编辑、视图、预设、工具、帮助 六个菜单项 -->
+        <!-- ============================================== -->
+        <Menu DockPanel.Dock="Top" Margin="0,0,0,0">
+            <!-- 文件菜单：新建/打开/保存/另存为/生成文件/退出 -->
+            <MenuItem Header="文件"> <!-- 文件 -->
+                <MenuItem Header="新建文件" InputGesture="Ctrl+N" Click="OnNewFile" /> <!-- 新建文件 -->
+                <MenuItem Header="打开文件" InputGesture="Ctrl+O" Click="OnOpenFile" /> <!-- 打开文件 -->
+                <Separator />
+                <MenuItem Header="保存文件" InputGesture="Ctrl+S" Click="OnSaveFile" /> <!-- 保存文件 -->
+                <MenuItem Header="另存为文件" Click="OnSaveAsFile" /> <!-- 另存为文件 -->
+                <Separator />
+                <MenuItem Header="生成文件" Click="OnExportFile" /> <!-- 生成文件 -->
+                <Separator />
+                <MenuItem Header="退出" Click="OnExit" /> <!-- 退出 -->
+            </MenuItem>
+            <!-- 编辑菜单：撤销/重做/剪切/复制/粘贴 -->
+            <MenuItem Header="编辑"> <!-- 编辑 -->
+                <MenuItem Header="撤销" InputGesture="Ctrl+Z" Click="OnUndo" /> <!-- 撤销 -->
+                <MenuItem Header="重做" InputGesture="Ctrl+Y" Click="OnRedo" /> <!-- 重做 -->
+                <Separator />
+                <MenuItem Header="剪切" InputGesture="Ctrl+X" Click="OnCut" /> <!-- 剪切 -->
+                <MenuItem Header="复制" InputGesture="Ctrl+C" Click="OnCopy" /> <!-- 复制 -->
+                <MenuItem Header="粘贴" InputGesture="Ctrl+V" Click="OnPaste" /> <!-- 粘贴 -->
+            </MenuItem>
+            <!-- 视图菜单：属性面板/脚本编辑器/字幕列表的显示切换，全屏模式 -->
+            <MenuItem Header="视图"> <!-- 视图 -->
+                <MenuItem x:Name="MenuToggleProperty" Header="属性面板" IsChecked="True"
+                          Click="OnTogglePropertyPanel" /> <!-- 属性面板 -->
+                <MenuItem x:Name="MenuToggleScript" Header="脚本编辑器" IsChecked="True"
+                          Click="OnToggleScriptPanel" /> <!-- 脚本编辑器 -->
+                <Separator />
+                <MenuItem x:Name="MenuToggleSubtitleList" Header="字幕列表" IsChecked="True"
+                          Click="OnToggleSubtitleList" /> <!-- 字幕列表 -->
+                <Separator />
+                <MenuItem Header="全屏" InputGesture="F11" Click="OnToggleFullScreen" /> <!-- 全屏 -->
+            </MenuItem>
+
+            <!-- 预设菜单：管理/导入/导出预设
+            <MenuItem Header="预设">
+                <MenuItem Header="管理预设" Click="OnManagePresets" />
+                <MenuItem Header="导入预设" Click="OnImportPreset" />
+                <MenuItem Header="导出预设" Click="OnExportPreset" />
+            </MenuItem>
+             -->
+
+            <!-- 工具菜单：批量导出/选项 -->
+            <MenuItem Header="工具"> <!-- 工具 -->
+                <MenuItem Header="时间换算" Click="OnOpenTimeConversion"/> <!-- 时间换算 -->
+                <MenuItem Header="批量导出" Click="OnBatchExport" /> <!-- 批量导出 -->
+                <MenuItem Header="在线歌词搜索" Click="OnOpenLyricsOnline" /> <!-- 在线歌词搜索 -->
+                <MenuItem Header="选项" Click="OnOpenOptions" /> <!-- 选项 -->
+            </MenuItem>
+            <!-- 工具菜单：批量导出/选项 -->
+            <MenuItem Header="语言"> <!-- 语言 -->
+                <MenuItem x:Name="MenuLanguageEnglish" Header="English" Tag="en" Click="OnLanguageSelected" /> <!-- English -->
+                <MenuItem x:Name="MenuLanguageSimplifiedChinese" Header="简体中文" Tag="zh-Hans" Click="OnLanguageSelected" /> <!-- 简体中文 -->
+                <MenuItem x:Name="MenuLanguageTraditionalChinese" Header="繁體中文" Tag="zh-Hant" Click="OnLanguageSelected" /> <!-- 繁體中文 -->
+                <MenuItem x:Name="MenuLanguageJapanese" Header="日本語" Tag="ja" Click="OnLanguageSelected" /> <!-- 日本語 -->
+            </MenuItem>
+            <!-- 帮助菜单：文档/关于 -->
+            <MenuItem Header="帮助"> <!-- 帮助 -->
+                <MenuItem Header="文档" Click="OnOpenDocs" /> <!-- 文档 -->
+                <MenuItem Header="关于 MMT Editor" Click="OnAbout" /> <!-- 关于 MMT Editor -->
+            </MenuItem>
+        </Menu>
+
+        <!-- ==================== 工具栏 ==================== -->
+        <!-- 包含：文件操作按钮、撤销重做(SVG图标)、预设选择、预览播放控制 -->
+        <!-- =============================================== -->
+        <Border DockPanel.Dock="Top"
+                BorderThickness="0,0,0,1" Margin="10"
+                BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                Padding="6,4">
+            <StackPanel Orientation="Horizontal" Spacing="4">
+                <!-- 文件操作按钮组 -->
+                <Button Classes="Outlined" Content="新建" Click="OnNewFile"/> <!-- 新建 -->
+                <Button Classes="Outlined" Content="打开" Click="OnOpenFile" /> <!-- 打开 -->
+                <Button Classes="Outlined" Content="保存" Click="OnSaveFile" /> <!-- 保存 -->
+                <Button Classes="Flat Accent" Content="生成文件" FontWeight="SemiBold" Click="OnExportFile" /> <!-- 生成文件 -->
+
+                <Separator Margin="6,0" />
+
+                <!-- 撤销/重做按钮，使用Assets文件夹中的SVG图标 -->
+                <!-- 撤销 -->
+                <Button Classes="Basic" Width="32" Padding="0" Click="OnUndo" ToolTip.Tip="撤销">
+                    <Image Source="{svg:SvgImage /Assets/icon_undo.svg}" Width="16" Height="16" />
+                </Button>
+                <!-- 重做 -->
+                <Button Classes="Basic" Width="32" Padding="0" Click="OnRedo" ToolTip.Tip="重做">
+                    <Image Source="{svg:SvgImage /Assets/icon_redo.svg}" Width="16" Height="16" />
+                </Button>
+
+                <Separator Margin="6,0" />
+
+                <!-- 预设选择下拉框和保存按钮 
+                <TextBlock Text="当前预设:" VerticalAlignment="Center"
+                           FontSize="14" Foreground="{DynamicResource SukiLowText}" />
+                <ComboBox x:Name="CmbPreset" MinWidth="120" SelectedIndex="0"
+                          SelectionChanged="OnPresetChanged">
+                    <ComboBoxItem Content="def (默认)" />
+                    <ComboBoxItem Content="title (标题)" />
+                    <ComboBoxItem Content="+ 新建预设..." />
+                </ComboBox>
+                <Button Classes="Outlined" Content="保存预设" Click="OnSavePreset" />
+                -->
+
+                <Separator Margin="6,0" />
+
+                <!-- 预览播放/停止按钮，使用Assets文件夹中的SVG图标 -->
+                <!-- 预览 -->
+                <Button Classes="Outlined" Click="OnPreview" ToolTip.Tip="预览">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Image Source="{svg:SvgImage /Assets/play.svg}" Width="14" Height="14" />
+                        <TextBlock Text="预览" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <!-- 停止 -->
+                <Button Classes="Outlined" Click="OnStopPreview" ToolTip.Tip="停止">
+                    <StackPanel Orientation="Horizontal" Spacing="4">
+                        <Image Source="{svg:SvgImage /Assets/stop.svg}" Width="14" Height="14" />
+                        <TextBlock Text="停止" VerticalAlignment="Center" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- ==================== 状态栏 ==================== -->
+        <!-- 显示：当前状态、预设名称、字幕数量、画面分辨率、播放时间 -->
+        <!-- =============================================== -->
+        <Border DockPanel.Dock="Bottom" Height="26"
+                Background="{DynamicResource SukiPrimaryColor}">
+            <Grid Margin="12,0">
+                <StackPanel Orientation="Horizontal" Spacing="16" VerticalAlignment="Center">
+                     <!-- 就绪 -->
+                    <TextBlock x:Name="StatusText" Text="就绪" Foreground="White" FontSize="12" Opacity="0.95" />
+                    <Border Width="1" Height="14" Background="White" Opacity="0.3" />
+                     <!-- 预设名称 
+                    <TextBlock x:Name="StatusPreset" Text="预设: def" Foreground="White" FontSize="12" Opacity="0.9" />
+                    <Border Width="1" Height="14" Background="White" Opacity="0.3" />
+                    -->
+                    <!-- 字幕数量 -->
+                    <TextBlock x:Name="StatusSubtitleCount" Text="字幕: 0 条" Foreground="White" FontSize="12" Opacity="0.9" />
+                    <Border Width="1" Height="14" Background="White" Opacity="0.3" />
+                    <!-- 画面分辨率 -->
+                    <TextBlock x:Name="StatusResolution" Text="画面: 1280×720" Foreground="White" FontSize="12" Opacity="0.9" />
+                </StackPanel>
+                <!-- 播放时间显示（右对齐） -->
+                <TextBlock x:Name="StatusTime" Text="" Foreground="White" FontSize="13" Opacity="0.8"
+                           HorizontalAlignment="Right" VerticalAlignment="Center" />
+            </Grid>
+        </Border>
+
+        <!-- ==================== 主内容区（5列网格布局） ==================== -->
+        <!-- 列定义：280(属性面板) | 4(分隔条) | *(中央区) | 4(分隔条) | 320(脚本编辑器) -->
+        <!-- ============================================================== -->
+        <Grid x:Name="MainGrid" ColumnDefinitions="300, 4, *, 4, 320">
+
+            <!-- ========== Column 0: 左侧属性面板 ========== -->
+            <!-- 可折叠的属性设置区域，包含：字体、颜色、位置、对齐、时间、画面 -->
+            <!-- ========================================== -->
+            <ScrollViewer Grid.Column="0"
+                          HorizontalScrollBarVisibility="Disabled"
+                          VerticalScrollBarVisibility="Auto">
+                <StackPanel Spacing="0">
+
+                    <!-- 属性面板标题栏 -->
+                    <Border Padding="12,8" BorderThickness="0,0,0,1"
+                            BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                            Background="{DynamicResource SukiCardBackground}">
+                        <TextBlock Text="属性面板" FontWeight="Bold" FontSize="12"
+                                   Foreground="{DynamicResource SukiLowText}" />
+                    </Border>
+
+                    <!-- ===== 字体设置区 ===== -->
+                    <!-- 包含：字体名称（系统字体列表）、字体大小、样式开关（粗体/斜体/下划线/删除线） -->
+                    <!-- ========================================== -->
+                     <!-- 字体标题 -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="字体" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- 字体名称下拉框，运行时加载系统已安装字体 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="名称" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <ComboBox x:Name="CmbFontName" Grid.Column="1"
+                                          SelectedIndex="0" HorizontalAlignment="Stretch"
+                                          SelectionChanged="OnFontNameChanged" />
+                            </Grid>
+                            <!-- 字体大小输入框，单位pt -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="大小" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudFontSize" Grid.Column="1" Value="13"
+                                               Minimum="1" Maximum="200" Increment="0.5" Width="100"
+                                               ShowButtonSpinner="True"
+                                               theme:NumericUpDownExtensions.Unit="pt"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudFontSize" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 水平缩放，单位% -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="水平" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudScaleX" Grid.Column="1" Value="100"
+                                               Minimum="1" Maximum="500" Increment="5" Width="100"
+                                               ShowButtonSpinner="True"
+                                               theme:NumericUpDownExtensions.Unit="%"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudScaleX" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 垂直缩放，单位% -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="垂直" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudScaleY" Grid.Column="1" Value="100"
+                                               Minimum="1" Maximum="500" Increment="5" Width="100"
+                                               ShowButtonSpinner="True"
+                                               theme:NumericUpDownExtensions.Unit="%"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudScaleY" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 旋转角度，正数顺时针，负数逆时针 -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="旋转" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudRotation" Grid.Column="1" Value="0"
+                                               Minimum="-360" Maximum="360" Increment="5" Width="100"
+                                               ShowButtonSpinner="True"
+                                               theme:NumericUpDownExtensions.Unit="°"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudRotation" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 字符间距 -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="间距" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudSpacing" Grid.Column="1" Value="0"
+                                               Minimum="-50" Maximum="100" Increment="1" Width="100"
+                                               ShowButtonSpinner="True"
+                                               theme:NumericUpDownExtensions.Unit="px"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudSpacing" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 字体样式切换按钮组，使用SVG图标 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="样式" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                                    <!-- 粗体切换按钮 -->
+                                    <ToggleButton x:Name="TglBold" Width="40" Height="40"
+                                                  IsChecked="True" HorizontalContentAlignment="Center"
+                                                  VerticalContentAlignment="Center"
+                                                  ToolTip.Tip="粗体" Padding="0,0,0,0"
+                                                  Click="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/bold.svg}" Width="18" Height="18" />
+                                    </ToggleButton>
+                                    <!-- 斜体切换按钮 -->
+                                    <ToggleButton x:Name="TglItalic" Width="40" Height="40"
+                                                  HorizontalContentAlignment="Center"
+                                                  VerticalContentAlignment="Center"
+                                                  ToolTip.Tip="斜体" Padding="0,0,0,0"
+                                                  Click="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/italic.svg}" Width="18" Height="18" />
+                                    </ToggleButton>
+                                    <!-- 下划线切换按钮 -->
+                                    <ToggleButton x:Name="TglUnderline" Width="40" Height="40"
+                                                  HorizontalContentAlignment="Center"
+                                                  VerticalContentAlignment="Center"
+                                                  ToolTip.Tip="下划线" Padding="0,0,0,0"
+                                                  Click="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/underline.svg}" Width="18" Height="18" />
+                                    </ToggleButton>
+                                    <!-- 删除线切换按钮 -->
+                                    <ToggleButton x:Name="TglStrike" Width="40" Height="40"
+                                                  HorizontalContentAlignment="Center"
+                                                  VerticalContentAlignment="Center"
+                                                  ToolTip.Tip="删除线" Padding="0,0,0,0"
+                                                  Click="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/striketthrough.svg}" Width="18" Height="18" />
+                                    </ToggleButton>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===== 颜色设置区 ===== -->
+                    <!-- 包含：字体颜色、描边颜色、阴影颜色、背景颜色 -->
+                    <!-- 点击颜色预览块弹出系统颜色选择器 -->
+                    <!-- ==================== -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="颜色" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- 字体颜色：点击色块弹出颜色选择器 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="字体" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                            Spacing="6" HorizontalAlignment="Right">
+                                    <Border x:Name="FontColorPreview" Width="28" Height="22" CornerRadius="4"
+                                            Background="White"
+                                            BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                                            BorderThickness="1"
+                                            PointerPressed="OnFontColorClick" />
+                                    <TextBlock x:Name="FontColorText" Text="255,255,255" FontSize="11"
+                                               FontFamily="Consolas"
+                                               Foreground="{DynamicResource SukiLowText}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                            <!-- 描边颜色 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="描边" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                            Spacing="6" HorizontalAlignment="Right">
+                                    <Border x:Name="StrokeColorPreview" Width="28" Height="22" CornerRadius="4"
+                                            Background="Black"
+                                            BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                                            BorderThickness="1"
+                                            PointerPressed="OnStrokeColorClick" />
+                                    <TextBlock x:Name="StrokeColorText" Text="0,0,0" FontSize="11"
+                                               FontFamily="Consolas"
+                                               Foreground="{DynamicResource SukiLowText}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                            <!-- 阴影颜色 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="阴影" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                            Spacing="6" HorizontalAlignment="Right">
+                                    <Border x:Name="ShadowColorPreview" Width="28" Height="22" CornerRadius="4"
+                                            Background="#000064"
+                                            BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                                            BorderThickness="1"
+                                            PointerPressed="OnShadowColorClick" />
+                                    <TextBlock x:Name="ShadowColorText" Text="0,0,100" FontSize="11"
+                                               FontFamily="Consolas"
+                                               Foreground="{DynamicResource SukiLowText}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                            <!-- 背景颜色（支持透明度） -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="背景" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal"
+                                            Spacing="6" HorizontalAlignment="Right">
+                                    <Border x:Name="BgColorPreview" Width="28" Height="22" CornerRadius="4"
+                                            Background="#1F00FFFF"
+                                            BorderBrush="{DynamicResource SukiLightBorderBrush}"
+                                            BorderThickness="1"
+                                            PointerPressed="OnBgColorClick" />
+                                    <TextBlock x:Name="BgColorText" Text="0,255,255,0" FontSize="11"
+                                               FontFamily="Consolas"
+                                               Foreground="{DynamicResource SukiLowText}"
+                                               VerticalAlignment="Center" />
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===== 位置设置区 ===== -->
+                    <!-- 包含：X/Y/Z坐标、描边宽度、阴影偏移、阴影模糊、透明度、竖排文字、公告板模式 -->
+                    <!-- ==================== -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="位置" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- X坐标 -->
+                            <Grid ColumnDefinitions="20, *, Auto">
+                                <TextBlock Grid.Column="0" Text="X" FontSize="16"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudPosX" Grid.Column="1" Value="0" Increment="1"
+                                               Width="70" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudPosX" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- Y坐标 -->
+                            <Grid ColumnDefinitions="20, *, Auto">
+                                <TextBlock Grid.Column="0" Text="Y" FontSize="16"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudPosY" Grid.Column="1" Value="0" Increment="1"
+                                               Width="70" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudPosY" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- Z坐标（深度） -->
+                            <Grid ColumnDefinitions="20, *, Auto">
+                                <TextBlock Grid.Column="0" Text="Z" FontSize="16"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudPosZ" Grid.Column="1" Value="0" Increment="0.1"
+                                               Width="70" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudPosZ" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 描边宽度 -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="描边" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudEdge" Grid.Column="1" Value="8" Minimum="0"
+                                               Increment="1" Width="70" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudEdge" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 阴影偏移 -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="阴影" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudShadow" Grid.Column="1" Value="0" Minimum="0"
+                                               Increment="1" Width="70" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudShadow" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 阴影模糊度 -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="模糊" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudShadowBlur" Grid.Column="1" Value="0" Minimum="0"
+                                               Increment="1" Width="70" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudShadowBlur" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 透明度 -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="透明度" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudOpacity" Grid.Column="1" Value="1.0" Minimum="0" Maximum="1"
+                                               Increment="0.05" Width="70" ShowButtonSpinner="False"
+                                               FormatString="0.00"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudOpacity" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 竖排文字开关 -->
+                            <CheckBox x:Name="ChkVertical" Content="竖排文字" IsChecked="False"  FontSize="14"
+                                      IsCheckedChanged="OnCheckBoxChanged" />
+                            <!-- 公告板模式开关（始终面向摄像机） -->
+                            <CheckBox x:Name="ChkBillboard" Content="公告板模式" IsChecked="False" FontSize="14"
+                                      IsCheckedChanged="OnCheckBoxChanged" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===== 对齐设置区 ===== -->
+                    <!-- 包含：水平对齐（左/中/右）、垂直对齐（顶部/居中/底部），使用SVG图标 -->
+                     <!-- ==================== -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="对齐" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- 水平对齐方式选择 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="水平" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                                    <!-- 左对齐 -->
+                                    <RadioButton x:Name="RdoAlignLeft" GroupName="HAlign"
+                                                 ToolTip.Tip="左对齐" Width="40" Height="40"
+                                                 HorizontalContentAlignment="Center" Margin="0,0,20,0"
+                                                 IsCheckedChanged="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/align-left.svg}" Width="18" Height="18" />
+                                    </RadioButton>
+                                    <!-- 居中 -->
+                                    <RadioButton x:Name="RdoAlignCenter" GroupName="HAlign"
+                                                 ToolTip.Tip="居中" Width="40" Height="40" Margin="0,0,20,0"
+                                                 HorizontalContentAlignment="Center"
+                                                 IsChecked="True"
+                                                 IsCheckedChanged="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/align-center.svg}" Width="18" Height="18" />
+                                    </RadioButton>
+                                     <!-- 右对齐 -->
+                                    <RadioButton x:Name="RdoAlignRight" GroupName="HAlign"
+                                                 ToolTip.Tip="右对齐" Width="40" Height="40" Margin="0,0,20,0"
+                                                 HorizontalContentAlignment="Center"
+                                                 IsCheckedChanged="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/align-right.svg}" Width="18" Height="18" />
+                                    </RadioButton>
+                                </StackPanel>
+                            </Grid>
+                            <!-- 垂直对齐方式选择 -->
+                            <Grid ColumnDefinitions="50, *">
+                                <TextBlock Grid.Column="0" Text="垂直" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                                     <!-- 顶部对齐 -->
+                                    <RadioButton x:Name="RdoValignTop" GroupName="VAlign"
+                                                 ToolTip.Tip="顶部对齐" Width="40" Height="40" Margin="0,0,20,0"
+                                                 HorizontalContentAlignment="Center"
+                                                 IsCheckedChanged="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/v-align-top.svg}" Width="18" Height="18" />
+                                    </RadioButton>
+                                     <!-- 垂直居中 -->
+                                    <RadioButton x:Name="RdoValignCenter" GroupName="VAlign"
+                                                 ToolTip.Tip="垂直居中" Width="40" Height="40" Margin="0,0,20,0"
+                                                 HorizontalContentAlignment="Center"
+                                                 IsChecked="True"
+                                                 IsCheckedChanged="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/valign-center.svg}" Width="18" Height="18" />
+                                    </RadioButton>
+                                    <!-- 底部对齐 -->
+                                    <RadioButton x:Name="RdoValignBottom" GroupName="VAlign"
+                                                 ToolTip.Tip="底部对齐" Width="40" Height="40" Margin="0,0,20,0"
+                                                 HorizontalContentAlignment="Center"
+                                                 IsCheckedChanged="OnPropertyValueChanged">
+                                        <Image Source="{svg:SvgImage /Assets/ValignBottom.svg}" Width="18" Height="18" />
+                                    </RadioButton>
+                                </StackPanel>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===== 时间设置区 ===== -->
+                    <!-- 包含：淡入淡出时长、自动时长（秒/字）、时间基准、时间范围输入 -->
+                    <!-- ==================== -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="时间" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- 淡入淡出时长（秒） -->
+                            <Grid ColumnDefinitions="60, *, Auto, Auto">
+                                <TextBlock Grid.Column="0" Text="淡入淡出" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                               <!-- 数值 -->
+                                <NumericUpDown x:Name="NudFade" Grid.Column="1" Value="0.38" Minimum="0"
+                                               Increment="0.01" Width="70"
+                                               ShowButtonSpinner="False"
+                                               FormatString="0.00"
+                                               ValueChanged="OnPropertyValueChanged" />
+                               <!-- 秒 -->
+                                <TextBlock Grid.Column="2" Text="秒" FontSize="14" Margin="0,0,5,0"
+                                           Foreground="{DynamicResource SukiLowText}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                                <!-- 插入按钮  -->
+                                   <Button Grid.Column="3" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudFade" Margin="0,0,0,0" />
+                            </Grid>
+                            <!-- 自动时长（每个字符的显示时间） -->
+                            <Grid ColumnDefinitions="60, *, Auto, Auto">
+                                <TextBlock Grid.Column="0" Text="自动时长" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                 <!-- 数值  -->
+                                <NumericUpDown x:Name="NudAutoTime" Grid.Column="1" Value="0.16" Minimum="0"
+                                               Increment="0.01" Width="70"
+                                               ShowButtonSpinner="False"
+                                               FormatString="0.00"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                 <!-- 秒/字  -->
+                                <TextBlock Grid.Column="2" Text="秒/字" FontSize="14"  Margin="0,0,5,0"
+                                           Foreground="{DynamicResource SukiLowText}"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Center" />
+                                 <!-- 插入按钮  -->
+                                <Button Grid.Column="3" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudAutoTime" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 时间基准偏移 -->
+                            <Grid ColumnDefinitions="60, *, Auto">
+                                <TextBlock Grid.Column="0" Text="时间基准" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <!-- 数值  -->
+                                <NumericUpDown x:Name="NudTimeBase" Grid.Column="1" Value="0" Minimum="0"
+                                               Increment="0.1" Width="70"
+                                               ShowButtonSpinner="False"
+                                               FormatString="0.0"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <!-- 插入按钮  -->
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudTimeBase" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 时间范围 -->
+                            <Grid ColumnDefinitions="60, *">
+                                <TextBlock Grid.Column="0" Text="时间范围" FontSize="14"
+                                           VerticalAlignment="Center" Margin="0,2,0,5"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                </Grid>
+                            <!-- 时间范围时间码 -->
+                                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="2">
+                                    <TextBox x:Name="TxtTimeStart" Text="00:00:00.000" Width="110"
+                                             FontSize="13"
+                                             HorizontalContentAlignment="Center" />
+                                    <TextBlock Text="—" VerticalAlignment="Center" FontSize="12"
+                                               Foreground="{DynamicResource SukiLowText}" />
+                                    <TextBox x:Name="TxtTimeEnd" Text="00:00:00.000" Width="110"
+                                             FontSize="13"
+                                             HorizontalContentAlignment="Center" />
+                                </StackPanel>
+                            <!-- 插入按钮 -->
+                                <Button Grid.Column="1" Content="插入" FontSize="13"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertTimeRange" HorizontalAlignment="Left" />
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- ===== 画面设置区（默认折叠） ===== -->
+                    <!-- 包含：画面宽度/高度、边距X/Y -->
+                    <!-- ============================== -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="画面" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- 画面宽度（像素） -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="宽度" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudScreenWidth" Grid.Column="1" Value="1280" Minimum="1"
+                                               Width="80" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudScreenWidth" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 画面高度（像素） -->
+                            <Grid ColumnDefinitions="50, *, Auto">
+                                <TextBlock Grid.Column="0" Text="高度" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudScreenHeight" Grid.Column="1" Value="720" Minimum="1"
+                                               Width="80" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="2" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudScreenHeight" Margin="4,0,0,0" />
+                            </Grid>
+                            <!-- 边距X和Y -->
+                            <Grid ColumnDefinitions="50, *, 20, *, Auto">
+                                <TextBlock Grid.Column="0" Text="边距X" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudMarginX" Grid.Column="1" Value="5" Minimum="0"
+                                               Width="60" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <TextBlock Grid.Column="2" Text="Y" FontSize="12"
+                                           VerticalAlignment="Center" HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <NumericUpDown x:Name="NudMarginY" Grid.Column="3" Value="5" Minimum="0"
+                                               Width="60" ShowButtonSpinner="False"
+                                               ValueChanged="OnPropertyValueChanged" />
+                                <Button Grid.Column="4" Content="插入" FontSize="12"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertNudValue" Tag="NudMarginX" Margin="4,0,0,0" />
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                    <!-- 额外功能 -->
+                    <Expander IsExpanded="True" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="额外功能" FontWeight="SemiBold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="6" Margin="8,4">
+                            <!-- :set 记录格式 -->
+                            <Grid ColumnDefinitions="60, *, Auto">
+                                <TextBlock Grid.Column="0" Text="记录格式" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <TextBox x:Name="TxtSetName" Grid.Column="1" Watermark="集合名"
+                                         FontSize="11" Margin="4,0" />
+                                 <!-- 插入按钮 -->
+                                <Button Grid.Column="2" Content="插入" FontSize="14" Margin="10,0,0,0"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertSet" />
+                            </Grid>
+                            <!-- :get 调用格式 -->
+                            <Grid ColumnDefinitions="60, *, Auto">
+                                <TextBlock Grid.Column="0" Text="调用格式" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                <TextBox x:Name="TxtGetName" Grid.Column="1" Watermark="集合名/default"
+                                         FontSize="11" Margin="4,0" />
+                                <!-- 插入按钮 -->
+                                <Button Grid.Column="2" Content="插入" FontSize="14" Margin="10,0,0,0"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertGet" />
+                            </Grid>
+                            <!-- :skip 跳过下个文本 -->
+                            <Grid ColumnDefinitions="60, *">
+                                <TextBlock Grid.Column="0" Text="跳过文本" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                 <!-- 插入按钮 -->
+                                <Button Grid.Column="1" Content="插入" FontSize="12" Margin="20,0,0,0"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertSkip" HorizontalAlignment="Left" />
+                            </Grid>
+                            <!-- :end 结束标记 -->
+                            <Grid ColumnDefinitions="60, *">
+                                <TextBlock Grid.Column="0" Text="结束标记" FontSize="14"
+                                           VerticalAlignment="Center"
+                                           Foreground="{DynamicResource SukiLowText}" />
+                                 <!-- 插入按钮 -->
+                                <Button Grid.Column="1" Content="插入" FontSize="12" Margin="20,0,0,0"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnInsertEnd" HorizontalAlignment="Left" />
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Column 1: 可拖拽的列分隔条 -->
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" Width="4"
+                          Background="Transparent" />
+
+            <!-- ========== Column 2: 中央区域（预览+字幕列表） ========== -->
+            <Grid Grid.Column="2" RowDefinitions="*, Auto, *">
+
+                <Grid Grid.Row="0" RowDefinitions="Auto, *">
+
+                    <Border Grid.Row="0" Padding="8,6"
+                            Background="#0F172A"
+                            BorderThickness="0,0,0,1" BorderBrush="#334155">
+                        <Grid ColumnDefinitions="Auto, *, Auto">
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                                <!-- 预览 -->
+                                <Border Padding="8,4" CornerRadius="4" Background="#1E293B">
+                                    <TextBlock Text="预览" FontSize="14" Foreground="#F1F5F9" />
+                                </Border>
+                                 <!-- 坐标定位
+                                <Border Padding="8,4" CornerRadius="4">
+                                    <TextBlock Text="坐标定位" FontSize="14" Foreground="#94A3B8" />
+                                    </Border> 
+                                    -->
+                            </StackPanel>
+                            <!-- 缩放功能 -->
+                            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4">
+                                <!-- 缩放适配 -->
+                                <Button Content="⊡" FontSize="18" Padding="4,2"
+                                        Background="Transparent" Foreground="#fff"
+                                        BorderThickness="0" ToolTip.Tip="缩放适配" Click="OnZoomFit" />
+                                <!-- + 放大 -->
+                                <Button Content="＋" FontSize="18" Padding="4,2" 
+                                        Background="Transparent" Foreground="#fff"
+                                        BorderThickness="0" ToolTip.Tip="放大" Click="OnZoomIn" />
+                                <!-- - 缩小 -->
+                                <Button Content="－" FontSize="18" Padding="4,2"
+                                        Background="Transparent" Foreground="#fff"
+                                        BorderThickness="0" ToolTip.Tip="缩小" Click="OnZoomOut" />
+                                <!-- 百分比显示 -->
+                                <TextBlock x:Name="TxtZoom" Text="100%" FontSize="13" Foreground="#fff"
+                                           VerticalAlignment="Center" Margin="4,0,0,0" />
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 预览区域 -->
+                    <Border Grid.Row="1" Background="#1E293B" ClipToBounds="True"
+                            PointerWheelChanged="OnPreviewMouseWheel">
+                        <ScrollViewer x:Name="PreviewScrollViewer"
+                                      HorizontalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Auto">
+                            <!-- 预览内容 -->
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Border x:Name="PreviewBorder" Width="640" Height="360" CornerRadius="4"
+                                        ClipToBounds="True">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                        <GradientStop Color="#1A1A2E" Offset="0" />
+                                        <GradientStop Color="#16213E" Offset="0.5" />
+                                        <GradientStop Color="#0F3460" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Grid>
+                                    <Border Height="1" Background="#333B82F6"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Stretch" />
+                                    <Border Width="1" Background="#333B82F6"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Stretch" />
+                                    <Canvas x:Name="PreviewCanvas" ClipToBounds="True" />
+                                    <!-- 预览分辨率 -->
+                                    <Grid HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,8,8">
+                                        <TextBlock Text="1280 × 720" FontSize="16" FontFamily="Consolas"
+                                                   Foreground="Black" FontWeight="SemiBold"
+                                                   RenderTransformOrigin="0.5,0.5">
+                                            <TextBlock.RenderTransform>
+                                                <TranslateTransform X="1" Y="1"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                        <TextBlock x:Name="PreviewResolution" Text="1280 × 720"
+                                                   FontSize="16" FontFamily="Consolas"
+                                                   Foreground="White" FontWeight="SemiBold"/>
+                                    </Grid>
+                                    <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="8,0,0,8">
+                                        <TextBlock Text="" FontSize="16" FontFamily="Consolas"
+                                                   Foreground="Black" FontWeight="SemiBold"
+                                                   x:Name="PreviewTimeShadow"
+                                                   RenderTransformOrigin="0.5,0.5">
+                                            <TextBlock.RenderTransform>
+                                                <TranslateTransform X="1" Y="1"/>
+                                            </TextBlock.RenderTransform>
+                                        </TextBlock>
+                                        <TextBlock x:Name="PreviewTime" Text=""
+                                                   FontSize="16" FontFamily="Consolas"
+                                                   Foreground="White" FontWeight="SemiBold"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+                    </Border>
+
+                </Grid>
+
+                <GridSplitter Grid.Row="1" ResizeDirection="Rows" Height="4"
+                              Background="#334155" HorizontalAlignment="Stretch" />
+
+                <!-- 字幕列表 -->
+                <Grid Grid.Row="2" RowDefinitions="Auto, *">
+
+                    <Border x:Name="SubtitleListHeader" Grid.Row="0" Padding="8,6"
+                            Background="#0F172A"
+                            BorderThickness="0,1,0,1" BorderBrush="#334155">
+                        <Grid ColumnDefinitions="Auto, *, Auto">
+                            <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
+                                <!-- 字幕列表标题 -->
+                                <TextBlock Text="字幕列表" FontWeight="SemiBold" FontSize="13"
+                                           Foreground="#94A3B8" VerticalAlignment="Center" />
+                                <!-- 添加按钮 -->
+                                <Button Content="＋ 添加" FontSize="13" Padding="4,2"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1" ToolTip.Tip="添加字幕"
+                                        Click="OnAddSubtitle" />
+                                <!-- 删除按钮 -->
+                                <Button Content="✕ 删除" FontSize="13" Padding="4,2"
+                                        Background="Transparent" Foreground="#94A3B8" ToolTip.Tip="删除字幕"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnDeleteSubtitle" />
+                                <!-- ⬆上移 -->
+                                <Button Content="⬆" FontSize="14" Padding="4,2" ToolTip.Tip="上移字幕"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnMoveSubtitleUp" />
+                                <!-- ⬇下移 -->
+                                <Button Content="⬇" FontSize="14" Padding="4,2" ToolTip.Tip="下移字幕"
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"
+                                        Click="OnMoveSubtitleDown" />
+                            </StackPanel>
+                             <!-- 字幕数量：共 0 条字幕 -->
+                            <TextBlock x:Name="SubtitleCountLabel" Grid.Column="2" Text="共 0 条字幕" FontSize="13"
+                                       Foreground="#94A3B8" VerticalAlignment="Center" />
+                        </Grid>
+                    </Border>
+
+                    <!-- 字幕列表的右键菜单 -->
+                    <Border x:Name="SubtitleListBorder" Grid.Row="1" Background="#0F172A">
+                        <ListBox x:Name="SubtitleList" Background="Transparent"
+                                 BorderThickness="0"
+                                 SelectionChanged="OnSubtitleSelectionChanged"
+                                 Padding="0">
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="修改" Click="OnEditSubtitle" /> <!-- 修改 -->
+                                    <Separator />
+                                    <MenuItem Header="复制" Click="OnCopySubtitle" /> <!-- 复制 -->
+                                    <MenuItem Header="粘贴" Click="OnPasteSubtitle" /> <!-- 粘贴 -->
+                                    <Separator />
+                                    <MenuItem Header="删除" Click="OnDeleteSubtitle" /> <!-- 删除 -->
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListBox>
+                    </Border>
+
+                </Grid>
+
+            </Grid>
+
+            <!-- Column 3: 可拖拽的列分隔条 -->
+            <GridSplitter Grid.Column="3" ResizeDirection="Columns" Width="4"
+                          Background="Transparent" />
+
+
+            <!-- ========== Column 4: 右侧脚本编辑器 ========== -->
+            <Grid Grid.Column="4" RowDefinitions="Auto, *">
+
+                <!-- 脚本编辑器标题栏：MMTScript/特效模板标签 + 实时同步指示 -->
+                <Border Grid.Row="0" Padding="8,6"
+                        Background="#0F172A"
+                        BorderThickness="0,0,0,1" BorderBrush="#334155">
+                    <Grid ColumnDefinitions="Auto, *, Auto">
+                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                            <Border Padding="8,4" CornerRadius="4" Background="#1E293B">
+                                <TextBlock Text="MMTScript" FontSize="12" Foreground="#F1F5F9" />
+                            </Border>
+                            <!-- 特效模板 
+                            <Border Padding="8,4" CornerRadius="4">
+                                <TextBlock Text="特效模板" FontSize="12" Foreground="#94A3B8" />
+                            </Border>
+                            -->
+                        </StackPanel>
+                        <!-- 实时同步状态指示灯 -->
+                        <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="4"
+                                    VerticalAlignment="Center">
+                            <Border Width="6" Height="6" CornerRadius="3" Background="#10B981" />
+                            <TextBlock Text="实时同步" FontSize="12" Foreground="#10B981" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- MMT脚本编辑器 -->
+                <Border Grid.Row="1" Background="#1E293B"
+                        HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <ctrl:MmtScriptEditor x:Name="ScriptEditor"
+                                          HorizontalAlignment="Stretch"
+                                          VerticalAlignment="Stretch" />
+                </Border>
+            </Grid>
+
+        </Grid>
+    </DockPanel>
+</suki:SukiWindow>

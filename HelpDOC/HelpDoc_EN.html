@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="generator" content="VNote">
+
+    <title>HelpDoc_EN</title>
+
+    <style type="text/css">
+    div.code-toolbar > div.toolbar {
+    display: none;
+}
+
+    </style>
+
+    <style type="text/css">
+    *,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container-fluid {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.col, .col-1, .col-10, .col-11, .col-12, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-auto, .col-lg, .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-auto, .col-md, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-auto, .col-sm, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-auto, .col-xl, .col-xl-1, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-auto {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-12 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .col-md-3 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 25%;
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+@media (min-width: 768px) {
+    .col-md-9 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 75%;
+        flex: 0 0 75%;
+        max-width: 75%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-xl-2 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 16.666667%;
+        flex: 0 0 16.666667%;
+        max-width: 16.666667%;
+    }
+}
+
+@media (min-width: 1200px) {
+    .col-xl-10 {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 83.333333%;
+        flex: 0 0 83.333333%;
+        max-width: 83.333333%;
+    }
+}
+
+@media (min-width: 768px) {
+    .pt-md-3, .py-md-3 {
+        padding-top: 1rem!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .pb-md-3, .py-md-3 {
+        padding-bottom: 1rem!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .pl-md-5, .px-md-5 {
+        padding-left: 3rem!important;
+    }
+}
+
+.d-none {
+    display: none!important;
+}
+
+@media (min-width: 1200px) {
+    .d-xl-block {
+        display: block!important;
+    }
+}
+
+@media (min-width: 768px) {
+    .d-md-block {
+        display: block!important;
+    }
+}
+
+.bd-content {
+    -webkit-box-ordinal-group: 1;
+    -ms-flex-order: 0;
+    order: 0;
+}
+
+.bd-toc {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 4rem;
+    height: calc(100vh - 10rem);
+    overflow-y: auto;
+}
+
+.bd-toc {
+    -webkit-box-ordinal-group: 2;
+    -ms-flex-order: 1;
+    order: 1;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    font-size: .875rem;
+}
+
+.section-nav {
+    padding-left: 0;
+}
+
+.section-nav ul {
+    font-size: .875rem;
+    list-style-type: none;
+}
+
+.section-nav li {
+    font-size: .875rem;
+}
+
+.section-nav a {
+    color: inherit !important;
+    white-space: nowrap;
+}
+
+.row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+@media (min-width: 1200px) {
+    .flex-xl-nowrap {
+        flex-wrap: nowrap !important;
+    }
+}
+
+#floating-button {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: #00897B;
+    position: fixed;
+    top: .5rem;
+    right: .5rem;
+    cursor: pointer;
+    box-shadow: 0px 2px 5px #666;
+}
+
+#floating-button .more {
+    color: #F5F5F5;
+    position: absolute;
+    top: 0;
+    display: block;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    line-height: 2.5rem;
+    font-size: 2rem;
+    font-family: 'monospace';
+    font-weight: 300;
+}
+
+.hide-none {
+    display: none !important;
+}
+
+.col-expand {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 100% !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    padding-right: 3rem !important;
+}
+
+.outline-bold {
+    font-weight: bolder !important;
+}
+
+@media print {
+    #floating-button {
+        display: none !important;
+    }
+}
+
+
+    #vx-content.vx-section-number, #vx-content.vx-section-number-2 h1, #vx-content.vx-section-number-3 h1, #vx-content.vx-section-number-3 h2 { counter-reset: section1 0 section2 0 section3 0 section4 0 section5 0 section6 0; }
+#vx-content.vx-section-number-1 h1, #vx-content.vx-section-number-2 h2, #vx-content.vx-section-number-3 h3 { counter-reset: section2 0 section3 0 section4 0 seciton5 0 section6 0; }
+#vx-content.vx-section-number-1 h2, #vx-content.vx-section-number-2 h3, #vx-content.vx-section-number-3 h4 { counter-reset: section3 0 section4 0 section5 0 section6 0; }
+#vx-content.vx-section-number-1 h3, #vx-content.vx-section-number-2 h4, #vx-content.vx-section-number-3 h5 { counter-reset: section4 0 section5 0 section6 0; }
+#vx-content.vx-section-number-1 h4, #vx-content.vx-section-number-2 h5 { counter-reset: section5 0 section6 0; }
+#vx-content.vx-section-number-1 h5 { counter-reset: section6 0; }
+#vx-content.vx-section-number-1 h1::before, #vx-content.vx-section-number-2 h2::before, #vx-content.vx-section-number-3 h3::before { counter-increment: section1 1; content: counter(section1) ". "; }
+#vx-content.vx-section-number-1 h2::before, #vx-content.vx-section-number-2 h3::before, #vx-content.vx-section-number-3 h4::before { counter-increment: section2 1; content: counter(section1) "." counter(section2) ". "; }
+#vx-content.vx-section-number-1 h3::before, #vx-content.vx-section-number-2 h4::before, #vx-content.vx-section-number-3 h5::before { counter-increment: section3 1; content: counter(section1) "." counter(section2) "." counter(section3) ". "; }
+#vx-content.vx-section-number-1 h4::before, #vx-content.vx-section-number-2 h5::before, #vx-content.vx-section-number-3 h6::before { counter-increment: section4 1; content: counter(section1) "." counter(section2) "." counter(section3) "." counter(section4) ". "; }
+#vx-content.vx-section-number-1 h5::before, #vx-content.vx-section-number-2 h6::before { counter-increment: section5 1; content: counter(section1) "." counter(section2) "." counter(section3) "." counter(section4) "." counter(section5) ". "; }
+#vx-content.vx-section-number-1 h6::before { counter-increment: section6 1; content: counter(section1) "." counter(section2) "." counter(section3) "." counter(section4) "." counter(section5) "." counter(section6) ". "; }
+#vx-content.vx-constrain-image-width img, #vx-content.vx-constrain-image-width div.vx-plantuml-graph > svg, #vx-content.vx-constrain-image-width div.vx-mermaid-graph, #vx-content.vx-constrain-image-width div.vx-flowchartjs-graph, #vx-content.vx-constrain-image-width div.vx-wavedrom-graph { max-width: 100% !important; height: auto !important; }
+figure { margin: auto; }
+figcaption { font-style: italic; }
+#vx-content.vx-image-align-center figure { text-align: center; }
+#vx-content.vx-image-align-center figcaption { text-align: center; }
+#vx-content.vx-image-align-center div.vx-plantuml-graph, #vx-content.vx-image-align-center div.vx-mermaid-graph, #vx-content.vx-image-align-center div.vx-flowchartjs-graph, #vx-content.vx-image-align-center div.vx-wavedrom-graph { margin-left: auto; margin-right: auto; }
+.vx-table-of-contents ol { list-style: none; }
+#vx-content.vx-section-number-1 .vx-table-of-contents ol { counter-reset: toc 0; }
+#vx-content.vx-section-number-1 .vx-table-of-contents ol li { counter-increment: toc 1; }
+#vx-content.vx-section-number-1 .vx-table-of-contents ol li::before { content: counters(toc, ".") ". "; font-family: cursive; }
+#vx-content.vx-section-number-2 .vx-table-of-contents > ol > li ol { counter-reset: toc 0; }
+#vx-content.vx-section-number-2 .vx-table-of-contents > ol > li ol li { counter-increment: toc 1; }
+#vx-content.vx-section-number-2 .vx-table-of-contents > ol > li ol li::before { content: counters(toc, ".") ". "; font-family: cursive; }
+#vx-content.vx-section-number-3 .vx-table-of-contents > ol > li > ol > li ol { counter-reset: toc 0; }
+#vx-content.vx-section-number-3 .vx-table-of-contents > ol > li > ol > li ol li { counter-increment: toc 1; }
+#vx-content.vx-section-number-3 .vx-table-of-contents > ol > li > ol > li ol li::before { content: counters(toc, ".") ". "; font-family: cursive; }
+.vx-header-anchor { visibility: hidden; vertical-align: middle; }
+.vx-header-anchor::after { content: attr(vx-data-anchor-icon); }
+#vx-content h1:hover .vx-header-anchor, #vx-content h2:hover .vx-header-anchor, #vx-content h3:hover .vx-header-anchor, #vx-content h4:hover .vx-header-anchor, #vx-content h5:hover .vx-header-anchor, #vx-content h6:hover .vx-header-anchor { visibility: visible; vertical-align: middle; }
+#vx-content.vx-indent-first-line p { text-indent: 2em; }
+body.vx-transparent-background { background-color: transparent !important; }
+#vx-content.vx-nonscrollable pre { white-space: pre-wrap !important; word-break: break-all !important; overflow: hidden !important; }
+#vx-content.vx-nonscrollable pre code { white-space: pre-wrap !important; word-break: break-all !important; }
+#vx-content.vx-nonscrollable code, #vx-content.vx-nonscrollable a { word-break: break-all !important; }
+body { margin: 0px auto; font-family: "YaHei Consolas Hybrid", "Noto Sans", "Helvetica Neue", "Segoe UI", Helvetica, Tahoma, Arial, Geneva, Georgia, Palatino, "Times New Roman", 冬青黑体, "Microsoft YaHei", 微软雅黑, "Microsoft YaHei UI", "WenQuanYi Micro Hei", 文泉驿雅黑, Dengxian, 等线体, STXihei, 华文细黑, "Liberation Sans", "Droid Sans", NSimSun, 新宋体, SimSun, 宋体, "Apple Color Emoji", "Segoe UI Emoji"; color: rgb(52, 73, 94); line-height: 1.5; padding: 0px; background-color: rgb(255, 255, 255); font-size: 16px; }
+h1, h2, h3, h4, h5, h6 { color: rgb(52, 73, 94); font-weight: bold; margin-top: 20px; margin-bottom: 10px; padding: 0px; }
+p, blockquote, table { margin: 1.2em 0px; }
+ul, ol, dl { margin: 0.4em 0px; }
+p { padding: 0px; }
+h1 { padding-bottom: 0.4rem; font-size: 2.2rem; line-height: 1.3; }
+h2 { font-size: 1.75rem; line-height: 1.225; margin: 35px 0px 15px; padding-bottom: 0.5em; border-bottom: 1px solid rgb(221, 221, 221); }
+h3 { font-size: 1.4rem; line-height: 1.43; margin: 20px 0px 7px; }
+h4 { font-size: 1.2rem; }
+h5 { font-size: 1rem; }
+h6 { font-size: 1rem; color: rgb(119, 119, 119); }
+a { color: rgb(0, 153, 255); margin: 0px; padding: 0px; vertical-align: baseline; text-decoration: none; word-break: break-word; }
+a:hover { text-decoration: underline; }
+a:visited { color: rgb(128, 0, 128); }
+ul, ol { padding: 0px 0px 0px 24px; }
+li { line-height: 24px; }
+li ul, li ol { margin-left: 16px; }
+p, ul, ol { font-size: 16px; line-height: 24px; }
+pre { display: block; overflow: auto hidden; tab-size: 4; }
+code { font-family: "YaHei Consolas Hybrid", Consolas, Monaco, "Andale Mono", monospace, "Courier New"; color: rgb(233, 105, 0); padding: 0px 4px; margin: 4px 0px; border-radius: 2px; background-color: rgb(248, 248, 248); word-break: break-word; }
+:is(h1, h2, h3, h4, h5, h6) code { font-size: inherit; }
+pre code { display: block; padding-left: 0.5em; padding-right: 0.5em; color: rgb(52, 73, 94); background-color: rgb(224, 224, 224); line-height: 1.5; font-family: "YaHei Consolas Hybrid", Consolas, Monaco, "Andale Mono", monospace, "Courier New"; white-space: pre; tab-size: 4; }
+aside { display: block; float: right; width: 390px; }
+blockquote { color: rgb(102, 102, 102); border-left: 0.5em solid rgb(122, 122, 122); padding: 0px 1em; margin-left: 0px; }
+blockquote p { color: rgb(102, 102, 102); }
+hr { display: block; text-align: left; margin: 1em 0px; border: none; height: 1px; background-color: rgb(204, 204, 204); }
+table { padding: 0px; width: 100%; margin: 1rem 0px; border-collapse: collapse; }
+table tr { border-top: 1px solid rgb(204, 204, 204); background-color: white; margin: 0px; padding: 0px; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 1px solid rgb(204, 204, 204); background-color: rgb(242, 242, 242); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(204, 204, 204); margin: 0px; padding: 6px 13px; }
+table tr th :first-child, table tr td :first-child { margin-top: 0px; }
+table tr th :last-child, table tr td :last-child { margin-bottom: 0px; }
+div.vx-mermaid-graph { margin: 16px 0px; overflow-y: hidden; }
+div.vx-flowchartjs-graph { padding: 0px 5px; margin: 16px 0px; width: fit-content; overflow: hidden; }
+div.vx-wavedrom-graph { padding: 0px 5px; margin: 16px 0px; width: fit-content; overflow: hidden; }
+div.vx-plantuml-graph { padding: 5px 5px 0px; margin: 16px 0px; width: fit-content; overflow: hidden; }
+::selection { background-color: rgb(25, 118, 210); color: rgb(255, 255, 255); }
+::-webkit-scrollbar { background-color: rgb(245, 245, 245); width: 14px; height: 14px; border: none; }
+::-webkit-scrollbar-corner { background-color: rgb(245, 245, 245); }
+::-webkit-scrollbar-button { height: 14px; width: 14px; background-color: rgb(245, 245, 245); }
+::-webkit-scrollbar-button:hover { background-color: rgb(218, 218, 218); }
+::-webkit-scrollbar-button:active { background-color: rgb(192, 192, 192); }
+::-webkit-scrollbar-track { background-color: rgb(245, 245, 245); }
+::-webkit-scrollbar-thumb { border: none; background-color: rgb(205, 205, 205); }
+::-webkit-scrollbar-thumb:hover { background-color: rgb(192, 192, 192); }
+::-webkit-scrollbar-thumb:active { background-color: rgb(187, 187, 187); }
+::-webkit-scrollbar-button:horizontal:increment { background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19 12L31 24L19 36" stroke="%23222222" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'); background-repeat: no-repeat; background-size: contain; }
+::-webkit-scrollbar-button:horizontal:decrement { background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M31 36L19 24L31 12" stroke="%23222222" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'); background-repeat: no-repeat; background-size: contain; }
+::-webkit-scrollbar-button:vertical:increment { background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M36 18L24 30L12 18" stroke="%23222222" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'); background-repeat: no-repeat; background-size: contain; }
+::-webkit-scrollbar-button:vertical:decrement { background-image: url('data:image/svg+xml;utf8,<?xml version="1.0" encoding="UTF-8"?><svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 30L25 18L37 30" stroke="%23222222" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>'); background-repeat: no-repeat; background-size: contain; }
+#vx-content span.vx-search-match { color: rgb(34, 34, 34); background-color: rgb(77, 182, 172); }
+#vx-content span.vx-current-search-match { color: rgb(34, 34, 34); background-color: rgb(102, 187, 106); }
+#vx-content { margin: 0px auto; padding: 30px 30px 40px; }
+@media screen and (min-width: 1180px) {
+  #vx-content { max-width: 1100px; }
+}
+@media screen and (max-width: 768px) {
+  #vx-content { max-width: 100%; padding: 30px 15px 40px; }
+}
+.vx-alert { margin: 2em 0px; background-color: rgb(248, 248, 248) !important; padding: 12px 24px 12px 30px !important; border-radius: 0px !important; border-top: none !important; border-right: none !important; border-bottom: none !important; border-image: initial !important; border-left: 4px solid rgb(73, 139, 167) !important; color: inherit !important; }
+.vx-alert::before { background-color: rgb(73, 139, 167); border-radius: 100%; color: rgb(255, 255, 255); content: "!"; font-family: Dosis, "Source Sans Pro", "Helvetica Neue", Arial, sans-serif; font-size: 14px; font-weight: bold; left: -12px; line-height: 20px; position: absolute; height: 20px; width: 20px; text-align: center; top: 14px; }
+.vx-alert p { margin: 0.4em 0px; }
+.alert-success, .alert-s { border-color: rgb(66, 185, 131) !important; }
+.alert-success::before, .alert-s::before { background-color: rgb(66, 185, 131); }
+.alert-warning, .alert-w { border-color: rgb(255, 165, 2) !important; }
+.alert-warning::before, .alert-w::before { background-color: rgb(255, 165, 2); }
+.alert-info, .alert-i { border-color: rgb(112, 161, 255) !important; }
+.alert-info::before, .alert-i::before { background-color: rgb(112, 161, 255); }
+.alert-danger, .alert-d { border-color: rgb(255, 71, 87) !important; }
+.alert-danger::before, .alert-d::before { background-color: rgb(255, 71, 87); }
+.alert-light { border-color: rgb(193, 193, 193) !important; }
+.alert-light::before { background-color: rgb(193, 193, 193); }
+.alert-dark { border-color: rgb(72, 72, 72) !important; }
+.alert-dark::before { background-color: rgb(72, 72, 72); }
+.vx-header-anchor::after { background-color: rgb(238, 238, 238); padding: 0px 5px; border-radius: 3px; }
+.vx-header-anchor { color: rgb(153, 153, 153); display: inline-block; margin-left: 10px; }
+h1 .vx-header-anchor::after { content: "H1"; }
+h2 .vx-header-anchor::after { content: "H2"; }
+h3 .vx-header-anchor::after { content: "H3"; }
+h4 .vx-header-anchor::after { content: "H4"; }
+h5 .vx-header-anchor::after { content: "H5"; }
+h6 .vx-header-anchor::after { content: "H6"; }
+h1 .vx-header-anchor { margin-top: -5px; }
+h2 .vx-header-anchor { margin-top: -4px; }
+h3 .vx-header-anchor { margin-top: -3px; }
+h4 .vx-header-anchor { margin-top: -2px; }
+h5 .vx-header-anchor { margin-top: -1px; }
+.vx-alert .code-toolbar pre[class*="language-"] { border: 1px dashed rgb(238, 238, 238); background-color: rgb(243, 243, 243) !important; }
+code[class*="language-"], pre[class*="language-"] { color: rgb(82, 82, 82); background: none; text-shadow: white 0px 1px; font-size: 0.9rem; text-align: left; white-space: pre; word-spacing: normal; word-break: normal; overflow-wrap: normal; line-height: 1.5; tab-size: 4; hyphens: none; }
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection, code[class*="language-"]::selection, code[class*="language-"] ::selection { text-shadow: none; background-color: rgb(25, 118, 210); color: white; }
+@media print {
+  code[class*="language-"], pre[class*="language-"] { text-shadow: none; }
+}
+pre[class*="language-"] { padding: 1em; margin: 0px; overflow: auto; border-radius: 4px; }
+:not(pre) > code[class*="language-"], pre[class*="language-"] { background: rgb(248, 248, 248) !important; }
+:not(pre) > code[class*="language-"] { padding: 0.1em; border-radius: 0.3em; white-space: normal; }
+.token.comment, .token.prolog, .token.doctype, .token.cdata { color: rgb(170, 85, 0); }
+.token.punctuation { color: rgb(153, 153, 153); }
+.token.namespace { opacity: 0.7; }
+.token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.deleted { color: rgb(153, 0, 85); }
+.token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted { color: rgb(102, 153, 0); }
+.token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string { color: rgb(154, 110, 58); }
+.token.atrule, .token.attr-value, .token.keyword { color: rgb(119, 0, 136); }
+.token.function, .token.class-name { color: rgb(221, 74, 104); }
+.token.regex, .token.important, .token.variable { color: rgb(238, 153, 0); }
+.token.important, .token.bold { font-weight: bold; }
+.token.italic { font-style: italic; }
+.token.entity { cursor: help; }
+pre[class*="language-"].line-numbers { position: relative; padding-left: 3.8em; counter-reset: linenumber 0; }
+pre[class*="language-"].line-numbers > code { position: relative; white-space: inherit; letter-spacing: 1px; }
+.line-numbers .line-numbers-rows { position: absolute; pointer-events: none; top: 0px; font-size: 100%; left: -3.8em; width: 3em; letter-spacing: -1px; border-right: 1px solid rgb(221, 221, 221); color: rgb(153, 153, 153); user-select: none; }
+.line-numbers-rows > span { display: block; counter-increment: linenumber 1; }
+.line-numbers-rows > span::before { content: counter(linenumber); color: rgb(153, 153, 153); display: block; padding-right: 0.8em; text-align: right; }
+div.code-toolbar { position: relative; }
+div.code-toolbar > .toolbar { position: absolute; top: 0px; right: 0px; transition: opacity 0.3s ease-in-out 0s; opacity: 0; }
+div.code-toolbar:hover > .toolbar { opacity: 1; }
+div.code-toolbar:focus-within > .toolbar { opacity: 1; }
+div.code-toolbar > .toolbar .toolbar-item { display: inline-block; }
+div.code-toolbar > .toolbar a { cursor: pointer; }
+div.code-toolbar > .toolbar button { background: none; border: 0px; color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; font-family: inherit; font-optical-sizing: inherit; font-kerning: inherit; font-feature-settings: inherit; font-variation-settings: inherit; line-height: normal; overflow: visible; padding: 0px; user-select: none; }
+div.code-toolbar > .toolbar a, div.code-toolbar > .toolbar button, div.code-toolbar > .toolbar span { color: rgb(255, 255, 255); font-size: 0.8em; font-weight: bold; padding: 0.2em 0.5em; border-radius: 0px 4px; background-color: rgb(92, 157, 255); }
+.vx-image-view-image { transition: all 0.3s ease 0s; }
+.vx-modal-box { display: none; position: fixed; z-index: 1000; padding-top: 50px; left: 0px; top: 0px; width: 100%; height: 100%; overflow: hidden; background-color: rgba(51, 56, 66, 0.85); }
+.vx-modal-content { margin: auto; display: block; width: auto; height: auto; cursor: move; }
+.vx-modal-content { animation-name: zoom; animation-duration: 0.6s; }
+@-webkit-keyframes zoom { 
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+@keyframes zoom { 
+  0% { transform: scale(0); }
+  100% { transform: scale(1); }
+}
+span.vx-modal-close { position: absolute; z-index: 1000; top: 15px; right: 35px; color: rgb(171, 178, 191); font-size: 40px; font-weight: bold; transition: all 0.3s ease 0s; }
+span.vx-modal-close:hover, span.vx-modal-close:focus { color: rgb(215, 218, 224); text-decoration: none; cursor: pointer; }
+ul.contains-task-list { list-style-type: none; }
+.vx-alert { position: relative; padding: 0.75rem 1.25rem; margin-bottom: 1rem; border: 1px solid transparent; border-radius: 0.25rem; }
+.alert-primary { color: rgb(0, 64, 133); background-color: rgb(204, 229, 255); border-color: rgb(184, 218, 255); }
+.alert-secondary { color: rgb(56, 61, 65); background-color: rgb(226, 227, 229); border-color: rgb(214, 216, 219); }
+.alert-success { color: rgb(21, 87, 36); background-color: rgb(212, 237, 218); border-color: rgb(195, 230, 203); }
+.alert-info { color: rgb(12, 84, 96); background-color: rgb(209, 236, 241); border-color: rgb(190, 229, 235); }
+.alert-warning { color: rgb(133, 100, 4); background-color: rgb(255, 243, 205); border-color: rgb(255, 238, 186); }
+.alert-danger { color: rgb(114, 28, 36); background-color: rgb(248, 215, 218); border-color: rgb(245, 198, 203); }
+.alert-light { color: rgb(129, 129, 130); background-color: rgb(254, 254, 254); border-color: rgb(253, 253, 254); }
+.alert-dark { color: rgb(27, 30, 33); background-color: rgb(214, 216, 217); border-color: rgb(198, 200, 202); }
+
+    </style>
+
+    <script type="text/javascript">
+        var vxOutlineToc = [];
+
+var setVisible = function(node, visible) {
+    var cl = 'hide-none';
+    if (visible) {
+        node.classList.remove(cl);
+    } else {
+        node.classList.add(cl);
+    }
+};
+
+var isVisible = function(node) {
+    var cl = 'hide-none';
+    return !node.classList.contains(cl);
+};
+
+var setPostContentExpanded = function(node, expanded) {
+    var cl = 'col-expand';
+    if (expanded) {
+        node.classList.add(cl);
+    } else {
+        node.classList.remove(cl);
+    }
+};
+
+var setOutlinePanelVisible = function(visible) {
+    var outlinePanel = document.getElementById('outline-panel');
+    var postContent = document.getElementById('post-content');
+
+    setVisible(outlinePanel, visible);
+    setPostContentExpanded(postContent, !visible);
+};
+
+var isOutlinePanelVisible = function() {
+    var outlinePanel = document.getElementById('outline-panel');
+    return isVisible(outlinePanel);
+};
+
+window.addEventListener('load', function() {
+    var outlinePanel = document.getElementById('outline-panel');
+    outlinePanel.style.display = 'initial';
+
+    var floatingContainer = document.getElementById('container-floating');
+    floatingContainer.style.display = 'initial';
+
+    var outlineContent = document.getElementById('outline-content');
+    var postContent = document.getElementById('post-content');
+
+    // Escape @text to Html.
+    var escapeHtml = function(text) {
+        var map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    // Fetch the outline.
+    var headers = postContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    vxOutlineToc = [];
+    for (var i = 0; i < headers.length; ++i) {
+        var header = headers[i];
+
+        vxOutlineToc.push({
+            level: parseInt(header.tagName.substr(1)),
+            anchor: header.id,
+            title: escapeHtml(header.textContent)
+        });
+    }
+
+    if (vxOutlineToc.length == 0) {
+        setOutlinePanelVisible(false);
+        setVisible(floatingContainer, false);
+        return;
+    }
+
+    var baseLevel = baseLevelOfToc(vxOutlineToc);
+    var tocTree = tocToTree(toPerfectToc(vxOutlineToc, baseLevel), baseLevel);
+
+    outlineContent.innerHTML = tocTree;
+    setOutlinePanelVisible(true);
+    setVisible(floatingContainer, true);
+});
+
+// Return the topest level of @vxOutlineToc, starting from 1.
+var baseLevelOfToc = function(p_toc) {
+    var level = -1;
+    for (i in p_toc) {
+        if (level == -1) {
+            level = p_toc[i].level;
+        } else if (level > p_toc[i].level) {
+            level = p_toc[i].level;
+        }
+    }
+
+    if (level == -1) {
+        level = 1;
+    }
+
+    return level;
+};
+
+// Handle wrong title levels, such as '#' followed by '###'
+var toPerfectToc = function(p_toc, p_baseLevel) {
+    var i;
+    var curLevel = p_baseLevel - 1;
+    var perfToc = [];
+    for (i in p_toc) {
+        var item = p_toc[i];
+
+        // Insert empty header.
+        while (item.level > curLevel + 1) {
+            curLevel += 1;
+            var tmp = { level: curLevel,
+                        anchor: '',
+                        title: '[EMPTY]'
+                      };
+            perfToc.push(tmp);
+        }
+
+        perfToc.push(item);
+        curLevel = item.level;
+    }
+
+    return perfToc;
+};
+
+var itemToHtml = function(item) {
+    return '<a href="#' + item.anchor + '" title="' + item.title + '" data="' + item.anchor + '">' + item.title + '</a>';
+};
+
+// Turn a perfect toc to a tree using <ul>
+var tocToTree = function(p_toc, p_baseLevel) {
+    var i;
+    var front = '<li>';
+    var ending = ['</li>'];
+    var curLevel = p_baseLevel;
+    for (i in p_toc) {
+        var item = p_toc[i];
+        if (item.level == curLevel) {
+            front += '</li>';
+            front += '<li>';
+            front += itemToHtml(item);
+        } else if (item.level > curLevel) {
+            // assert(item.level - curLevel == 1)
+            front += '<ul>';
+            ending.push('</ul>');
+            front += '<li>';
+            front += itemToHtml(item);
+            ending.push('</li>');
+            curLevel = item.level;
+        } else {
+            while (item.level < curLevel) {
+                var ele = ending.pop();
+                front += ele;
+                if (ele == '</ul>') {
+                    curLevel--;
+                }
+            }
+            front += '</li>';
+            front += '<li>';
+            front += itemToHtml(item);
+        }
+    }
+    while (ending.length > 0) {
+        front += ending.pop();
+    }
+    front = front.replace("<li></li>", "");
+    front = '<ul>' + front + '</ul>';
+    return front;
+};
+
+var toggleMore = function() {
+    if (vxOutlineToc.length == 0) {
+        return;
+    }
+
+    var p = document.getElementById('floating-more');
+    if (isOutlinePanelVisible()) {
+        p.textContent = '<';
+        setOutlinePanelVisible(false);
+    } else {
+        p.textContent = '>';
+        setOutlinePanelVisible(true);
+    }
+};
+
+window.addEventListener('scroll', function() {
+    if (vxOutlineToc.length == 0 || !isOutlinePanelVisible()) {
+        return;
+    }
+
+    var postContent = document.getElementById('post-content');
+    var scrollTop = document.documentElement.scrollTop
+                    || document.body.scrollTop
+                    || window.pageYOffset;
+    var eles = postContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
+
+    if (eles.length == 0) {
+        return;
+    }
+
+    var idx = -1;
+    var biaScrollTop = scrollTop + 50;
+    for (var i = 0; i < eles.length; ++i) {
+        if (biaScrollTop >= eles[i].offsetTop) {
+            idx = i;
+        } else {
+            break;
+        }
+    }
+
+    var header = '';
+    if (idx != -1) {
+        header = eles[idx].id;
+    }
+
+    highlightItemOnlyInOutline(header);
+});
+
+var highlightItemOnlyInOutline = function(id) {
+    var cl = 'outline-bold';
+    var outlineContent = document.getElementById('outline-content');
+    var eles = outlineContent.querySelectorAll("a");
+    var target = null;
+    for (var i = 0; i < eles.length; ++i) {
+        var ele = eles[i];
+        if (ele.getAttribute('data') == id) {
+            target = ele;
+            ele.classList.add(cl);
+        } else {
+            ele.classList.remove(cl);
+        }
+    }
+
+    // TODO: scroll target into view within the outline panel scroll area.
+};
+
+    </script>
+
+    <!-- VX_SCRIPTS_PLACEHOLDER -->
+
+    <!-- VX_HEAD_PLACEHOLDER -->
+</head>
+<body class="<!-- VX_BODY_CLASS_LIST_PLACEHOLDER -->">
+    <div class="container-fluid">
+    <div class="row flex-xl-nowrap">
+        <!-- VX_OUTLINE_PANEL_START -->
+        <div id="outline-panel" style="display:none;" class="d-none d-md-block d-xl-block col-md-3 col-xl-2 bd-toc">
+            <div id="outline-content" class="section-nav"></div>
+        </div>
+        <!-- VX_OUTLINE_PANEL_END -->
+
+        <div id="post-content" class="col-12 col-md-9 col-xl-10 py-md-3 pl-md-5 bd-content">
+        <div id="vx-content" class="vx-constrain-image-width line-numbers"><h1 align="center">MMT Subtitle Editor</h1>
+<p align="center">
+  <img src="image/MMTicon.png" align="middle" width="150" class="vx-image-view-image">
+    <br><br>
+</p>
+<figure><img src="image/MMT_EN.jpg" alt="" class="vx-image-view-image"></figure>
+<p align="center">
+Language: <a href="HelpDoc_EN.html">English</a> | <a href="HelpDoc_SC.html">简体中文</a> | <a href="HelpDoc_TC.html">繁體中文</a> 
+ | <a href="HelpDoc_JP.html">日本語</a> 
+</p><h2 id="introduction" class="source-line" data-source-line="13">Introduction<a class="vx-header-anchor" href="#introduction" vx-data-anchor-icon="¶"></a></h2>
+<p class="source-line" data-source-line="15">Based on そぼろ's MikuMikuTelop tool, MMT Subtitle Editor is a graphical tool for editing, previewing, and exporting MMTScript subtitle scripts for MMD. It simplifies subtitle creation with visualized parameters, lyric search and download, batch export, and more.</p>
+<h2 id="features" class="source-line" data-source-line="17">Features<a class="vx-header-anchor" href="#features" vx-data-anchor-icon="¶"></a></h2>
+<ul>
+<li class="source-line" data-source-line="19"><strong>Script Editor</strong>: MMTScript script editing with syntax highlighting</li>
+<li class="source-line" data-source-line="20"><strong>Real-time Preview</strong>: Preview subtitle effects while editing scripts</li>
+<li class="source-line" data-source-line="21"><strong>Subtitle List</strong>: Visual subtitle timeline management</li>
+<li class="source-line" data-source-line="22"><strong>Property Panel</strong>: Graphical interface for quickly setting subtitle properties</li>
+<li class="source-line" data-source-line="23"><strong>Multi-language Support</strong>: Supports Simplified Chinese, Traditional Chinese, English, and Japanese</li>
+<li class="source-line" data-source-line="24"><strong>Online Lyrics Search</strong>: Search and import lyrics from NetEase Cloud Music and QQ Music</li>
+<li class="source-line" data-source-line="25"><strong>Preset Management</strong>: Save and load subtitle style presets</li>
+<li class="source-line" data-source-line="26"><strong>Batch Export</strong>: One-click export of all subtitles as PNG images</li>
+<li class="source-line" data-source-line="27"><strong>Timecode Conversion</strong>: Convert between timecodes and frame numbers</li>
+<li class="source-line" data-source-line="28"><strong>Animation Effects</strong>: Supports fade, random blur, slide, scale pop, wipe, blinds, and other animation effects</li>
+<li class="source-line" data-source-line="29"><strong>Multi-encoding Support</strong>: Automatically detects and correctly reads UTF-8, Shift-JIS, GBK, and other encoded files</li>
+</ul>
+<h2 id="system-requirements" class="source-line" data-source-line="31">System Requirements<a class="vx-header-anchor" href="#system-requirements" vx-data-anchor-icon="¶"></a></h2>
+<ul>
+<li class="source-line" data-source-line="33"><strong>Operating System</strong>:
+<ul>
+<li class="source-line" data-source-line="34">Windows 10/11 or later</li>
+<li class="source-line" data-source-line="35">macOS (10.15+)</li>
+<li class="source-line" data-source-line="36">Linux (Ubuntu, Debian, Fedora, Arch, etc.)</li>
+</ul>
+</li>
+<li class="source-line" data-source-line="37"><strong>Runtime</strong>: .NET 8.0 Runtime required
+<ul>
+<li class="source-line" data-source-line="38">64-bit: <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.26-windows-x64-installer">https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.26-windows-x64-installer</a></li>
+<li class="source-line" data-source-line="39">32-bit: <a href="https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.26-windows-x86-installer">https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-8.0.26-windows-x86-installer</a></li>
+</ul>
+</li>
+<li class="source-line" data-source-line="40"><strong>Resolution</strong>: 1920×1080 or higher recommended</li>
+</ul>
+<h2 id="how-to-use" class="source-line" data-source-line="42">How to Use<a class="vx-header-anchor" href="#how-to-use" vx-data-anchor-icon="¶"></a></h2>
+<ul>
+<li class="source-line" data-source-line="44">Double-click <code>MMT Subtitle Editor.exe</code> to run the program.</li>
+<li class="source-line" data-source-line="45">Switch to your preferred language from the "Language/语言/言語" menu. Currently available: English, Simplified Chinese, Traditional Chinese, Japanese. Let me know if you need other languages.</li>
+<li class="source-line" data-source-line="46">Import or create <code>.txt/.mmt</code> script files</li>
+<li class="source-line" data-source-line="47">Click the "Preview" button to play and view subtitle effects.</li>
+<li class="source-line" data-source-line="48">Adjust parameters in the subtitle property panel, such as font, color, size, position, alignment, etc.</li>
+<li class="source-line" data-source-line="49">Click the "Save" button to save the subtitle style as a preset.</li>
+<li class="source-line" data-source-line="50">Click "Generate Files" to create <code>MikuMikuTelop.x</code>, <code>MikuMikuTelop.fx</code>, <code>PostTelop.x</code>, <code>PostTelop.fx</code> files and image sequences.</li>
+<li class="source-line" data-source-line="51">Import <code>MikuMikuTelop.x</code> into MikuMikuDance for playback! The accessory should be placed at the bottom of the accessory list. Audio or frame count is required for playback.</li>
+<li class="source-line" data-source-line="52">PostTelop.x cannot be used alone; it's designed to work with other MME effects. By hiding PostTelop.x, you can temporarily disable post-processing effects.</li>
+</ul>
+<h2 id="tool-menu-usage" class="source-line" data-source-line="54">Tool Menu Usage<a class="vx-header-anchor" href="#tool-menu-usage" vx-data-anchor-icon="¶"></a></h2>
+<h3 id="time-conversion" class="source-line" data-source-line="56">Time Conversion<a class="vx-header-anchor" href="#time-conversion" vx-data-anchor-icon="¶"></a></h3>
+<figure><img src="image/TimeConversion_EN.jpg" alt="" class="vx-image-view-image"></figure>
+<p class="source-line" data-source-line="60">This tool converts between timecodes and 30fps frame numbers. For example, entering <code>00:01:00.000</code> in the time field will display <code>1800F</code> in the frame field. Very convenient for calculating subtitle duration.</p>
+<h3 id="batch-export" class="source-line" data-source-line="62">Batch Export<a class="vx-header-anchor" href="#batch-export" vx-data-anchor-icon="¶"></a></h3>
+<figure><img src="image/BatchExport_EN.jpg" alt="" class="vx-image-view-image"></figure>
+<p class="source-line" data-source-line="66">This tool batch exports <code>.txt/.mmt</code> files, creating corresponding folders with the same names. Each folder contains image sequences and <code>.x/.fx</code> files.<br>
+Simply drag files to the drop zone.</p>
+<h3 id="online-lyrics-search" class="source-line" data-source-line="69">Online Lyrics Search<a class="vx-header-anchor" href="#online-lyrics-search" vx-data-anchor-icon="¶"></a></h3>
+<figure><img src="image/OnlineLyrics_EN.jpg" alt="" class="vx-image-view-image"></figure>
+<p class="source-line" data-source-line="73">This tool searches and imports lyrics from NetEase Cloud Music and QQ Music.<br>
+First, select source, mode, and format, then enter a link or song ID. Click the search button to load lyrics. Some songs may show "no lyrics available".<br>
+Enter keywords and click search to see results. Select a song and click "OK" to import lyrics into the lyrics panel.<br>
+MMT timecode format can be set to "Timecode" or "Seconds".<br>
+The "Save Lrc Lyrics" button saves current lyrics as a <code>.LRC</code> file.<br>
+The "Insert to Script" button inserts current lyrics into the script editor.</p>
+<p class="source-line" data-source-line="80">Song link/ID examples:<br>
+NetEase Cloud example link: <a href="https://music.163.com/#/song?id=1847207199">https://music.163.com/#/song?id=1847207199</a><br>
+NetEase Cloud song ID: 1847207199<br>
+QQ Music example link: <a href="https://y.qq.com/n/ryqq/songDetail/000sjEUD2wMqNt">https://y.qq.com/n/ryqq/songDetail/000sjEUD2wMqNt</a><br>
+QQ Music song ID: 000sjEUD2wMqNt</p>
+<h3 id="options" class="source-line" data-source-line="86">Options<a class="vx-header-anchor" href="#options" vx-data-anchor-icon="¶"></a></h3>
+<figure><img src="image/option_EN.jpg" alt="" class="vx-image-view-image"></figure>
+<p class="source-line" data-source-line="90">This tool sets preview canvas options.<br>
+You can set canvas color or background image.</p>
+<h2 id="mmtscript-syntax-reference" class="source-line" data-source-line="93">MMTScript Syntax Reference<a class="vx-header-anchor" href="#mmtscript-syntax-reference" vx-data-anchor-icon="¶"></a></h2>
+<p class="source-line" data-source-line="95">MMTScript is a simple subtitle description language designed for MMD &amp; MME subtitle effect generation tool "MikuMikuTelop".</p>
+<h3 id="basic-format" class="source-line" data-source-line="97">Basic Format<a class="vx-header-anchor" href="#basic-format" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="99">@display_time,duration
+subtitle text
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></div>
+<h3 id="time-commands" class="source-line" data-source-line="104">Time Commands<a class="vx-header-anchor" href="#time-commands" vx-data-anchor-icon="¶"></a></h3>
+<table class="source-line" data-source-line="106">
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@3,5</code></td>
+<td>Display from 3 seconds for 5 seconds</td>
+</tr>
+<tr>
+<td><code>@100F,10</code></td>
+<td>Display from frame 100 for 10 seconds</td>
+</tr>
+<tr>
+<td><code>@10</code></td>
+<td>Display from 10 seconds, duration auto-calculated</td>
+</tr>
+<tr>
+<td><code>@+2,5</code></td>
+<td>Display 2 seconds after the previous subtitle ends</td>
+</tr>
+<tr>
+<td><code>@*0,5</code></td>
+<td>Display simultaneously with the previous subtitle</td>
+</tr>
+<tr>
+<td><code>@32~36</code></td>
+<td>Display from 32 seconds to 36 seconds</td>
+</tr>
+<tr>
+<td><code>@00:00:10.000 - 00:00:12.000</code></td>
+<td>Specify time range. <font color="green">*New Feature</font></td>
+</tr>
+</tbody>
+</table>
+<h3 id="system-commands" class="source-line" data-source-line="116">System Commands<a class="vx-header-anchor" href="#system-commands" vx-data-anchor-icon="¶"></a></h3>
+<h4 id="font-settings" class="source-line" data-source-line="118">Font Settings<a class="vx-header-anchor" href="#font-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="120">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:font</code></td>
+<td>font_name</td>
+<td>Specify font name</td>
+</tr>
+<tr>
+<td><code>:size</code></td>
+<td>value</td>
+<td>Font size (percentage relative to half screen height)</td>
+</tr>
+<tr>
+<td><code>:fontcolor</code></td>
+<td>R,G,B</td>
+<td>Font color (0-255)</td>
+</tr>
+<tr>
+<td><code>:bold</code></td>
+<td>-</td>
+<td>Enable bold</td>
+</tr>
+<tr>
+<td><code>:bold_off</code></td>
+<td>-</td>
+<td>Disable bold</td>
+</tr>
+<tr>
+<td><code>:italic</code></td>
+<td>-</td>
+<td>Enable italic</td>
+</tr>
+<tr>
+<td><code>:italic_off</code></td>
+<td>-</td>
+<td>Disable italic</td>
+</tr>
+<tr>
+<td><code>:underline</code></td>
+<td>-</td>
+<td>Enable underline</td>
+</tr>
+<tr>
+<td><code>:underline_off</code></td>
+<td>-</td>
+<td>Disable underline</td>
+</tr>
+<tr>
+<td><code>:strikeout</code></td>
+<td>-</td>
+<td>Enable strikethrough</td>
+</tr>
+<tr>
+<td><code>:strikeout_off</code></td>
+<td>-</td>
+<td>Disable strikethrough</td>
+</tr>
+</tbody>
+</table>
+<h4 id="position-settings" class="source-line" data-source-line="134">Position Settings<a class="vx-header-anchor" href="#position-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="136">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:pos</code></td>
+<td>X,Y</td>
+<td>Horizontal and vertical position (-100 to 100)</td>
+</tr>
+<tr>
+<td><code>:pos_x</code></td>
+<td>X</td>
+<td>Horizontal position only</td>
+</tr>
+<tr>
+<td><code>:pos_y</code></td>
+<td>Y</td>
+<td>Vertical position only</td>
+</tr>
+<tr>
+<td><code>:pos_nextline</code></td>
+<td>-</td>
+<td>Move to next line</td>
+</tr>
+<tr>
+<td><code>:pos_next</code></td>
+<td>-</td>
+<td>Move to continuation position</td>
+</tr>
+<tr>
+<td><code>:align_left</code></td>
+<td>-</td>
+<td>Left align</td>
+</tr>
+<tr>
+<td><code>:align_center</code></td>
+<td>-</td>
+<td>Center align</td>
+</tr>
+<tr>
+<td><code>:align_right</code></td>
+<td>-</td>
+<td>Right align</td>
+</tr>
+<tr>
+<td><code>:valign_top</code></td>
+<td>-</td>
+<td>Top align</td>
+</tr>
+<tr>
+<td><code>:valign_center</code></td>
+<td>-</td>
+<td>Vertical center</td>
+</tr>
+<tr>
+<td><code>:valign_bottom</code></td>
+<td>-</td>
+<td>Bottom align</td>
+</tr>
+</tbody>
+</table>
+<h4 id="stroke-and-shadow" class="source-line" data-source-line="150">Stroke and Shadow<a class="vx-header-anchor" href="#stroke-and-shadow" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="152">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:edge</code></td>
+<td>thickness</td>
+<td>Stroke thickness (percentage relative to font size)</td>
+</tr>
+<tr>
+<td><code>:edgecolor</code></td>
+<td>R,G,B</td>
+<td>Stroke color</td>
+</tr>
+<tr>
+<td><code>:edge_round</code></td>
+<td>-</td>
+<td>Round stroke corners</td>
+</tr>
+<tr>
+<td><code>:edge_round_off</code></td>
+<td>-</td>
+<td>Disable round stroke corners</td>
+</tr>
+<tr>
+<td><code>:shadow</code></td>
+<td>distance</td>
+<td>Shadow distance (percentage relative to font size)</td>
+</tr>
+<tr>
+<td><code>:shadowcolor</code></td>
+<td>R,G,B</td>
+<td>Shadow color</td>
+</tr>
+<tr>
+<td><code>:shadowblur</code></td>
+<td>radius</td>
+<td>Shadow blur radius</td>
+</tr>
+</tbody>
+</table>
+<h4 id="screen-settings" class="source-line" data-source-line="162">Screen Settings<a class="vx-header-anchor" href="#screen-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="164">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:screen</code></td>
+<td>width,height</td>
+<td>Screen dimensions</td>
+</tr>
+<tr>
+<td><code>:screen_height</code></td>
+<td>height</td>
+<td>Screen height</td>
+</tr>
+<tr>
+<td><code>:margin</code></td>
+<td>X,Y</td>
+<td>Margins (percentage relative to font size)</td>
+</tr>
+<tr>
+<td><code>:backcolor</code></td>
+<td>R,G,B,A</td>
+<td>Background color</td>
+</tr>
+</tbody>
+</table>
+<h4 id="effect-settings" class="source-line" data-source-line="171">Effect Settings<a class="vx-header-anchor" href="#effect-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="173">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:alpha</code></td>
+<td>opacity</td>
+<td>Opacity (0-1.0)</td>
+</tr>
+<tr>
+<td><code>:fade</code></td>
+<td>time</td>
+<td>Fade in/out time (seconds)</td>
+</tr>
+<tr>
+<td><code>:autotime</code></td>
+<td>time</td>
+<td>Auto duration per character (seconds)</td>
+</tr>
+<tr>
+<td><code>:timebase</code></td>
+<td>time</td>
+<td>Time base</td>
+</tr>
+</tbody>
+</table>
+<h4 id="transform-settings" class="source-line" data-source-line="180">Transform Settings<a class="vx-header-anchor" href="#transform-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="182">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:scalex</code></td>
+<td>scale</td>
+<td>Horizontal scale <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:scaley</code></td>
+<td>scale</td>
+<td>Vertical scale <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:rotate</code></td>
+<td>angle</td>
+<td>Rotation angle <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:spacing</code></td>
+<td>spacing</td>
+<td>Character spacing <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:pos_z</code></td>
+<td>depth</td>
+<td>Z-axis position <font color="green">*New Feature</font></td>
+</tr>
+</tbody>
+</table>
+<h4 id="animation-effects" class="source-line" data-source-line="190">Animation Effects<a class="vx-header-anchor" href="#animation-effects" vx-data-anchor-icon="¶"></a></h4>
+<p class="source-line" data-source-line="192">The following are new features that allow you to add various animation effects to subtitles:</p>
+<table class="source-line" data-source-line="194">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:anim fade</code></td>
+<td>type</td>
+<td>Animation type - Fade <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:anim random_blur</code></td>
+<td>type</td>
+<td>Animation type - Random Blur <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:anim slide_up</code></td>
+<td>type</td>
+<td>Animation type - Slide Up <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:anim scale_pop</code></td>
+<td>type</td>
+<td>Animation type - Scale Pop <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:anim wipe</code></td>
+<td>type</td>
+<td>Animation type - Wipe <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:anim blinds</code></td>
+<td>type</td>
+<td>Animation type - Blinds <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:animtime</code></td>
+<td>time</td>
+<td>Animation time (seconds) <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:animdir</code></td>
+<td>direction</td>
+<td>Wipe direction (ltr/rtl) <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:animblinds</code></td>
+<td>count</td>
+<td>Number of blinds <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:animblur</code></td>
+<td>intensity</td>
+<td>Blur intensity <font color="green">*New Feature</font></td>
+</tr>
+</tbody>
+</table>
+<h4 id="special-functions" class="source-line" data-source-line="207">Special Functions<a class="vx-header-anchor" href="#special-functions" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="209">
+<thead>
+<tr>
+<th>Command</th>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:tate</code></td>
+<td>-</td>
+<td>Vertical text</td>
+</tr>
+<tr>
+<td><code>:tate_off</code></td>
+<td>-</td>
+<td>Disable vertical text</td>
+</tr>
+<tr>
+<td><code>:billboard</code></td>
+<td>-</td>
+<td>Billboard mode</td>
+</tr>
+<tr>
+<td><code>:billboard_off</code></td>
+<td>-</td>
+<td>Disable billboard mode</td>
+</tr>
+<tr>
+<td><code>:set</code></td>
+<td>name</td>
+<td>Save current format as preset</td>
+</tr>
+<tr>
+<td><code>:get</code></td>
+<td>name</td>
+<td>Load saved format (default resets all)</td>
+</tr>
+<tr>
+<td><code>:skip</code></td>
+<td>-</td>
+<td>Skip next text command</td>
+</tr>
+<tr>
+<td><code>:end</code></td>
+<td>-</td>
+<td>Script end marker</td>
+</tr>
+</tbody>
+</table>
+<h3 id="comments" class="source-line" data-source-line="220">Comments<a class="vx-header-anchor" href="#comments" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="222">// This is a comment line
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div>
+<h3 id="example-script" class="source-line" data-source-line="226">Example Script<a class="vx-header-anchor" href="#example-script" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="228">// Basic settings
+:screen 1280,720
+:font MS Gothic
+:size 48
+:fontcolor 255,255,255
+:edge 7
+:edgecolor 0,0,0
+:align_center
+
+// First subtitle
+@0,3
+Welcome
+
+// Second subtitle
+@+1,3
+This is an example subtitle
+You can write multi-line subtitles
+
+// Use preset
+:set style1
+
+// Load preset
+:get style1
+
+// End
+:end
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
+<h2 id="keyboard-shortcuts" class="source-line" data-source-line="257">Keyboard Shortcuts<a class="vx-header-anchor" href="#keyboard-shortcuts" vx-data-anchor-icon="¶"></a></h2>
+<table class="source-line" data-source-line="259">
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Ctrl+N</td>
+<td>New file</td>
+</tr>
+<tr>
+<td>Ctrl+O</td>
+<td>Open file</td>
+</tr>
+<tr>
+<td>Ctrl+S</td>
+<td>Save file</td>
+</tr>
+<tr>
+<td>Ctrl+Shift+S</td>
+<td>Save as</td>
+</tr>
+<tr>
+<td>F5</td>
+<td>Refresh preview</td>
+</tr>
+<tr>
+<td>Ctrl+E</td>
+<td>Export PNG</td>
+</tr>
+<tr>
+<td>Ctrl+P</td>
+<td>Preset management</td>
+</tr>
+</tbody>
+</table>
+<h2 id="using-the-statute" class="source-line" data-source-line="269">using the statute<a class="vx-header-anchor" href="#using-the-statute" vx-data-anchor-icon="¶"></a></h2>
+<ul>
+<li class="source-line" data-source-line="271">free to share, not commercial.</li>
+<li class="source-line" data-source-line="272">the author is not responsible for any problems.</li>
+</ul>
+<h2 id="license" class="source-line" data-source-line="274">License<a class="vx-header-anchor" href="#license" vx-data-anchor-icon="¶"></a></h2>
+<p class="source-line" data-source-line="276">This project is open source under the MIT license.</p>
+<h2 id="acknowledgments" class="source-line" data-source-line="278">Acknowledgments<a class="vx-header-anchor" href="#acknowledgments" vx-data-anchor-icon="¶"></a></h2>
+<ul>
+<li class="source-line" data-source-line="280"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - Original MMTScript specification designer: そぼろ</li>
+<li class="source-line" data-source-line="281"><a href="https://avaloniaui.net/">Avalonia</a> - Cross-platform UI framework</li>
+<li class="source-line" data-source-line="282"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - Modern UI theme</li>
+<li class="source-line" data-source-line="283"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - Online lyrics reference project</li>
+</ul>
+<h2 id="ai-assistance" class="source-line" data-source-line="285">AI Assistance<a class="vx-header-anchor" href="#ai-assistance" vx-data-anchor-icon="¶"></a></h2>
+<ul>
+<li class="source-line" data-source-line="287">GLM 5.1</li>
+<li class="source-line" data-source-line="288">GPT-5.4</li>
+</ul>
+</div>
+        </div>
+    </div>
+    </div>
+
+    <!-- VX_OUTLINE_BUTTON_START -->
+    <div id="container-floating" style="display:none;" class="d-none d-md-block d-xl-block">
+        <div id="floating-button" onclick="toggleMore()">
+            <p id="floating-more" class="more">&gt;</p>
+        </div>
+    </div>
+    <!-- VX_OUTLINE_BUTTON_END -->
+</body>
+</html>

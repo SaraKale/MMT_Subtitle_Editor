@@ -1,0 +1,264 @@
+//MMTScript actually used in this video
+
+//:screen 640,360
+
+:font Arial
+:bold
+
+:align_center
+:valign_center
+:pos 0,0
+:size 11
+:edge 8
+
+:fade 0.38
+:autotime 0.16
+
+:set def
+
+:size 20
+:autotime 0.32
+:shadowblur 8
+:fade 0.8
+
+:set title
+
+@0.5, 6
+MikuMikuTelop Practical Guide
+
+:get def
+
+@+1
+Whether you watched the previous introduction or not,
+welcome to the MikuMikuTelop practical guide.
+
+@+1
+In this video, we will introduce a subtitle effect creation tool
+and explain the specific usage of MikuMikuTelop.
+
+
+@+1
+※Note
+
+The latest version at the time of this video's release is 1.2.
+I will explain it together with the new features,
+so please make sure to update.
+Previous scripts can still be used as-is.
+
+:get title
+
+@+2, 6
+1. Introduction
+
+:get def
+
+@+1
+First, I must mention that
+MikuMikuTelop does not provide
+the kind of powerful subtitles that video editing software offers.
+
+@+1
+Rather, by synchronizing motion and subtitle timing,
+you can accomplish things in MMD simply,
+apply effects to subtitles,
+place subtitles in 3D space,
+and other needs that are difficult to meet with video editing software
+— this tool may be able to fulfill them.
+
+:get title
+
+@+1, 5
+2. How to Use the Tool
+
+:get def
+
+@+1
+Simply drag and drop a file containing MMTScript.
+In the same folder as that file,
+a folder named (filename)_MMT will be created,
+containing texture and effect files.
+
+Then, load the effect accessory in MMD
+and the subtitles will be displayed.
+
+@+1
+MikuMikuTelop also has an auto-update feature like MME.
+When you update a script file registered in the list,
+the effect is also updated.
+MME further detects this and
+immediately reflects it in the MMD display.
+
+:get title
+
+@+2, 6
+3. Editing Scripts
+
+:get def
+
+@+1
+Basically, it's no different from a regular text file,
+so you can edit it with Notepad or other editors.
+
+Load the sample into MikuMikuTelop, display it in MMD
+to confirm it works, then try editing it
+and see how the displayed text changes.
+
+
+@+1
+One reason for choosing the script format is that
+for long texts like in this video,
+you can write them in your preferred editor.
+
+Personally, my favorite is EmEditor.
+I also use it for writing effects.
+
+:get title
+
+@+2, 6
+4. Panel Mode
+
+:get def
+
+@+1
+Check the "Shadow" checkbox of the accessory
+to enable self-shadow for the effect accessory.
+
+@+1
+Then, the subtitle display screen
+will be placed in 3D space like a flat panel.
+
+As an accessory, it can also be moved and rotated.
+
+:billboard
+
+@+1,9
+Billboard display is also available.
+
+:pos_y +-20
+:pos_x +-30
+
+@*0
+Each subtitle faces the camera direction.
+
+:billboard_off
+
+:get title
+
+@+2, 6
+5. MMTScript - Text Commands
+
+:get def
+
+@+1
+Now let's briefly explain the script.
+Commands for displaying subtitles
+are called "Text Commands."
+
+
+@+1
+They are written as:
+"@" (at mark) + time expression + "," (comma) + duration expression
+For example,
+@@ 10, 5
+looks like this.
+
+Text following a text command
+will be displayed as a subtitle.
+
+@+1
+The standard unit is seconds, but adding "F" after a number
+allows you to specify frames.
+
+Also, adding "+" (plus) before the time expression
+sets the time relative to the end of the previous subtitle,
+and adding "*" (asterisk)
+sets the time relative to the start of the previous subtitle.
+
+
+@+1
+If you omit the duration, it will be
+automatically determined based on the number of characters.
+
+:get title
+
+@+2, 6
+6. MMTScript - System Commands
+
+:get def
+
+@+1
+System commands include formatting and other settings
+that control how subtitles are displayed.
+
+
+@+1
+The basic format is:
+":" (colon) + command name
+followed by parameters on the next line(s).
+Some commands don't require parameters.
+
+:size 20
+:fontcolor 255,200,230
+:bold
+:italic
+:underline
+:pos 0, 50
+:align_center
+:valign_top
+:edge 12
+:edgecolor 0,30,80
+:edge_round
+:margin 25,25
+:backcolor 100,255,0,30
+
+@+1
+By using system commands,
+you can create formatting like this...
+
+:get def
+
+:fontcolor 230,255,200
+:edge 0
+:shadow 8
+:shadowcolor 70,0,0
+:shadowblur 8
+:tate
+:fade 2
+:size 14
+
+@+1
+Adjusting the fade-in time,
+I also added a vertical writing feature.
+
+:get def
+
+@+1
+There's a lot more that I can't cover here,
+but please look through the sample and specification document
+and try it out for yourself.
+
+
+:align_left
+:valign_top
+:pos -90,90
+:size 10
+:fade 1
+
+@10400F
+MikuMikuDance 7.39
+MikuMikuEffect 0.27
+Visual C# 2010 Express
+
+Sound:
+Besaid Island - Final Fantasy X PianoCollections
+MIDI: chuson
+
+Wind's Trace - Final Fantasy X-2 PianoCollections
+Performed by: Arkton
+
+:end
+
+
+This video is almost entirely made with MikuMikuTelop.
+It summarizes the key points from the Readme and script specification document.
+If you can fully understand this content, you can watch this video

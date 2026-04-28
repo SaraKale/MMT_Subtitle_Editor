@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="文件" xml:space="preserve">
+    <value>文件</value>
+  </data>
+  <data name="编辑" xml:space="preserve">
+    <value>编辑</value>
+  </data>
+  <data name="视图" xml:space="preserve">
+    <value>视图</value>
+  </data>
+  <data name="工具" xml:space="preserve">
+    <value>工具</value>
+  </data>
+  <data name="语言" xml:space="preserve">
+    <value>语言</value>
+  </data>
+  <data name="帮助" xml:space="preserve">
+    <value>帮助</value>
+  </data>
+  <data name="新建文件" xml:space="preserve">
+    <value>新建文件</value>
+  </data>
+  <data name="打开文件" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="保存文件" xml:space="preserve">
+    <value>保存文件</value>
+  </data>
+  <data name="另存为文件" xml:space="preserve">
+    <value>另存为文件</value>
+  </data>
+  <data name="生成文件" xml:space="preserve">
+    <value>生成文件</value>
+  </data>
+  <data name="退出" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="撤销" xml:space="preserve">
+    <value>撤销</value>
+  </data>
+  <data name="重做" xml:space="preserve">
+    <value>重做</value>
+  </data>
+  <data name="剪切" xml:space="preserve">
+    <value>剪切</value>
+  </data>
+  <data name="复制" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="粘贴" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="属性面板" xml:space="preserve">
+    <value>属性面板</value>
+  </data>
+  <data name="脚本编辑器" xml:space="preserve">
+    <value>脚本编辑器</value>
+  </data>
+  <data name="字幕列表" xml:space="preserve">
+    <value>字幕列表</value>
+  </data>
+  <data name="全屏" xml:space="preserve">
+    <value>全屏</value>
+  </data>
+  <data name="时间换算" xml:space="preserve">
+    <value>时间换算</value>
+  </data>
+  <data name="批量导出" xml:space="preserve">
+    <value>批量导出</value>
+  </data>
+  <data name="在线歌词搜索" xml:space="preserve">
+    <value>在线歌词搜索</value>
+  </data>
+  <data name="选项" xml:space="preserve">
+    <value>选项</value>
+  </data>
+  <data name="文档" xml:space="preserve">
+    <value>文档</value>
+  </data>
+  <data name="关于 MMT Editor" xml:space="preserve">
+    <value>关于 MMT Editor</value>
+  </data>
+  <data name="新建" xml:space="preserve">
+    <value>新建</value>
+  </data>
+  <data name="打开" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="保存" xml:space="preserve">
+    <value>保存</value>
+  </data>
+  <data name="预览" xml:space="preserve">
+    <value>预览</value>
+  </data>
+  <data name="停止" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="就绪" xml:space="preserve">
+    <value>就绪</value>
+  </data>
+  <data name="字幕: {0} 条" xml:space="preserve">
+    <value>字幕: {0} 条</value>
+  </data>
+  <data name="共 {0} 条字幕" xml:space="preserve">
+    <value>共 {0} 条字幕</value>
+  </data>
+  <data name="画面: {0}×{1}" xml:space="preserve">
+    <value>画面: {0}×{1}</value>
+  </data>
+  <data name="未命名" xml:space="preserve">
+    <value>未命名</value>
+  </data>
+  <data name="打开 MMT 脚本文件" xml:space="preserve">
+    <value>打开 MMT 脚本文件</value>
+  </data>
+  <data name="保存 MMT 脚本文件" xml:space="preserve">
+    <value>保存 MMT 脚本文件</value>
+  </data>
+  <data name="脚本文件" xml:space="preserve">
+    <value>脚本文件</value>
+  </data>
+  <data name="所有文件" xml:space="preserve">
+    <value>所有文件</value>
+  </data>
+  <data name="MMT文件" xml:space="preserve">
+    <value>MMT文件</value>
+  </data>
+  <data name="TXT文件" xml:space="preserve">
+    <value>TXT文件</value>
+  </data>
+  <data name="确认" xml:space="preserve">
+    <value>确认</value>
+  </data>
+  <data name="取消" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="不保存" xml:space="preserve">
+    <value>不保存</value>
+  </data>
+  <data name="错误" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="确定" xml:space="preserve">
+    <value>确定</value>
+  </data>
+  <data name="提示" xml:space="preserve">
+    <value>提示</value>
+  </data>
+  <data name="在线歌词" xml:space="preserve">
+    <value>在线歌词</value>
+  </data>
+  <data name="歌词搜索" xml:space="preserve">
+    <value>歌词搜索</value>
+  </data>
+  <data name="来源" xml:space="preserve">
+    <value>来源</value>
+  </data>
+  <data name="模式" xml:space="preserve">
+    <value>模式</value>
+  </data>
+  <data name="原文+译文" xml:space="preserve">
+    <value>原文+译文</value>
+  </data>
+  <data name="仅原文" xml:space="preserve">
+    <value>仅原文</value>
+  </data>
+  <data name="仅译文" xml:space="preserve">
+    <value>仅译文</value>
+  </data>
+  <data name="格式" xml:space="preserve">
+    <value>格式</value>
+  </data>
+  <data name="混合" xml:space="preserve">
+    <value>混合</value>
+  </data>
+  <data name="合并" xml:space="preserve">
+    <value>合并</value>
+  </data>
+  <data name="独立" xml:space="preserve">
+    <value>独立</value>
+  </data>
+  <data name="歌曲详情信息" xml:space="preserve">
+    <value>歌曲详情信息</value>
+  </data>
+  <data name="歌手: {0}" xml:space="preserve">
+    <value>歌手: {0}</value>
+  </data>
+  <data name="专辑: {0}" xml:space="preserve">
+    <value>专辑: {0}</value>
+  </data>
+  <data name="时长: {0}" xml:space="preserve">
+    <value>时长: {0}</value>
+  </data>
+  <data name="发行日期: {0}" xml:space="preserve">
+    <value>发行日期: {0}</value>
+  </data>
+  <data name="源: {0}" xml:space="preserve">
+    <value>源: {0}</value>
+  </data>
+  <data name="MMT时间码格式" xml:space="preserve">
+    <value>MMT时间码格式</value>
+  </data>
+  <data name="标准时间" xml:space="preserve">
+    <value>标准时间</value>
+  </data>
+  <data name="秒数" xml:space="preserve">
+    <value>秒数</value>
+  </data>
+  <data name="保存 LRC 歌词" xml:space="preserve">
+    <value>保存 LRC 歌词</value>
+  </data>
+  <data name="保存Lrc歌词" xml:space="preserve">
+    <value>保存Lrc歌词</value>
+  </data>
+  <data name="插入到脚本" xml:space="preserve">
+    <value>插入到脚本</value>
+  </data>
+  <data name="输出目录:" xml:space="preserve">
+    <value>输出目录:</value>
+  </data>
+  <data name="浏览" xml:space="preserve">
+    <value>浏览</value>
+  </data>
+  <data name="关闭" xml:space="preserve">
+    <value>关闭</value>
+  </data>
+  <data name="开始批量导出" xml:space="preserve">
+    <value>开始批量导出</value>
+  </data>
+  <data name="等待添加文件" xml:space="preserve">
+    <value>等待添加文件</value>
+  </data>
+  <data name="准备就绪" xml:space="preserve">
+    <value>准备就绪</value>
+  </data>
+  <data name="待处理" xml:space="preserve">
+    <value>待处理</value>
+  </data>
+  <data name="处理中" xml:space="preserve">
+    <value>处理中</value>
+  </data>
+  <data name="已完成" xml:space="preserve">
+    <value>已完成</value>
+  </data>
+  <data name="批量导出完成" xml:space="preserve">
+    <value>批量导出完成</value>
+  </data>
+  <data name="读取失败" xml:space="preserve">
+    <value>读取失败</value>
+  </data>
+  <data name="读取中..." xml:space="preserve">
+    <value>读取中...</value>
+  </data>
+  <data name="已添加 {0} 个文件" xml:space="preserve">
+    <value>已添加 {0} 个文件</value>
+  </data>
+  <data name="选择批量导出目录" xml:space="preserve">
+    <value>选择批量导出目录</value>
+  </data>
+  <data name="设计预览模式下不可执行导出" xml:space="preserve">
+    <value>设计预览模式下不可执行导出</value>
+  </data>
+  <data name="请先选择输出目录" xml:space="preserve">
+    <value>请先选择输出目录</value>
+  </data>
+  <data name="选择画布颜色" xml:space="preserve">
+    <value>选择画布颜色</value>
+  </data>
+  <data name="选择画布背景图片" xml:space="preserve">
+    <value>选择画布背景图片</value>
+  </data>
+  <data name="图片文件" xml:space="preserve">
+    <value>图片文件</value>
+  </data>
+  <data name="画布颜色" xml:space="preserve">
+    <value>画布颜色</value>
+  </data>
+  <data name="背景图片" xml:space="preserve">
+    <value>背景图片</value>
+  </data>
+  <data name="未选择图片" xml:space="preserve">
+    <value>未选择图片</value>
+  </data>
+  <data name="导入图片" xml:space="preserve">
+    <value>导入图片</value>
+  </data>
+  <data name="清除图片" xml:space="preserve">
+    <value>清除图片</value>
+  </data>
+  <data name="预览画布选项" xml:space="preserve">
+    <value>预览画布选项</value>
+  </data>
+  <data name="这些设置只影响编辑器中的预览画布，不会修改导出的字幕 PNG。" xml:space="preserve">
+    <value>这些设置只影响编辑器中的预览画布，不会修改导出的字幕 PNG。</value>
+  </data>
+  <data name="时间码" xml:space="preserve">
+    <value>时间码</value>
+  </data>
+  <data name="时间帧" xml:space="preserve">
+    <value>时间帧</value>
+  </data>
+  <data name="正在输入时间码..." xml:space="preserve">
+    <value>正在输入时间码...</value>
+  </data>
+  <data name="正在输入时间帧..." xml:space="preserve">
+    <value>正在输入时间帧...</value>
+  </data>
+  <data name="秒数：{0}s" xml:space="preserve">
+    <value>秒数：{0}s</value>
+  </data>
+  <data name="当前文件已修改，是否保存？" xml:space="preserve">
+    <value>当前文件已修改，是否保存？</value>
+  </data>
+  <data name="打开文档..." xml:space="preserve">
+    <value>打开文档...</value>
+  </data>
+  <data name="预览画布选项已更新" xml:space="preserve">
+    <value>预览画布选项已更新</value>
+  </data>
+  <data name="没有可撤销的操作" xml:space="preserve">
+    <value>没有可撤销的操作</value>
+  </data>
+  <data name="已撤销" xml:space="preserve">
+    <value>已撤销</value>
+  </data>
+  <data name="没有可重做的操作" xml:space="preserve">
+    <value>没有可重做的操作</value>
+  </data>
+  <data name="已重做" xml:space="preserve">
+    <value>已重做</value>
+  </data>
+  <data name="没有可预览的字幕" xml:space="preserve">
+    <value>没有可预览的字幕</value>
+  </data>
+  <data name="预览中..." xml:space="preserve">
+    <value>预览中...</value>
+  </data>
+  <data name="预览已停止" xml:space="preserve">
+    <value>预览已停止</value>
+  </data>
+  <data name="请输入歌曲链接、歌曲 ID 或关键字。" xml:space="preserve">
+    <value>请输入歌曲链接、歌曲 ID 或关键字。</value>
+  </data>
+  <data name="QQ音乐" xml:space="preserve">
+    <value>QQ音乐</value>
+  </data>
+  <data name="网易云" xml:space="preserve">
+    <value>网易云</value>
+  </data>
+  <data name="QQ 音乐接口当前还没有接入。" xml:space="preserve">
+    <value>QQ 音乐接口当前还没有接入。</value>
+  </data>
+  <data name="QQ 音乐目前只支持直接输入链接或id，暂时不支持关键字搜索。" xml:space="preserve">
+    <value>QQ 音乐目前只支持直接输入链接或id，暂时不支持关键字搜索。</value>
+  </data>
+  <data name="搜索歌词失败: {0}" xml:space="preserve">
+    <value>搜索歌词失败: {0}</value>
+  </data>
+  <data name="当前没有可保存的歌词内容。" xml:space="preserve">
+    <value>当前没有可保存的歌词内容。</value>
+  </data>
+  <data name="当前环境无法打开保存对话框。" xml:space="preserve">
+    <value>当前环境无法打开保存对话框。</value>
+  </data>
+  <data name="歌词已保存。" xml:space="preserve">
+    <value>歌词已保存。</value>
+  </data>
+  <data name="当前窗口没有关联主脚本编辑器，暂时无法插入脚本。" xml:space="preserve">
+    <value>当前窗口没有关联主脚本编辑器，暂时无法插入脚本。</value>
+  </data>
+  <data name="请先获取歌词后再插入到脚本。" xml:space="preserve">
+    <value>请先获取歌词后再插入到脚本。</value>
+  </data>
+  <data name="当前歌词中没有可插入脚本的时间标签。" xml:space="preserve">
+    <value>当前歌词中没有可插入脚本的时间标签。</value>
+  </data>
+  <data name="歌词已插入到脚本的 :end 之前。" xml:space="preserve">
+    <value>歌词已插入到脚本的 :end 之前。</value>
+  </data>
+  <data name="正在获取网易云歌曲信息和歌词..." xml:space="preserve">
+    <value>正在获取网易云歌曲信息和歌词...</value>
+  </data>
+  <data name="正在获取 QQ 音乐歌曲信息和歌词..." xml:space="preserve">
+    <value>正在获取 QQ 音乐歌曲信息和歌词...</value>
+  </data>
+  <data name="未选择歌曲" xml:space="preserve">
+    <value>未选择歌曲</value>
+  </data>
+  <data name="歌手: -" xml:space="preserve">
+    <value>歌手: -</value>
+  </data>
+  <data name="专辑: -" xml:space="preserve">
+    <value>专辑: -</value>
+  </data>
+  <data name="时长: -" xml:space="preserve">
+    <value>时长: -</value>
+  </data>
+  <data name="发行日期: -" xml:space="preserve">
+    <value>发行日期: -</value>
+  </data>
+  <data name="源: -" xml:space="preserve">
+    <value>源: -</value>
+  </data>
+  <data name="直链: -" xml:space="preserve">
+    <value>直链: -</value>
+  </data>
+  <data name="正在加载歌词..." xml:space="preserve">
+    <value>正在加载歌词...</value>
+  </data>
+  <data name="正在加载..." xml:space="preserve">
+    <value>正在加载...</value>
+  </data>
+  <data name="请选择一首歌曲查看歌词预览。" xml:space="preserve">
+    <value>请选择一首歌曲查看歌词预览。</value>
+  </data>
+  <data name="正在加载歌词预览..." xml:space="preserve">
+    <value>正在加载歌词预览...</value>
+  </data>
+  <data name="歌词预览加载失败: {0}" xml:space="preserve">
+    <value>歌词预览加载失败: {0}</value>
+  </data>
+  <data name="正在搜索网易云歌曲..." xml:space="preserve">
+    <value>正在搜索网易云歌曲...</value>
+  </data>
+  <data name="没有找到匹配的歌曲。" xml:space="preserve">
+    <value>没有找到匹配的歌曲。</value>
+  </data>
+  <data name="搜索失败: {0}" xml:space="preserve">
+    <value>搜索失败: {0}</value>
+  </data>
+  <data name="指定字体" xml:space="preserve">
+    <value>指定字体</value>
+  </data>
+  <data name="字体大小" xml:space="preserve">
+    <value>字体大小</value>
+  </data>
+  <data name="字体颜色" xml:space="preserve">
+    <value>字体颜色</value>
+  </data>
+  <data name="左对齐" xml:space="preserve">
+    <value>左对齐</value>
+  </data>
+  <data name="水平居中" xml:space="preserve">
+    <value>水平居中</value>
+  </data>
+  <data name="右对齐" xml:space="preserve">
+    <value>右对齐</value>
+  </data>
+  <data name="顶部对齐" xml:space="preserve">
+    <value>顶部对齐</value>
+  </data>
+  <data name="垂直居中" xml:space="preserve">
+    <value>垂直居中</value>
+  </data>
+  <data name="底部对齐" xml:space="preserve">
+    <value>底部对齐</value>
+  </data>
+  <data name="屏幕尺寸" xml:space="preserve">
+    <value>屏幕尺寸</value>
+  </data>
+  <data name="字幕位置" xml:space="preserve">
+    <value>字幕位置</value>
+  </data>
+  <data name="不透明度" xml:space="preserve">
+    <value>不透明度</value>
+  </data>
+  <data name="指定描边粗细" xml:space="preserve">
+    <value>指定描边粗细</value>
+  </data>
+  <data name="描边颜色" xml:space="preserve">
+    <value>描边颜色</value>
+  </data>
+  <data name="将描边边角设为圆形" xml:space="preserve">
+    <value>将描边边角设为圆形</value>
+  </data>
+  <data name="阴影距离" xml:space="preserve">
+    <value>阴影距离</value>
+  </data>
+  <data name="阴影颜色" xml:space="preserve">
+    <value>阴影颜色</value>
+  </data>
+  <data name="阴影模糊" xml:space="preserve">
+    <value>阴影模糊</value>
+  </data>
+  <data name="淡入淡出" xml:space="preserve">
+    <value>淡入淡出</value>
+  </data>
+  <data name="自动时长" xml:space="preserve">
+    <value>自动时长</value>
+  </data>
+  <data name="时间基准" xml:space="preserve">
+    <value>时间基准</value>
+  </data>
+  <data name="竖排文字" xml:space="preserve">
+    <value>竖排文字</value>
+  </data>
+  <data name="公告板模式" xml:space="preserve">
+    <value>公告板模式</value>
+  </data>
+  <data name="动画方式" xml:space="preserve">
+    <value>动画方式</value>
+  </data>
+  <data name="动画时间" xml:space="preserve">
+    <value>动画时间</value>
+  </data>
+  <data name="擦除方向" xml:space="preserve">
+    <value>擦除方向</value>
+  </data>
+  <data name="百叶数量" xml:space="preserve">
+    <value>百叶数量</value>
+  </data>
+  <data name="模糊强度" xml:space="preserve">
+    <value>模糊强度</value>
+  </data>
+  <data name="定义样式集合" xml:space="preserve">
+    <value>定义样式集合</value>
+  </data>
+  <data name="调用样式集合" xml:space="preserve">
+    <value>调用样式集合</value>
+  </data>
+  <data name="跳过下一段文本" xml:space="preserve">
+    <value>跳过下一段文本</value>
+  </data>
+  <data name="结束标记" xml:space="preserve">
+    <value>结束标记</value>
+  </data>
+  <data name="+ 新建预设..." xml:space="preserve">
+    <value>+ 新建预设...</value>
+  </data>
+  <data name="1800F 或 @1800F,90F" xml:space="preserve">
+    <value>1800F 或 @1800F,90F</value>
+  </data>
+  <data name="MikuMikuTelop 字幕特效编辑器" xml:space="preserve">
+    <value>MikuMikuTelop 字幕特效编辑器</value>
+  </data>
+  <data name="def (默认)" xml:space="preserve">
+    <value>def (默认)</value>
+  </data>
+  <data name="title (标题)" xml:space="preserve">
+    <value>title (标题)</value>
+  </data>
+  <data name="✕ 删除" xml:space="preserve">
+    <value>✕ 删除</value>
+  </data>
+  <data name="上移字幕" xml:space="preserve">
+    <value>上移字幕</value>
+  </data>
+  <data name="下划线" xml:space="preserve">
+    <value>下划线</value>
+  </data>
+  <data name="下移字幕" xml:space="preserve">
+    <value>下移字幕</value>
+  </data>
+  <data name="专辑" xml:space="preserve">
+    <value>专辑</value>
+  </data>
+  <data name="位置" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="作者：SaraKale" xml:space="preserve">
+    <value>作者：SaraKale</value>
+  </data>
+  <data name="保存预设" xml:space="preserve">
+    <value>保存预设</value>
+  </data>
+  <data name="修改" xml:space="preserve">
+    <value>修改</value>
+  </data>
+  <data name="共 0 条字幕" xml:space="preserve">
+    <value>共 0 条字幕</value>
+  </data>
+  <data name="关于" xml:space="preserve">
+    <value>关于</value>
+  </data>
+  <data name="删除" xml:space="preserve">
+    <value>删除</value>
+  </data>
+  <data name="删除字幕" xml:space="preserve">
+    <value>删除字幕</value>
+  </data>
+  <data name="删除线" xml:space="preserve">
+    <value>删除线</value>
+  </data>
+  <data name="名称" xml:space="preserve">
+    <value>名称</value>
+  </data>
+  <data name="坐标定位" xml:space="preserve">
+    <value>坐标定位</value>
+  </data>
+  <data name="垂直" xml:space="preserve">
+    <value>垂直</value>
+  </data>
+  <data name="大小" xml:space="preserve">
+    <value>大小</value>
+  </data>
+  <data name="字体" xml:space="preserve">
+    <value>字体</value>
+  </data>
+  <data name="字幕: 0 条" xml:space="preserve">
+    <value>字幕: 0 条</value>
+  </data>
+  <data name="字幕数" xml:space="preserve">
+    <value>字幕数</value>
+  </data>
+  <data name="实时同步" xml:space="preserve">
+    <value>实时同步</value>
+  </data>
+  <data name="宽度" xml:space="preserve">
+    <value>宽度</value>
+  </data>
+  <data name="对齐" xml:space="preserve">
+    <value>对齐</value>
+  </data>
+  <data name="导入预设" xml:space="preserve">
+    <value>导入预设</value>
+  </data>
+  <data name="导出预设" xml:space="preserve">
+    <value>导出预设</value>
+  </data>
+  <data name="将 .mmt / .txt 文件拖到此处" xml:space="preserve">
+    <value>将 .mmt / .txt 文件拖到此处</value>
+  </data>
+  <data name="居中" xml:space="preserve">
+    <value>居中</value>
+  </data>
+  <data name="已添加 0 个文件" xml:space="preserve">
+    <value>已添加 0 个文件</value>
+  </data>
+  <data name="当前版本：1.0.0" xml:space="preserve">
+    <value>当前版本：1.0.0</value>
+  </data>
+  <data name="当前预设:" xml:space="preserve">
+    <value>当前预设:</value>
+  </data>
+  <data name="描边" xml:space="preserve">
+    <value>描边</value>
+  </data>
+  <data name="插入" xml:space="preserve">
+    <value>插入</value>
+  </data>
+  <data name="搜索" xml:space="preserve">
+    <value>搜索</value>
+  </data>
+  <data name="搜索结果" xml:space="preserve">
+    <value>搜索结果</value>
+  </data>
+  <data name="支持时间码与 30fps 帧数互相换算。帧数框也支持输入 1800F、1800 或 @1800F,90F / @60,3.0 这类 MMT 时间写法。" xml:space="preserve">
+    <value>支持时间码与 30fps 帧数互相换算。帧数框也支持输入 1800F、1800 或 @1800F,90F / @60,3.0 这类 MMT 时间写法。</value>
+  </data>
+  <data name="放大" xml:space="preserve">
+    <value>放大</value>
+  </data>
+  <data name="斜体" xml:space="preserve">
+    <value>斜体</value>
+  </data>
+  <data name="旋转" xml:space="preserve">
+    <value>旋转</value>
+  </data>
+  <data name="日本語" xml:space="preserve">
+    <value>日本語</value>
+  </data>
+  <data name="时间" xml:space="preserve">
+    <value>时间</value>
+  </data>
+  <data name="时间范围" xml:space="preserve">
+    <value>时间范围</value>
+  </data>
+  <data name="样式" xml:space="preserve">
+    <value>样式</value>
+  </data>
+  <data name="模糊" xml:space="preserve">
+    <value>模糊</value>
+  </data>
+  <data name="歌手" xml:space="preserve">
+    <value>歌手</value>
+  </data>
+  <data name="歌曲名称" xml:space="preserve">
+    <value>歌曲名称</value>
+  </data>
+  <data name="歌曲时长" xml:space="preserve">
+    <value>歌曲时长</value>
+  </data>
+  <data name="歌曲源" xml:space="preserve">
+    <value>歌曲源</value>
+  </data>
+  <data name="歌词" xml:space="preserve">
+    <value>歌词</value>
+  </data>
+  <data name="水平" xml:space="preserve">
+    <value>水平</value>
+  </data>
+  <data name="添加字幕" xml:space="preserve">
+    <value>添加字幕</value>
+  </data>
+  <data name="特效模板" xml:space="preserve">
+    <value>特效模板</value>
+  </data>
+  <data name="状态" xml:space="preserve">
+    <value>状态</value>
+  </data>
+  <data name="用于编辑、预览和导出 MMTScript 字幕脚本。" xml:space="preserve">
+    <value>用于编辑、预览和导出 MMTScript 字幕脚本。</value>
+  </data>
+  <data name="画面" xml:space="preserve">
+    <value>画面</value>
+  </data>
+  <data name="画面: 1280×720" xml:space="preserve">
+    <value>画面: 1280×720</value>
+  </data>
+  <data name="秒" xml:space="preserve">
+    <value>秒</value>
+  </data>
+  <data name="秒/字" xml:space="preserve">
+    <value>秒/字</value>
+  </data>
+  <data name="简体中文" xml:space="preserve">
+    <value>简体中文</value>
+  </data>
+  <data name="管理预设" xml:space="preserve">
+    <value>管理预设</value>
+  </data>
+  <data name="粗体" xml:space="preserve">
+    <value>粗体</value>
+  </data>
+  <data name="繁體中文" xml:space="preserve">
+    <value>繁體中文</value>
+  </data>
+  <data name="缩小" xml:space="preserve">
+    <value>缩小</value>
+  </data>
+  <data name="缩放适配" xml:space="preserve">
+    <value>缩放适配</value>
+  </data>
+  <data name="背景" xml:space="preserve">
+    <value>背景</value>
+  </data>
+  <data name="记录格式" xml:space="preserve">
+    <value>记录格式</value>
+  </data>
+  <data name="请输入歌曲链接、歌曲 ID 或关键字" xml:space="preserve">
+    <value>请输入歌曲链接、歌曲 ID 或关键字</value>
+  </data>
+  <data name="请输入歌曲链接、歌曲ID 或 关键字" xml:space="preserve">
+    <value>请输入歌曲链接、歌曲ID 或 关键字</value>
+  </data>
+  <data name="请选择输出目录" xml:space="preserve">
+    <value>请选择输出目录</value>
+  </data>
+  <data name="调用格式" xml:space="preserve">
+    <value>调用格式</value>
+  </data>
+  <data name="跳过文本" xml:space="preserve">
+    <value>跳过文本</value>
+  </data>
+  <data name="边距X" xml:space="preserve">
+    <value>边距X</value>
+  </data>
+  <data name="选择颜色" xml:space="preserve">
+    <value>选择颜色</value>
+  </data>
+  <data name="透明度" xml:space="preserve">
+    <value>透明度</value>
+  </data>
+  <data name="间距" xml:space="preserve">
+    <value>间距</value>
+  </data>
+  <data name="阴影" xml:space="preserve">
+    <value>阴影</value>
+  </data>
+  <data name="集合名" xml:space="preserve">
+    <value>集合名</value>
+  </data>
+  <data name="集合名/default" xml:space="preserve">
+    <value>集合名/default</value>
+  </data>
+  <data name="预设" xml:space="preserve">
+    <value>预设</value>
+  </data>
+  <data name="预设: def" xml:space="preserve">
+    <value>预设: def</value>
+  </data>
+  <data name="颜色" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="额外功能" xml:space="preserve">
+    <value>额外功能</value>
+  </data>
+  <data name="高度" xml:space="preserve">
+    <value>高度</value>
+  </data>
+  <data name="＋ 添加" xml:space="preserve">
+    <value>＋ 添加</value>
+  </data>
+  <data name="📂 拖放区域" xml:space="preserve">
+    <value>📂 拖放区域</value>
+  </data>
+  <data name="时间帧_Duplicate[1]" xml:space="preserve">
+    <value>时间帧</value>
+  </data>
+  <data name="未选择图片_Duplicate[1]" xml:space="preserve">
+    <value>未选择图片</value>
+  </data>
+  <data name="竖排文字_Duplicate[1]" xml:space="preserve">
+    <value>竖排文字</value>
+  </data>
+  <data name="新字幕" xml:space="preserve">
+    <value>新字幕</value>
+  </data>
+  <data name="已添加字幕" xml:space="preserve">
+    <value>已添加字幕</value>
+  </data>
+  <data name="已删除字幕" xml:space="preserve">
+    <value>已删除字幕</value>
+  </data>
+  <data name="已上移字幕" xml:space="preserve">
+    <value>已上移字幕</value>
+  </data>
+  <data name="已下移字幕" xml:space="preserve">
+    <value>已下移字幕</value>
+  </data>
+  <data name="字幕已修改" xml:space="preserve">
+    <value>字幕已修改</value>
+  </data>
+  <data name="已复制字幕" xml:space="preserve">
+    <value>已复制字幕</value>
+  </data>
+  <data name="剪贴板为空" xml:space="preserve">
+    <value>剪贴板为空</value>
+  </data>
+  <data name="已粘贴字幕" xml:space="preserve">
+    <value>已粘贴字幕</value>
+  </data>
+  <data name="字幕文本" xml:space="preserve">
+    <value>字幕文本</value>
+  </data>
+  <data name="开始(秒)" xml:space="preserve">
+    <value>开始(秒)</value>
+  </data>
+  <data name="结束(秒)" xml:space="preserve">
+    <value>结束(秒)</value>
+  </data>
+  <data name="修改字幕" xml:space="preserve">
+    <value>修改字幕</value>
+  </data>
+  <data name="随机模糊" xml:space="preserve">
+    <value>随机模糊</value>
+  </data>
+  <data name="上滑进入" xml:space="preserve">
+    <value>上滑进入</value>
+  </data>
+  <data name="缩放弹出" xml:space="preserve">
+    <value>缩放弹出</value>
+  </data>
+  <data name="百叶窗" xml:space="preserve">
+    <value>百叶窗</value>
+  </data>
+  <data name="左到右" xml:space="preserve">
+    <value>左到右</value>
+  </data>
+  <data name="右到左" xml:space="preserve">
+    <value>右到左</value>
+  </data>
+  <data name="计算" xml:space="preserve">
+    <value>计算</value>
+  </data>
+</root>
