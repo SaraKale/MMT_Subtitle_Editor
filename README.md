@@ -319,7 +319,7 @@ Or simply click `BatchBuild.bat` to build for multiple platforms.
 
 ## License
 
-This project is open source under the MIT license.
+This project is open source under the CC BY-NC-SA 4.0 license.
 
 ## Acknowledgments
 

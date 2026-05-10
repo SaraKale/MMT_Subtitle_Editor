@@ -314,7 +314,7 @@ dotnet publish -c Release -r linux-x64
 
 ## 许可证
 
-本项目基于 MIT 许可证开源。
+本项目基于 CC BY-NC-SA 4.0 许可证开源。
 
 ## 使用规约
 

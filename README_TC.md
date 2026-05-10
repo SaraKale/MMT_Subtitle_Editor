@@ -319,7 +319,7 @@ dotnet publish -c Release -r linux-x64
 
 ## 許可證
 
-本專案基於 MIT 許可證開源。
+本專案基於 CC BY-NC-SA 4.0 許可證開源。
 
 ## 致謝
 

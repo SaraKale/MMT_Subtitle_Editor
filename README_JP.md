@@ -319,7 +319,7 @@ dotnet publish -c Release -r linux-x64
 
 ## ライセンス
 
-このプロジェクトはMITライセンスで公開されています。
+このプロジェクトはCC BY-NC-SA 4.0ライセンスで公開されています。
 
 ## 謝辞
 
