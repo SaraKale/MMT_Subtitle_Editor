@@ -152,13 +152,29 @@ MMTScript 是為 MMD & MME 字幕特效生成工具「MikuMikuTelop」設計的�
 
 | 命令 | 參數 | 說明 |
 |------|------|------|
-| `:edge` | 粗細 | 描邊粗細（相對於字體大小的百分比） |
-| `:edgecolor` | R,G,B | 描邊顏色 |
+| `:edge` | 粗細 | 描邊粗細 |
+| `:edgecolor` | R,G,B | 描邊顏色  |
+| `:edge2` | 粗細 | 第二層描邊粗細 <font color="green">*新增功能</font> |
+| `:edgecolor2` | R,G,B | 第二層描邊顏色 <font color="green">*新增功能</font> |
+| `:edge3` | 粗細 | 第三層描邊粗細 <font color="green">*新增功能</font> |
+| `:edgecolor3` | R,G,B | 第三層描邊顏色 <font color="green">*新增功能</font> |
+| `:edge4` | 粗細 | 第四層描邊粗細 <font color="green">*新增功能</font> |
+| `:edgecolor4` | R,G,B | 第四層描邊顏色 <font color="green">*新增功能</font> |
 | `:edge_round` | - | 圓角描邊 |
 | `:edge_round_off` | - | 關閉圓角描邊 |
-| `:shadow` | 距離 | 陰影距離（相對於字體大小的百分比） |
-| `:shadowcolor` | R,G,B | 陰影顏色 |
-| `:shadowblur` | 半徑 | 陰影模糊半徑 |
+| `:shadow` | 距離 | 陰影距離 |
+| `:shadowcolor` | R,G,B | 陰影顏色  |
+| `:shadowblur` | 數值 | 陰影模糊半徑 |
+| `:glow` | 數值 | 外發光半徑 <font color="green">*新增功能</font> |
+| `:glowcolor` | R,G,B | 外發光顏色 <font color="green">*新增功能</font> |
+| `:glowalpha` | 0-1 | 外發光不透明度 <font color="green">*新增功能</font> |
+| `:edgegradient_on` |  - | 開啟描邊漸變 <font color="green">*新增功能</font> |
+| `:edgegradient_off` |  - | 關閉描邊漸變 <font color="green">*新增功能</font> |
+| `:edgegradient` | R,G,B | 描邊漸變顏色 <font color="green">*新增功能</font> |
+| `:textgradient_on` | - | 開啟文字漸變 <font color="green">*新增功能</font> |
+| `:textgradient_off` | - | 關閉文字漸變 <font color="green">*新增功能</font> |
+| `:textgradient` | R,G,B | 文字漸變顏色 <font color="green">*新增功能</font> |
+| `:textgradientdir` | vertical/horizontal | 文字漸變方向，水平和垂直 <font color="green">*新增功能</font> |
 
 #### 畫面設定
 
@@ -217,6 +233,11 @@ MMTScript 是為 MMD & MME 字幕特效生成工具「MikuMikuTelop」設計的�
 | `:get` | 名稱 | 調用儲存的格式（default 重置所有） |
 | `:skip` | - | 跳過下一個文本命令 |
 | `:end` | - | 腳本結束標記 |
+| `:imagepath` | path/to/image.png | 圖片路徑 <font color="green">*新增功能</font> |
+| `:imagescale` | 150,150 | 圖片縮放比例 <font color="green">*新增功能</font> |
+| `:imagepos` | 0,0,0 | 圖片位置 <font color="green">*新增功能</font> |
+| `:imagerotation` | 數值 | 圖片旋轉角度 <font color="green">*新增功能</font> |
+| `:imagealpha` | 0-1 | 圖片透明度 <font color="green">*新增功能</font> |
 
 ### 註釋
 

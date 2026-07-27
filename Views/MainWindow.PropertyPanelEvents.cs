@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
@@ -8,6 +10,8 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform.Storage;
 using Avalonia.Threading;
 using MMTGui.Localization;
 
@@ -49,7 +53,6 @@ public partial class MainWindow
                 nud.KeyDown += OnNumericKeyDown;
         }
     }
-
     private void OnNumericKeyDown(object? sender, KeyEventArgs e)
     {
         if (e.Key != Key.Enter || _isSyncingFromProperty) return;
@@ -90,16 +93,21 @@ public partial class MainWindow
 
     private void ProcessNudChange(NumericUpDown nud)
     {
-        if (nud == NudFontSize)
+        // 智能检测下一个描边层数
+        if (nud == NudEdge)
+        {
+            var layer = GetNextEdgeLayer();
+            var cmd = layer == 1 ? "edge" : $"edge{layer}";
+            InsertOrReplaceCommand($":{cmd} {nud.Value}", cmd);
+        }
+        else if (nud == NudFontSize)
             InsertOrReplaceCommand($":size {nud.Value}");
         else if (nud == NudPosX)
-            InsertOrReplaceCommand($":pos {NudPosX?.Value ?? 0},{NudPosY?.Value ?? 0}");
+            InsertOrReplaceCommand($":pos {(double)(NudPosX?.Value ?? 0m)},{(double)(NudPosY?.Value ?? 0m)}");
         else if (nud == NudPosY)
-            InsertOrReplaceCommand($":pos {NudPosX?.Value ?? 0},{NudPosY?.Value ?? 0}");
+            InsertOrReplaceCommand($":pos {(double)(NudPosX?.Value ?? 0m)},{(double)(NudPosY?.Value ?? 0m)}");
         else if (nud == NudPosZ)
             InsertOrReplaceCommand($":pos_z {nud.Value}");
-        else if (nud == NudEdge)
-            InsertOrReplaceCommand($":edge {nud.Value}");
         else if (nud == NudShadow)
             InsertOrReplaceCommand($":shadow {nud.Value}");
         else if (nud == NudShadowBlur)
@@ -111,13 +119,13 @@ public partial class MainWindow
         else if (nud == NudTimeBase)
             InsertOrReplaceCommand($":timebase {nud.Value:0.0}");
         else if (nud == NudMarginX)
-            InsertOrReplaceCommand($":margin {NudMarginX?.Value ?? 5},{NudMarginY?.Value ?? 5}");
+            InsertOrReplaceCommand($":margin {(double)(NudMarginX?.Value ?? 5m)},{(double)(NudMarginY?.Value ?? 5m)}");
         else if (nud == NudMarginY)
-            InsertOrReplaceCommand($":margin {NudMarginX?.Value ?? 5},{NudMarginY?.Value ?? 5}");
+            InsertOrReplaceCommand($":margin {(double)(NudMarginX?.Value ?? 5m)},{(double)(NudMarginY?.Value ?? 5m)}");
         else if (nud == NudScreenWidth)
-            InsertOrReplaceCommand($":screen {NudScreenWidth?.Value ?? 1280},{NudScreenHeight?.Value ?? 720}");
+            InsertOrReplaceCommand($":screen {(double)(NudScreenWidth?.Value ?? 1280m)},{(double)(NudScreenHeight?.Value ?? 720m)}");
         else if (nud == NudScreenHeight)
-            InsertOrReplaceCommand($":screen {NudScreenWidth?.Value ?? 1280},{NudScreenHeight?.Value ?? 720}");
+            InsertOrReplaceCommand($":screen {(double)(NudScreenWidth?.Value ?? 1280m)},{(double)(NudScreenHeight?.Value ?? 720m)}");
         else if (nud == NudOpacity)
             InsertOrReplaceCommand($":alpha {nud.Value:0.00}");
         else if (nud == NudScaleX)
@@ -134,7 +142,78 @@ public partial class MainWindow
             InsertOrReplaceCommand($":animblinds {nud.Value:0}", "animblinds");
         else if (_nudAnimationBlurStrength != null && nud == _nudAnimationBlurStrength)
             InsertOrReplaceCommand($":animblur {nud.Value:0.0}", "animblur");
+        else if (nud == NudEdge2)
+        {
+            var layer = GetNextEdgeLayer();
+            var cmd = layer == 1 ? "edge" : $"edge{layer}";
+            InsertOrReplaceCommand($":{cmd} {nud.Value:0}", cmd);
+        }
+        else if (nud == NudGlow)
+            InsertOrReplaceCommand($":glow {nud.Value:0}", "glow");
+        else if (nud == NudGlowAlpha)
+            InsertOrReplaceCommand($":glowalpha {nud.Value:0.0}", "glowalpha");
     }
+
+    /// <summary>
+    /// 检测脚本中已有的描边层数，返回下一个可用的层数（1-4）。
+    /// 规则：返回已存在的最高层数+1（追加模式）；如果都不存在，返回 1；超过4则循环回1。
+    /// </summary>
+    private int GetNextEdgeLayer()
+    {
+        if (ScriptEditor == null) return 1;
+        var text = ScriptEditor.Text ?? string.Empty;
+        var lines = text.Replace("\r\n", "\n").Replace("\r", "\n").Split('\n');
+
+        int maxLayer = 0;
+        foreach (var line in lines)
+        {
+            var trimmed = line.Trim();
+            if (trimmed.StartsWith(":edge4 ") || trimmed.StartsWith(":edge4\t"))
+                maxLayer = Math.Max(maxLayer, 4);
+            else if (trimmed.StartsWith(":edge3 ") || trimmed.StartsWith(":edge3\t"))
+                maxLayer = Math.Max(maxLayer, 3);
+            else if (trimmed.StartsWith(":edge2 ") || trimmed.StartsWith(":edge2\t"))
+                maxLayer = Math.Max(maxLayer, 2);
+            else if (trimmed.StartsWith(":edge ") || trimmed.StartsWith(":edge\t"))
+                maxLayer = Math.Max(maxLayer, 1);
+        }
+
+        if (maxLayer == 0) return 1;
+        if (maxLayer >= 4) return 1;
+        return maxLayer + 1;
+    }
+
+    /// <summary>
+    /// 检测脚本中已有的描边颜色层数，返回下一个可用的层数（1-4）。
+    /// 规则：返回已存在的最高层数+1（追加模式）；如果都不存在，返回 1；超过4则循环回1。
+    /// </summary>
+    private int GetNextEdgeColorLayer()
+    {
+        if (ScriptEditor == null) return 1;
+        var text = (ScriptEditor.Text ?? string.Empty)
+            .Replace("\r\n", "\n")
+            .Replace("\r", "\n");
+        var lines = text.Split(new[] { "\n" }, StringSplitOptions.None);
+
+        int maxLayer = 0;
+        foreach (var line in lines)
+        {
+            var trimmed = line.Trim();
+            if (trimmed.StartsWith(":edgecolor4 ") || trimmed.StartsWith(":edgecolor4\t"))
+                maxLayer = Math.Max(maxLayer, 4);
+            else if (trimmed.StartsWith(":edgecolor3 ") || trimmed.StartsWith(":edgecolor3\t"))
+                maxLayer = Math.Max(maxLayer, 3);
+            else if (trimmed.StartsWith(":edgecolor2 ") || trimmed.StartsWith(":edgecolor2\t"))
+                maxLayer = Math.Max(maxLayer, 2);
+            else if (trimmed.StartsWith(":edgecolor ") || trimmed.StartsWith(":edgecolor\t"))
+                maxLayer = Math.Max(maxLayer, 1);
+        }
+
+        if (maxLayer == 0) return 1;
+        if (maxLayer >= 4) return 1;
+        return maxLayer + 1;
+    }
+
     #region 属性面板事件
 
     /// <summary>
@@ -148,10 +227,10 @@ public partial class MainWindow
         if (PreviewResolution != null && NudScreenWidth != null && NudScreenHeight != null)
             PreviewResolution.Text = $"{NudScreenWidth.Value} × {NudScreenHeight.Value}";
 
-        UpdatePreviewFrame((double)(NudScreenWidth?.Value ?? 1280), (double)(NudScreenHeight?.Value ?? 720));
+        UpdatePreviewFrame((double)(NudScreenWidth?.Value ?? 1280m), (double)(NudScreenHeight?.Value ?? 720m));
 
         if (!_isSyncingFromProperty)
-            InsertOrReplaceCommand($":screen {NudScreenWidth?.Value ?? 1280},{NudScreenHeight?.Value ?? 720}");
+            InsertOrReplaceCommand($":screen {(double)(NudScreenWidth?.Value ?? 1280m)},{(double)(NudScreenHeight?.Value ?? 720m)}");
 
         UpdateStatusBar();
     }
@@ -293,6 +372,9 @@ public partial class MainWindow
             "NudScreenHeight" => NudScreenHeight,
             "NudMarginX" => NudMarginX,
             "NudMarginY" => NudMarginY,
+            "NudEdge2" => NudEdge2,
+            "NudGlow" => NudGlow,
+            "NudGlowAlpha" => NudGlowAlpha,
             _ => null
         };
     }
@@ -496,6 +578,22 @@ public partial class MainWindow
             "edgecolor" => LocalizationService.T("描边颜色"),
             "edge_round" => LocalizationService.T("将描边边角设为圆形"),
             "edge_round_off" => LocalizationService.T("将描边边角设为圆形"),
+            "edge2" => LocalizationService.T("外层描边粗细"),
+            "edgecolor2" => LocalizationService.T("外层描边颜色"),
+            "edge3" => LocalizationService.T("第三层描边粗细"),
+            "edgecolor3" => LocalizationService.T("第三层描边颜色"),
+            "edge4" => LocalizationService.T("第四层描边粗细"),
+            "edgecolor4" => LocalizationService.T("第四层描边颜色"),
+            "glow" => LocalizationService.T("外发光半径"),
+            "glowcolor" => LocalizationService.T("外发光颜色"),
+            "glowalpha" => LocalizationService.T("外发光不透明度"),
+            "edgegradient_on" => LocalizationService.T("启用描边渐变"),
+            "edgegradient_off" => LocalizationService.T("关闭描边渐变"),
+            "edgegradient" => LocalizationService.T("描边渐变颜色"),
+            "textgradient_on" => LocalizationService.T("启用文字渐变"),
+            "textgradient_off" => LocalizationService.T("关闭文字渐变"),
+            "textgradient" => LocalizationService.T("文字渐变颜色"),
+            "textgradientdir" => LocalizationService.T("文字渐变方向"),
             "shadow" => LocalizationService.T("阴影距离"),
             "shadowcolor" => LocalizationService.T("阴影颜色"),
             "shadowblur" => LocalizationService.T("阴影模糊"),
@@ -558,6 +656,9 @@ public partial class MainWindow
             "tate" or "tate_off" => "tate", // 倾斜
             "billboard" or "billboard_off" => "billboard", // 广告牌
             "edge_round" or "edge_round_off" => "edge_round", // 圆角
+            "edgegradient_on" or "edgegradient_off" or "edgegradient" => "edgegradient", // 描边渐变
+            "textgradient_on" or "textgradient_off" or "textgradient" => "textgradient", // 文字渐变
+            "textgradientdir" => "textgradientdir", // 文字渐变方向
             "anim" or "animation" => "anim", // 动画
             "animdir" or "animation_direction" => "animdir", // 动画方向
             "animblinds" or "animation_blinds" => "animblinds", // 百叶窗动画
@@ -597,7 +698,7 @@ public partial class MainWindow
     }
 
     /// <summary>
-    /// 描边颜色点击 - 使用系统颜色选择器
+    /// 描边颜色点击 - 智能检测层数，自动插入下一层颜色命令
     /// </summary>
     private async void OnStrokeColorClick(object? sender, PointerPressedEventArgs e)
     {
@@ -607,7 +708,11 @@ public partial class MainWindow
         {
             StrokeColorPreview.Background = new SolidColorBrush(color.Value);
             StrokeColorText.Text = $"{color.Value.R},{color.Value.G},{color.Value.B}";
-            InsertOrReplaceCommand($":edgecolor {color.Value.R},{color.Value.G},{color.Value.B}", "edgecolor");
+
+            // 智能检测下一层
+            var layer = GetNextEdgeColorLayer();
+            var cmd = layer == 1 ? "edgecolor" : $"edgecolor{layer}";
+            InsertOrReplaceCommand($":{cmd} {color.Value.R},{color.Value.G},{color.Value.B}", cmd);
         }
     }
 
@@ -638,6 +743,146 @@ public partial class MainWindow
             BgColorPreview.Background = new SolidColorBrush(color.Value);
             BgColorText.Text = $"{color.Value.A},{color.Value.R},{color.Value.G},{color.Value.B}";
             InsertOrReplaceCommand($":backcolor {color.Value.R},{color.Value.G},{color.Value.B},{color.Value.A}", "backcolor");
+        }
+    }
+
+    /// <summary>
+    /// 高级效果颜色选择按钮点击（双色渐变、外发光、双层描边）。
+    /// 通过 Button.Tag 区分具体要设置的颜色。
+    /// </summary>
+    private async void OnPickColor(object? sender, RoutedEventArgs e)
+    {       if (_isSyncingFromProperty) return;
+        if (sender is not Button btn || btn.Tag is not string tag) return;
+        await PickAdvancedColorAsync(tag);
+    }
+
+    /// <summary>
+    /// 高级效果颜色预览框点击（与按钮等效）。
+    /// </summary>
+    private async void OnColorPreviewClick(object? sender, PointerPressedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        if (sender is not Border border || border.Tag is not string tag) return;
+        await PickAdvancedColorAsync(tag);
+    }
+
+    /// <summary>
+    /// 根据颜色标签弹出颜色选择器并写入对应命令到脚本。
+    /// </summary>
+    private async Task PickAdvancedColorAsync(string tag)
+    {
+        Border? preview = tag switch
+        {
+            "edgecolor2" => Edge2ColorPreview,
+            "glowcolor" => GlowColorPreview,
+            "edgegradienttop" => EdgeGradientTopPreview,
+            "edgegradientbottom" => EdgeGradientBottomPreview,
+            "textgradienttop" => TextGradientTopPreview,
+            "textgradientbottom" => TextGradientBottomPreview,
+            _ => null
+        };
+        if (preview == null) return;
+
+        var currentColor = preview.Background is SolidColorBrush sb ? sb.Color : Colors.White;
+        var color = await PickColor(LocalizationService.T("选择颜色"), currentColor);
+        if (!color.HasValue) return;
+
+        preview.Background = new SolidColorBrush(color.Value);
+
+        switch (tag)
+        {
+            case "edgecolor2":
+                {
+                    var layer = GetNextEdgeColorLayer();
+                    var cmd = layer == 1 ? "edgecolor" : $"edgecolor{layer}";
+                    InsertOrReplaceCommand($":{cmd} {color.Value.R},{color.Value.G},{color.Value.B}", cmd);
+                }
+                break;
+            case "glowcolor":
+                InsertOrReplaceCommand($":glowcolor {color.Value.R},{color.Value.G},{color.Value.B}", "glowcolor");
+                break;
+            case "edgegradienttop":
+            case "edgegradientbottom":
+                WriteEdgeGradientCommand();
+                break;
+            case "textgradienttop":
+            case "textgradientbottom":
+                WriteTextGradientCommand();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// 根据 UI 颜色预览生成 :edgegradient 命令。
+    /// </summary>
+    private void WriteEdgeGradientCommand()
+    {
+        var top = EdgeGradientTopPreview?.Background is SolidColorBrush t ? t.Color : Colors.Red;
+        var bottom = EdgeGradientBottomPreview?.Background is SolidColorBrush b ? b.Color : Colors.Blue;
+        InsertOrReplaceCommand($":edgegradient {top.R},{top.G},{top.B},{bottom.R},{bottom.G},{bottom.B}", "edgegradient");
+    }
+
+    /// <summary>
+    /// 根据 UI 颜色预览生成 :textgradient 命令。
+    /// </summary>
+    private void WriteTextGradientCommand()
+    {
+        var top = TextGradientTopPreview?.Background is SolidColorBrush t ? t.Color : Colors.Red;
+        var bottom = TextGradientBottomPreview?.Background is SolidColorBrush b ? b.Color : Colors.Blue;
+        InsertOrReplaceCommand($":textgradient {top.R},{top.G},{top.B},{bottom.R},{bottom.G},{bottom.B}", "textgradient");
+    }
+
+    /// <summary>
+    /// 高级效果的复选框变化处理（描边渐变、文字渐变开关）。
+    /// </summary>
+    private void OnAdvancedCheckBoxChanged(object? sender, RoutedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        if (sender is not CheckBox chk || chk.Tag is not string tag) return;
+
+        _isSyncingFromProperty = true;
+        try
+        {
+            var isOn = chk.IsChecked == true;
+            switch (tag)
+            {
+                case "edgegradient":
+                    InsertOrReplaceCommand(isOn ? ":edgegradient_on" : ":edgegradient_off", "edgegradient");
+                    if (isOn) WriteEdgeGradientCommand();
+                    break;
+                case "textgradient":
+                    InsertOrReplaceCommand(isOn ? ":textgradient_on" : ":textgradient_off", "textgradient");
+                    if (isOn) WriteTextGradientCommand();
+                    break;
+            }
+        }
+        finally
+        {
+            _isSyncingFromProperty = false;
+        }
+    }
+
+    /// <summary>
+    /// 高级效果下拉框变化处理（文字渐变方向）。
+    /// </summary>
+    private void OnAdvancedComboBoxChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        if (sender is not ComboBox cmb || cmb.Tag is not string tag) return;
+        if (cmb.SelectedItem == null) return;
+
+        _isSyncingFromProperty = true;
+        try
+        {
+            if (tag == "textgradientdir")
+            {
+                var dir = cmb.SelectedIndex == 1 ? "horizontal" : "vertical";
+                InsertOrReplaceCommand($":textgradientdir {dir}", "textgradientdir");
+            }
+        }
+        finally
+        {
+            _isSyncingFromProperty = false;
         }
     }
 
@@ -713,5 +958,334 @@ public partial class MainWindow
         return result;
     }
 
+    // ========== 图片相关事件处理 ==========
+    
+    /// <summary>
+    /// 浏览图片文件
+    /// </summary>
+    private async void OnBrowseImage(object? sender, RoutedEventArgs e)
+    {
+        var storage = GetTopLevel(this).StorageProvider;
+        var files = await storage.OpenFilePickerAsync(new FilePickerOpenOptions
+        {
+            Title = LocalizationService.T("选择图片文件"),
+            AllowMultiple = false,
+            FileTypeFilter = new[]
+            {
+                new FilePickerFileType(LocalizationService.T("图片文件"))
+                {
+                    Patterns = new[] { "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif","*.tga", "*.dds", "*.svg", "*.webp", "*.tiff", "*.avif" }
+                },
+                new FilePickerFileType(LocalizationService.T("所有文件"))
+                {
+                    Patterns = new[] { "*.*" }
+                }
+            }
+        });
+        
+        if (files.Count > 0)
+        {
+            var path = files[0].Path.LocalPath;
+            TxtImagePath.Text = path;
+
+            // 自动预览
+            try
+            {
+                var bitmap = new Bitmap(path);
+                if (NudImageScaleX != null)
+                {
+                    // 设置合适的缩放比例，使图片适应预览区域
+                    var maxDim = Math.Max(bitmap.PixelSize.Width, bitmap.PixelSize.Height);
+                    var scale = Math.Min(640, 360) * 100.0 / maxDim;
+                    NudImageScaleX.Value = (decimal)scale;
+                    NudImageScaleY.Value = (decimal)scale;
+                }
+            }
+            catch { }
+
+            // 若当前已选中图片条目，则替换其图片路径并刷新预览
+            if (_selectedImageEntry != null && _selectedImageEntry.IsImage)
+            {
+                var relativePath = GetRelativeImagePath(path);
+                var oldPath = _selectedImageEntry.ImagePath;
+                _selectedImageEntry.ImagePath = relativePath;
+
+                UpdateImagePathInScript(_selectedImageEntry, relativePath);
+
+                RenderPreviewFromSubtitle(_selectedImageEntry);
+                SetStatus(LocalizationService.T("图片已更新"));
+            }
+        }
+    }
+
+    /// <summary>
+    /// 更新脚本中指定图片条目的 :imagepath 行。
+    /// </summary>
+    private void UpdateImagePathInScript(SubtitleEntry entry, string newPath)
+    {
+        if (ScriptEditor == null || entry == null) return;
+
+        var script = ScriptEditor.Text;
+        if (string.IsNullOrEmpty(script)) return;
+
+        var lines = script.Split('\n');
+        int imagepathLineIndex = -1;
+
+        if (entry.ImageIndex > 0)
+        {
+            int imageCount = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Trim().StartsWith(":imagepath "))
+                {
+                    imageCount++;
+                    if (imageCount == entry.ImageIndex)
+                    {
+                        imagepathLineIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            var targetPath = entry.ImagePath ?? "";
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var trimmed = lines[i].Trim();
+                if (trimmed.StartsWith(":imagepath "))
+                {
+                    imagepathLineIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (imagepathLineIndex < 0) return;
+
+        lines[imagepathLineIndex] = $":imagepath {newPath}";
+
+        _isSyncingFromProperty = true;
+        try
+        {
+            ScriptEditor.Text = string.Join("\n", lines);
+        }
+        finally
+        {
+            _isSyncingFromProperty = false;
+        }
+    }
+    
+    /// <summary>
+    /// 插入图片命令到脚本
+    /// </summary>
+    private void OnInsertImage(object? sender, RoutedEventArgs e)
+    {
+        if (string.IsNullOrEmpty(TxtImagePath?.Text))
+        {
+            SetStatus(LocalizationService.T("请先选择图片文件"));
+            return;
+        }
+
+        var absolutePath = TxtImagePath.Text;
+        var relativePath = GetRelativeImagePath(absolutePath);
+        var scaleX = (double)(NudImageScaleX?.Value ?? 100m);
+        var scaleY = (double)(NudImageScaleY?.Value ?? 100m);
+        var posX = (double)(NudImagePosX?.Value ?? 0m);
+        var posY = (double)(NudImagePosY?.Value ?? 0m);
+        var posZ = (double)(NudImagePosZ?.Value ?? 0m);
+        var rotation = (double)(NudImageRotation?.Value ?? 0m);
+        var alpha = (SliderImageAlpha?.Value ?? 100) / 100.0;
+
+        var commands = new StringBuilder();
+        commands.AppendLine($"// {LocalizationService.T("图片路径")}");
+        commands.AppendLine($":imagepath {relativePath}");
+        commands.AppendLine($"// {LocalizationService.T("图片缩放比例")}");
+        commands.AppendLine($":imagescale {scaleX},{scaleY}");
+        commands.AppendLine($"// {LocalizationService.T("图片位置")}");
+        commands.AppendLine($":imagepos {posX},{posY},{posZ}");
+
+        if (rotation != 0)
+        {
+            commands.AppendLine($"// {LocalizationService.T("图片旋转角度")}");
+            commands.AppendLine($":imagerotation {rotation}");
+        }
+
+        if (alpha < 1.0)
+        {
+            commands.AppendLine($"// {LocalizationService.T("图片透明度")}");
+            commands.AppendLine($":imagealpha {alpha:F2}");
+        }
+
+        ScriptEditor?.InsertAtCaret(commands.ToString());
+
+        // 解析脚本同步字幕列表，查找并选中刚插入的图片条目
+        ParseScriptToSubtitles();
+
+        // 反向搜索：找到最后一个匹配路径的图片条目（即刚插入的）
+        var insertedIndex = -1;
+        for (int i = _subtitles.Count - 1; i >= 0; i--)
+        {
+            if (_subtitles[i].IsImage && _subtitles[i].ImagePath == relativePath)
+            {
+                insertedIndex = i;
+                break;
+            }
+        }
+
+        if (insertedIndex >= 0)
+        {
+            _selectedImageEntry = _subtitles[insertedIndex];
+            if (SubtitleList != null)
+                SubtitleList.SelectedIndex = insertedIndex;
+            RenderPreviewFromSubtitle(_selectedImageEntry);
+        }
+
+        SetStatus(LocalizationService.T("图片命令已插入"));
+    }
+    
+    private string GetRelativeImagePath(string absolutePath)
+    {
+        if (string.IsNullOrEmpty(_currentFilePath))
+            return absolutePath;
+        
+        var scriptDir = Path.GetDirectoryName(_currentFilePath);
+        if (string.IsNullOrEmpty(scriptDir))
+            return absolutePath;
+        
+        var uri1 = new Uri(scriptDir.TrimEnd(Path.DirectorySeparatorChar) + Path.DirectorySeparatorChar);
+        var uri2 = new Uri(absolutePath);
+        
+        var relativeUri = uri1.MakeRelativeUri(uri2);
+        return Uri.UnescapeDataString(relativeUri.ToString().Replace('/', Path.DirectorySeparatorChar));
+    }
+    
+    private void OnImageScaleChanged(object? sender, NumericUpDownValueChangedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        UpdateImageEntryProperty("scale");
+    }
+    
+    private void OnImagePosChanged(object? sender, NumericUpDownValueChangedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        UpdateImageEntryProperty("pos");
+    }
+    
+    private void OnImageRotationChanged(object? sender, NumericUpDownValueChangedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        UpdateImageEntryProperty("rotation");
+    }
+    
+    private void OnImageAlphaChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+        if (_isSyncingFromProperty) return;
+        UpdateImageEntryProperty("alpha");
+    }
+    
+    private void UpdateImageEntryProperty(string propertyName)
+    {
+        if (_selectedImageEntry == null) return;
+        
+        switch (propertyName)
+        {
+            case "scale":
+                _selectedImageEntry.ImageScaleX = (double)(NudImageScaleX?.Value ?? 100m);
+                _selectedImageEntry.ImageScaleY = (double)(NudImageScaleY?.Value ?? 100m);
+                break;
+            case "pos":
+                _selectedImageEntry.PosX = (double)(NudImagePosX?.Value ?? 0m);
+                _selectedImageEntry.PosY = (double)(NudImagePosY?.Value ?? 0m);
+                _selectedImageEntry.PosZ = (double)(NudImagePosZ?.Value ?? 0m);
+                break;
+            case "rotation":
+                _selectedImageEntry.ImageRotation = (double)(NudImageRotation?.Value ?? 0m);
+                break;
+            case "alpha":
+                _selectedImageEntry.ImageAlpha = (SliderImageAlpha?.Value ?? 100) / 100.0;
+                break;
+        }
+        
+        UpdateImageCommandsInScript(_selectedImageEntry);
+        RenderPreviewFromSubtitle(_selectedImageEntry);
+    }
+    
+    private void UpdateImageCommandsInScript(SubtitleEntry entry)
+    {
+        if (ScriptEditor == null || entry == null) return;
+
+        var script = ScriptEditor.Text;
+        if (string.IsNullOrEmpty(script)) return;
+
+        var lines = script.Split('\n');
+        int imagepathLineIndex = -1;
+
+        // 按 ImageIndex 定位正确的 :imagepath 块
+        if (entry.ImageIndex > 0)
+        {
+            int imageCount = 0;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Trim().StartsWith(":imagepath "))
+                {
+                    imageCount++;
+                    if (imageCount == entry.ImageIndex)
+                    {
+                        imagepathLineIndex = i;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            // 回退：按路径匹配
+            var targetPath = entry.ImagePath ?? "";
+            for (int i = 0; i < lines.Length; i++)
+            {
+                var trimmed = lines[i].Trim();
+                if (trimmed.StartsWith(":imagepath ") && trimmed.Substring(11).Trim() == targetPath)
+                {
+                    imagepathLineIndex = i;
+                    break;
+                }
+            }
+        }
+
+        if (imagepathLineIndex < 0) return;
+
+        // 更新后续的图片命令（跳过注释行，遇到非图片命令时退出）
+        for (int i = imagepathLineIndex + 1; i < lines.Length; i++)
+        {
+            var line = lines[i].Trim();
+
+            if (line.StartsWith("//"))
+                continue;
+
+            if (!line.StartsWith(":image"))
+                break;
+
+            if (line.StartsWith(":imagescale "))
+                lines[i] = $":imagescale {entry.ImageScaleX},{entry.ImageScaleY}";
+            else if (line.StartsWith(":imagepos "))
+                lines[i] = $":imagepos {entry.PosX},{entry.PosY},{entry.PosZ}";
+            else if (line.StartsWith(":imagerotation "))
+                lines[i] = $":imagerotation {entry.ImageRotation}";
+            else if (line.StartsWith(":imagealpha "))
+                lines[i] = $":imagealpha {entry.ImageAlpha:F2}";
+        }
+
+        _isSyncingFromProperty = true;
+        try
+        {
+            ScriptEditor.Text = string.Join("\n", lines);
+        }
+        finally
+        {
+            _isSyncingFromProperty = false;
+        }
+    }
+    
     #endregion
 }

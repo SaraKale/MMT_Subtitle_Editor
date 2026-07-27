@@ -35,6 +35,22 @@ public static class MmtScriptParser
         public Color EdgeColor { get; set; } = Colors.Black;
         public double EdgeWidth { get; set; } = 8;
         public bool EdgeRound { get; set; } = true;
+        public double Edge2Width { get; set; } = 0;
+        public Color Edge2Color { get; set; } = Colors.White;
+        public double Edge3Width { get; set; } = 0;
+        public Color Edge3Color { get; set; } = Color.FromRgb(128, 128, 128);
+        public double Edge4Width { get; set; } = 0;
+        public Color Edge4Color { get; set; } = Color.FromRgb(64, 64, 64);
+        public double GlowRadius { get; set; } = 0;
+        public Color GlowColor { get; set; } = Color.FromRgb(255, 200, 100);
+        public double GlowAlpha { get; set; } = 0.8;
+        public bool EdgeGradientEnabled { get; set; }
+        public Color EdgeGradientTop { get; set; } = Colors.Red;
+        public Color EdgeGradientBottom { get; set; } = Colors.Blue;
+        public bool TextGradientEnabled { get; set; }
+        public Color TextGradientTop { get; set; } = Colors.Red;
+        public Color TextGradientBottom { get; set; } = Colors.Blue;
+        public string TextGradientDirection { get; set; } = "vertical";
         public Color ShadowColor { get; set; } = Color.FromRgb(0, 0, 100);
         public double ShadowDistance { get; set; }
         public double ShadowBlur { get; set; }
@@ -58,6 +74,14 @@ public static class MmtScriptParser
         public int AnimationBlindsCount { get; set; } = 8;
         public double AnimationBlurStrength { get; set; } = 1.0;
 
+        // 新增图片属性
+        public bool IsImage { get; set; }
+        public string? ImagePath { get; set; }
+        public double ImageScaleX { get; set; } = 100;
+        public double ImageScaleY { get; set; } = 100;
+        public double ImageRotation { get; set; } = 0;
+        public double ImageAlpha { get; set; } = 1.0;
+
         public ParserState Clone() => new()
         {
             Fade = Fade,
@@ -76,6 +100,22 @@ public static class MmtScriptParser
             EdgeColor = EdgeColor,
             EdgeWidth = EdgeWidth,
             EdgeRound = EdgeRound,
+            Edge2Width = Edge2Width,
+            Edge2Color = Edge2Color,
+            Edge3Width = Edge3Width,
+            Edge3Color = Edge3Color,
+            Edge4Width = Edge4Width,
+            Edge4Color = Edge4Color,
+            GlowRadius = GlowRadius,
+            GlowColor = GlowColor,
+            GlowAlpha = GlowAlpha,
+            EdgeGradientEnabled = EdgeGradientEnabled,
+            EdgeGradientTop = EdgeGradientTop,
+            EdgeGradientBottom = EdgeGradientBottom,
+            TextGradientEnabled = TextGradientEnabled,
+            TextGradientTop = TextGradientTop,
+            TextGradientBottom = TextGradientBottom,
+            TextGradientDirection = TextGradientDirection,
             ShadowColor = ShadowColor,
             ShadowDistance = ShadowDistance,
             ShadowBlur = ShadowBlur,
@@ -97,7 +137,13 @@ public static class MmtScriptParser
             AnimationDuration = AnimationDuration,
             AnimationDirection = AnimationDirection,
             AnimationBlindsCount = AnimationBlindsCount,
-            AnimationBlurStrength = AnimationBlurStrength
+            AnimationBlurStrength = AnimationBlurStrength,
+            IsImage = IsImage,
+            ImagePath = ImagePath,
+            ImageScaleX = ImageScaleX,
+            ImageScaleY = ImageScaleY,
+            ImageRotation = ImageRotation,
+            ImageAlpha = ImageAlpha,
         };
 
         public SubtitleEntry ToSubtitleEntry(string text, double startTime, double endTime, string preset) => new()
@@ -120,6 +166,22 @@ public static class MmtScriptParser
             EdgeColor = EdgeColor,
             EdgeWidth = EdgeWidth,
             EdgeRound = EdgeRound,
+            Edge2Width = Edge2Width,
+            Edge2Color = Edge2Color,
+            Edge3Width = Edge3Width,
+            Edge3Color = Edge3Color,
+            Edge4Width = Edge4Width,
+            Edge4Color = Edge4Color,
+            GlowRadius = GlowRadius,
+            GlowColor = GlowColor,
+            GlowAlpha = GlowAlpha,
+            EdgeGradientEnabled = EdgeGradientEnabled,
+            EdgeGradientTop = EdgeGradientTop,
+            EdgeGradientBottom = EdgeGradientBottom,
+            TextGradientEnabled = TextGradientEnabled,
+            TextGradientTop = TextGradientTop,
+            TextGradientBottom = TextGradientBottom,
+            TextGradientDirection = TextGradientDirection,
             ShadowColor = ShadowColor,
             ShadowDistance = ShadowDistance,
             ShadowBlur = ShadowBlur,
@@ -141,7 +203,13 @@ public static class MmtScriptParser
             AnimationDuration = AnimationDuration,
             AnimationDirection = AnimationDirection,
             AnimationBlindsCount = AnimationBlindsCount,
-            AnimationBlurStrength = AnimationBlurStrength
+            AnimationBlurStrength = AnimationBlurStrength,
+            IsImage = IsImage,
+            ImagePath = ImagePath,
+            ImageScaleX = ImageScaleX,
+            ImageScaleY = ImageScaleY,
+            ImageRotation = ImageRotation,
+            ImageAlpha = ImageAlpha,
         };
     }
 
@@ -160,6 +228,10 @@ public static class MmtScriptParser
         double currentTime = 0;
         double lastEndTime = 0;
         bool nextSkip = false;
+        bool pendingImage = false;
+        double pendingTimeStart = -1;
+        double pendingTimeEnd = -1;
+        string pendingPreset = "def";
         SubtitleEntry? lastEntry = null;
 
         for (int i = 0; i < lines.Length; i++)
@@ -320,6 +392,205 @@ public static class MmtScriptParser
             if (line.StartsWith(":edge_round")) // 设置边框圆角
             {
                 state.EdgeRound = !line.Contains("_off", StringComparison.Ordinal);
+                continue;
+            }
+
+            // 外层描边宽度
+            if (line.StartsWith(":edge2 ", StringComparison.Ordinal))
+            {
+                if (double.TryParse(line.Substring(6).Trim(), out var e2))
+                    state.Edge2Width = e2;
+                continue;
+            }
+
+            // 外层描边颜色
+            if (line.StartsWith(":edgecolor2 ", StringComparison.Ordinal))
+            {
+                state.Edge2Color = ParseColor(line.Substring(12).Trim(), state.Edge2Color);
+                continue;
+            }
+
+            // 外发光半径
+            if (line.StartsWith(":glow ", StringComparison.Ordinal))
+            {
+                if (double.TryParse(line.Substring(6).Trim(), out var gr))
+                    state.GlowRadius = gr;
+                continue;
+            }
+
+            // 外发光颜色
+            if (line.StartsWith(":glowcolor ", StringComparison.Ordinal))
+            {
+                state.GlowColor = ParseColor(line.Substring(11).Trim(), state.GlowColor);
+                continue;
+            }
+
+            // 外发光不透明度
+            if (line.StartsWith(":glowalpha ", StringComparison.Ordinal))
+            {
+                if (double.TryParse(line.Substring(11).Trim(), out var ga))
+                    state.GlowAlpha = ga;
+                continue;
+            }
+
+            // 第三层描边宽度
+            if (line.StartsWith(":edge3 ", StringComparison.Ordinal))
+            {
+                if (double.TryParse(line.Substring(7).Trim(), out var e3))
+                    state.Edge3Width = e3;
+                continue;
+            }
+
+            // 第三层描边颜色
+            if (line.StartsWith(":edgecolor3 ", StringComparison.Ordinal))
+            {
+                state.Edge3Color = ParseColor(line.Substring(12).Trim(), state.Edge3Color);
+                continue;
+            }
+
+            // 第四层描边宽度
+            if (line.StartsWith(":edge4 ", StringComparison.Ordinal))
+            {
+                if (double.TryParse(line.Substring(7).Trim(), out var e4))
+                    state.Edge4Width = e4;
+                continue;
+            }
+
+            // 第四层描边颜色
+            if (line.StartsWith(":edgecolor4 ", StringComparison.Ordinal))
+            {
+                state.Edge4Color = ParseColor(line.Substring(12).Trim(), state.Edge4Color);
+                continue;
+            }
+
+            // 描边渐变开关
+            if (line.StartsWith(":edgegradient_on", StringComparison.Ordinal))
+            {
+                state.EdgeGradientEnabled = true;
+                continue;
+            }
+            if (line.StartsWith(":edgegradient_off", StringComparison.Ordinal))
+            {
+                state.EdgeGradientEnabled = false;
+                continue;
+            }
+            // 描边渐变颜色对：上R,G,B,下R,G,B
+            if (line.StartsWith(":edgegradient ", StringComparison.Ordinal))
+            {
+                var pair = ParseColorPair(line.Substring(14).Trim());
+                if (pair != null)
+                {
+                    state.EdgeGradientTop = pair.Value.Top;
+                    state.EdgeGradientBottom = pair.Value.Bottom;
+                    state.EdgeGradientEnabled = true;
+                }
+                continue;
+            }
+
+            // 文字渐变开关
+            if (line.StartsWith(":textgradient_on", StringComparison.Ordinal))
+            {
+                state.TextGradientEnabled = true;
+                continue;
+            }
+            if (line.StartsWith(":textgradient_off", StringComparison.Ordinal))
+            {
+                state.TextGradientEnabled = false;
+                continue;
+            }
+            // 文字渐变颜色对：上R,G,B,下R,G,B
+            if (line.StartsWith(":textgradient ", StringComparison.Ordinal))
+            {
+                var pair = ParseColorPair(line.Substring(14).Trim());
+                if (pair != null)
+                {
+                    state.TextGradientTop = pair.Value.Top;
+                    state.TextGradientBottom = pair.Value.Bottom;
+                    state.TextGradientEnabled = true;
+                }
+                continue;
+            }
+            // 文字渐变方向
+            if (line.StartsWith(":textgradientdir ", StringComparison.Ordinal))
+            {
+                var dir = line.Substring(17).Trim();
+                if (!string.IsNullOrEmpty(dir))
+                    state.TextGradientDirection = dir;
+                continue;
+            }
+
+            if (line.StartsWith(":edgecolor2 ", StringComparison.Ordinal)) // 外层描边颜色
+            {
+                state.Edge2Color = ParseColor(line.Substring(12).Trim(), state.Edge2Color);
+                continue;
+            }
+
+            if (line.StartsWith(":edge2 ", StringComparison.Ordinal)) // 外层描边粗细
+            {
+                if (double.TryParse(line.Substring(7).Trim(), out var e2))
+                    state.Edge2Width = e2;
+                continue;
+            }
+
+            if (line.StartsWith(":glowcolor ", StringComparison.Ordinal)) // 外发光颜色
+            {
+                state.GlowColor = ParseColor(line.Substring(11).Trim(), state.GlowColor);
+                continue;
+            }
+
+            if (line.StartsWith(":glowalpha ", StringComparison.Ordinal)) // 外发光不透明度
+            {
+                if (double.TryParse(line.Substring(11).Trim(), out var ga))
+                    state.GlowAlpha = Math.Clamp(ga, 0, 1);
+                continue;
+            }
+
+            if (line.StartsWith(":glow ", StringComparison.Ordinal)) // 外发光半径
+            {
+                if (double.TryParse(line.Substring(6).Trim(), out var gr))
+                    state.GlowRadius = gr;
+                continue;
+            }
+
+            if (line.StartsWith(":edgegradient ", StringComparison.Ordinal)) // 描边渐变 上R,G,B,下R,G,B
+            {
+                var colors = ParseColorPair(line.Substring(14).Trim());
+                if (colors != null)
+                {
+                    state.EdgeGradientTop = colors.Value.Top;
+                    state.EdgeGradientBottom = colors.Value.Bottom;
+                    state.EdgeGradientEnabled = true;
+                }
+                continue;
+            }
+
+            if (line.StartsWith(":edgegradient_off", StringComparison.Ordinal)) // 关闭描边渐变
+            {
+                state.EdgeGradientEnabled = false;
+                continue;
+            }
+
+            if (line.StartsWith(":textgradientdir ", StringComparison.Ordinal)) // 文字渐变方向
+            {
+                state.TextGradientDirection = line.Substring(17).Trim().ToLowerInvariant();
+                continue;
+            }
+
+            if (line.StartsWith(":textgradient ", StringComparison.Ordinal)) // 文字渐变 上R,G,B,下R,G,B
+            {
+                var colors = ParseColorPair(line.Substring(14).Trim());
+                if (colors != null)
+                {
+                    state.TextGradientTop = colors.Value.Top;
+                    state.TextGradientBottom = colors.Value.Bottom;
+                    state.TextGradientEnabled = true;
+                }
+                continue;
+            }
+
+            if (line.StartsWith(":textgradient_off", StringComparison.Ordinal)) // 关闭文字渐变
+            {
+                state.TextGradientEnabled = false;
                 continue;
             }
 
@@ -498,6 +769,75 @@ public static class MmtScriptParser
                 continue;
             }
 
+        // ========== 新增图片命令解析 ==========
+        
+        if (line.StartsWith(":imagepath "))  // 设置图片路径
+        {
+            // 如果前面有未处理的图片块，先创建独立条目
+            if (pendingImage && state.IsImage && !string.IsNullOrEmpty(state.ImagePath))
+            {
+                var ts = pendingTimeStart >= 0 ? pendingTimeStart : lastEndTime;
+                var te = pendingTimeEnd >= 0 ? pendingTimeEnd : lastEndTime + 1;
+                var pendingEntry = state.ToSubtitleEntry("", ts, te, pendingPreset);
+                pendingEntry.IsImage = true;
+                entries.Add(pendingEntry);
+                lastEntry = pendingEntry;
+
+                pendingTimeStart = -1;
+                pendingTimeEnd = -1;
+
+                state.IsImage = false;
+                state.ImagePath = null;
+                state.ImageScaleX = 100;
+                state.ImageScaleY = 100;
+                state.ImageRotation = 0;
+                state.ImageAlpha = 1.0;
+            }
+
+            // 标记有未处理的图片块，等待 @time 或脚本末尾创建条目
+            pendingImage = true;
+
+            state.ImagePath = line.Substring(11).Trim();
+            state.IsImage = true;
+            continue;
+        }
+        
+        if (line.StartsWith(":imagescale ")) // 设置图片缩放比例
+        {
+            var parts = line.Substring(12).Trim().Split(',');
+            if (parts.Length >= 1 && double.TryParse(parts[0], out var scaleX))
+                state.ImageScaleX = scaleX;
+            if (parts.Length >= 2 && double.TryParse(parts[1], out var scaleY))
+                state.ImageScaleY = scaleY;
+            continue;
+        }
+        
+        if (line.StartsWith(":imagepos ")) // 设置图片位置
+        {
+            var parts = line.Substring(10).Trim().Split(',');
+            if (parts.Length >= 1 && double.TryParse(parts[0], out var posX))
+                state.PosX = posX;
+            if (parts.Length >= 2 && double.TryParse(parts[1], out var posY))
+                state.PosY = posY;
+            if (parts.Length >= 3 && double.TryParse(parts[2], out var posZ))
+                state.PosZ = posZ;
+            continue;
+        }
+        
+        if (line.StartsWith(":imagerotation ")) // 设置图片旋转角度
+        {
+            if (double.TryParse(line.Substring(15).Trim(), out var rotation))
+                state.ImageRotation = rotation;
+            continue;
+        }
+        
+        if (line.StartsWith(":imagealpha ")) // 设置图片透明度
+        {
+            if (double.TryParse(line.Substring(12).Trim(), out var alpha))
+                state.ImageAlpha = Math.Clamp(alpha, 0, 1);
+            continue;
+        }
+
             if (line.StartsWith(":end")) // 结束
                 break;
 
@@ -557,7 +897,39 @@ public static class MmtScriptParser
                 }
 
                 var subText = CollectSubtitleText(lines, i + 1);
-                if (!string.IsNullOrEmpty(subText) && !nextSkip)
+                if (state.IsImage)
+                {
+                    // 图片条目使用 pendingTime（前面 @time 保存的时间），而非当前 @time
+                    var imgStart = pendingTimeStart >= 0 ? pendingTimeStart : startTime;
+                    var imgEnd = pendingTimeEnd >= 0 ? pendingTimeEnd : endTime;
+                    var imgPreset = pendingTimeStart >= 0 ? pendingPreset : currentPreset;
+                    var imageEntry = state.ToSubtitleEntry("", imgStart, imgEnd, imgPreset);
+                    entries.Add(imageEntry);
+                    lastEntry = imageEntry;
+                    pendingImage = false;
+                    pendingTimeStart = -1;
+                    pendingTimeEnd = -1;
+
+                    // 重置图片状态，防止后续字幕被误标记为图片
+                    state.IsImage = false;
+                    state.ImagePath = null;
+                    state.ImageScaleX = 100;
+                    state.ImageScaleY = 100;
+                    state.ImageRotation = 0;
+                    state.ImageAlpha = 1.0;
+
+                    // 文本字幕作为独立条目创建，使用当前 @time 的时间
+                    if (!string.IsNullOrEmpty(subText) && !nextSkip)
+                    {
+                        var textEntry = state.ToSubtitleEntry(subText, startTime, endTime, currentPreset);
+                        var textureSize = MeasureTextureSize(textEntry);
+                        textEntry.TextureWidth = (int)Math.Round(textureSize.Width);
+                        textEntry.TextureHeight = (int)Math.Round(textureSize.Height);
+                        entries.Add(textEntry);
+                        lastEntry = textEntry;
+                    }
+                }
+                else if (!string.IsNullOrEmpty(subText) && !nextSkip)
                 {
                     var entry = state.ToSubtitleEntry(subText, startTime, endTime, currentPreset);
                     var textureSize = MeasureTextureSize(entry);
@@ -565,6 +937,15 @@ public static class MmtScriptParser
                     entry.TextureHeight = (int)Math.Round(textureSize.Height);
                     entries.Add(entry);
                     lastEntry = entry;
+                    pendingTimeStart = -1;
+                    pendingTimeEnd = -1;
+                }
+                else
+                {
+                    // subText 为空且非图片：保存时间，可能是 @time 后跟 :imagepath 格式
+                    pendingTimeStart = startTime;
+                    pendingTimeEnd = endTime;
+                    pendingPreset = currentPreset;
                 }
 
                 nextSkip = false;
@@ -574,10 +955,21 @@ public static class MmtScriptParser
             }
         }
 
+        // 脚本末尾检查是否有未处理的图片块
+        if (pendingImage && state.IsImage && !string.IsNullOrEmpty(state.ImagePath))
+        {
+            var ts = pendingTimeStart >= 0 ? pendingTimeStart : lastEndTime;
+            var te = pendingTimeEnd >= 0 ? pendingTimeEnd : lastEndTime + 1;
+            var pp = pendingTimeStart >= 0 ? pendingPreset : currentPreset;
+            var pendingEntry = state.ToSubtitleEntry("", ts, te, pp);
+            pendingEntry.IsImage = true;
+            entries.Add(pendingEntry);
+        }
+
         for (int i = 0; i < entries.Count - 1; i++)
         {
             var nextStart = entries[i + 1].StartTime;
-            if (entries[i].EndTime > nextStart)
+            if (nextStart > entries[i].StartTime && entries[i].EndTime > nextStart)
                 entries[i].EndTime = nextStart;
         }
 
@@ -840,6 +1232,23 @@ public static class MmtScriptParser
         }
 
         return fallback;
+    }
+
+    /// <summary>
+    /// 解析颜色对（上色,下色）格式：R,G,B,R,G,B
+    /// </summary>
+    private static (Color Top, Color Bottom)? ParseColorPair(string text)
+    {
+        var parts = text.Split(',');
+        if (parts.Length < 6) return null;
+        if (!byte.TryParse(parts[0].Trim(), out var r1) ||
+            !byte.TryParse(parts[1].Trim(), out var g1) ||
+            !byte.TryParse(parts[2].Trim(), out var b1) ||
+            !byte.TryParse(parts[3].Trim(), out var r2) ||
+            !byte.TryParse(parts[4].Trim(), out var g2) ||
+            !byte.TryParse(parts[5].Trim(), out var b2))
+            return null;
+        return (Color.FromRgb(r1, g1, b1), Color.FromRgb(r2, g2, b2));
     }
 
     /// <summary>

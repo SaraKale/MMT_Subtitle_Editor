@@ -244,6 +244,17 @@ public class MmtScriptEditor : UserControl
         UpdateHighlighting(null, null); // 更新语法高亮显示
         UpdateDocumentMetrics(); // 更新文档元数据
         SyncScrollOverlay(); // 同步滚动覆盖层
+
+        // 在命令颜色映射中添加
+        var commandColors = new Dictionary<string, Color>
+        {
+            // 图片命令
+            ["imagepath"] = Color.FromRgb(255, 140, 0),      // 橙色
+            ["imagescale"] = Color.FromRgb(255, 165, 0),     // 橙色
+            ["imagepos"] = Color.FromRgb(255, 140, 0),       // 橙色
+            ["imagerotation"] = Color.FromRgb(255, 165, 0),  // 橙色
+            ["imagealpha"] = Color.FromRgb(255, 140, 0)      // 橙色
+        };
     }
 
     /// <summary>
@@ -421,7 +432,7 @@ public class MmtScriptEditor : UserControl
                 };
                 yield return new Run(rest)
                 {
-                    Foreground = GetCommandBrush()
+                    Foreground = GetImageCommandBrush(rest)
                 };
                 yield break;
             }
@@ -436,7 +447,7 @@ public class MmtScriptEditor : UserControl
 
             yield return new Run(command)
             {
-                Foreground = GetCommandBrush()
+                Foreground = GetImageCommandBrush(command)
             };
 
             yield return new Run(parameters)
@@ -467,6 +478,15 @@ public class MmtScriptEditor : UserControl
 
     /// <summary>获取命令画刷（蓝色）</summary>
     private static IBrush GetCommandBrush() => new SolidColorBrush(Color.FromRgb(96, 165, 250));
+
+    /// <summary>获取图片命令画刷（橙色）</summary>
+    private static IBrush GetImageCommandBrush(string command)
+    {
+        var commandName = command.TrimStart(':').ToLowerInvariant();
+        return commandName.StartsWith("image") 
+            ? new SolidColorBrush(Color.FromRgb(255, 140, 0)) 
+            : GetCommandBrush();
+    }
 
     /// <summary>获取参数画刷（浅白色）</summary>
     private static IBrush GetParameterBrush() => new SolidColorBrush(Color.FromRgb(226, 232, 240));

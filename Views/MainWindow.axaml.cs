@@ -55,6 +55,15 @@ public partial class MainWindow : SukiWindow
 
     private bool _isPreviewing;
 
+    /// <summary>音频播放服务（基于 NAudio）。</summary>
+    private AudioPlayerService? _audioPlayer;
+
+    /// <summary>音频进度同步计时器（用于刷新进度条和时间显示）。</summary>
+    private DispatcherTimer? _audioProgressTimer;
+
+    /// <summary>是否正在程序代码中修改音频进度条（避免递归）。</summary>
+    private bool _isUpdatingAudioProgress;
+
     /// <summary>剪贴板：复制的字幕条目</summary>
     private SubtitleEntry? _clipboardSubtitle;
 
@@ -129,6 +138,15 @@ public partial class MainWindow : SukiWindow
         SetupScriptEditor();
         InitializeCommands();
         InitializeLocalization();
+        InitializeAudio();
+        Closed += (_, _) => ShutdownAudio();
+
+        // 初始化变换框管理器
+         if (PreviewCanvas != null)
+         {
+             _transformBoxManager = new TransformBoxManager(PreviewCanvas);
+             _transformBoxManager.TransformChanged += OnTransformBoxChanged;
+         }
     }
 
     /// <summary>
@@ -245,9 +263,15 @@ public partial class MainWindow : SukiWindow
         ApplyScreenSettingsToUi(scriptScreen.Width, scriptScreen.Height);
 
         _subtitles.Clear();
+        int imageIndex = 0;
         for (int i = 0; i < parsed.Count; i++)
         {
             parsed[i].Index = i + 1;
+            if (parsed[i].IsImage)
+            {
+                imageIndex++;
+                parsed[i].ImageIndex = imageIndex;
+            }
             _subtitles.Add(parsed[i]);
         }
 
@@ -865,7 +889,9 @@ public partial class MainWindow : SukiWindow
 
         var textBlock = new TextBlock
         {
-            Text = sub.Text,
+            Text = sub.IsImage
+                ? LocalizationService.F("图片{0}", sub.ImageIndex)
+                : sub.Text,
             FontSize = 12,
             Foreground = new SolidColorBrush(Color.FromRgb(203, 213, 225)),
             VerticalAlignment = VerticalAlignment.Center,
@@ -928,7 +954,35 @@ public partial class MainWindow : SukiWindow
         Title = $"{fileName}{modified} - MMT Subtitle Editor";
     }
 
+    /// <summary>
+    /// 变换框管理器变换事件处理
+    /// </summary>
+    private void OnTransformBoxChanged(TransformChangedEventArgs e)
+    {
+        if (e.Entry == null) return;
 
+        // 更新属性面板数值、脚本与预览
+        Dispatcher.UIThread.Post(() =>
+        {
+            _isSyncingFromProperty = true;
+            try
+            {
+                NudImagePosX.Value = (decimal)e.Entry.PosX;
+                NudImagePosY.Value = (decimal)e.Entry.PosY;
+                NudImageScaleX.Value = (decimal)e.Entry.ImageScaleX;
+                NudImageScaleY.Value = (decimal)e.Entry.ImageScaleY;
+                NudImageRotation.Value = (decimal)e.Entry.ImageRotation;
+            }
+            finally
+            {
+                _isSyncingFromProperty = false;
+            }
+
+            // 实时更新脚本与预览画面
+            UpdateImageCommandsInScript(e.Entry);
+            RenderPreviewFromSubtitle(e.Entry);
+        });
+    }
     // ========= END ============
 
 }

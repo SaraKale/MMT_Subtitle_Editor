@@ -152,13 +152,29 @@ MMTScript 是为 MMD & MME 字幕特效生成工具「MikuMikuTelop」设计的�
 
 | 命令 | 参数 | 说明 |
 |------|------|------|
-| `:edge` | 粗细 | 描边粗细（相对于字体大小的百分比） |
+| `:edge` | 粗细 | 描边粗细 |
 | `:edgecolor` | R,G,B | 描边颜色 |
+| `:edge2` | 粗细 | 第二层描边粗细 <font color="green">*新增功能</font> |
+| `:edgecolor2` | R,G,B | 第二层描边颜色 <font color="green">*新增功能</font> |
+| `:edge3` | 粗细 | 第三层描边粗细 <font color="green">*新增功能</font> |
+| `:edgecolor3` | R,G,B | 第三层描边颜色 <font color="green">*新增功能</font> |
+| `:edge4` | 粗细 | 第四层描边粗细 <font color="green">*新增功能</font> |
+| `:edgecolor4` | R,G,B | 第四层描边颜色 <font color="green">*新增功能</font> |
 | `:edge_round` | - | 圆角描边 |
 | `:edge_round_off` | - | 关闭圆角描边 |
-| `:shadow` | 距离 | 阴影距离（相对于字体大小的百分比） |
+| `:shadow` | 距离 | 阴影距离|
 | `:shadowcolor` | R,G,B | 阴影颜色 |
-| `:shadowblur` | 半径 | 阴影模糊半径 |
+| `:shadowblur` | 数值 | 阴影模糊半径 |
+| `:glow` | 数值 | 外发光半径 <font color="green">*新增功能</font> |
+| `:glowcolor` | R,G,B | 外发光颜色 <font color="green">*新增功能</font> |
+| `:glowalpha` | 0-1 | 外发光不透明度 <font color="green">*新增功能</font> |
+| `:edgegradient_on` |  - | 开启描边渐变 <font color="green">*新增功能</font> |
+| `:edgegradient_off` |  - | 关闭描边渐变 <font color="green">*新增功能</font> |
+| `:edgegradient` | R,G,B | 描边渐变颜色 <font color="green">*新增功能</font> |
+| `:textgradient_on` | - | 开启文字渐变 <font color="green">*新增功能</font> |
+| `:textgradient_off` | - | 关闭文字渐变 <font color="green">*新增功能</font> |
+| `:textgradient` | R,G,B | 文字渐变颜色 <font color="green">*新增功能</font> |
+| `:textgradientdir` | vertical/horizontal | 文字渐变方向，水平和垂直 <font color="green">*新增功能</font> |
 
 #### 画面设置
 
@@ -217,6 +233,11 @@ MMTScript 是为 MMD & MME 字幕特效生成工具「MikuMikuTelop」设计的�
 | `:get` | 名称 | 调用保存的格式（default 重置所有） |
 | `:skip` | - | 跳过下一个文本命令 |
 | `:end` | - | 脚本结束标记 |
+| `:imagepath` | path/to/image.png | 图片路径 <font color="green">*新增功能</font> |
+| `:imagescale` | 150,150 | 图片缩放比例 <font color="green">*新增功能</font> |
+| `:imagepos` | 0,0,0 | 图片位置 <font color="green">*新增功能</font> |
+| `:imagerotation` | 数值 | 图片旋转角度 <font color="green">*新增功能</font> |
+| `:imagealpha` | 0-1 | 图片透明度 <font color="green">*新增功能</font> |
 
 ### 注释
 

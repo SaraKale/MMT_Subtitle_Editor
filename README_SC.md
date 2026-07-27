@@ -156,13 +156,29 @@ MMTScript 是为 MMD & MME 字幕特效生成工具「MikuMikuTelop」设计的�
 
 | 命令 | 参数 | 说明 |
 |------|------|------|
-| `:edge` | 粗细 | 描边粗细（相对于字体大小的百分比） |
+| `:edge` | 粗细 | 描边粗细 |
 | `:edgecolor` | R,G,B | 描边颜色 |
+| `:edge2` | 粗细 | 第二层描边粗细 |
+| `:edgecolor2` | R,G,B | 第二层描边颜色 |
+| `:edge3` | 粗细 | 第三层描边粗细 |
+| `:edgecolor3` | R,G,B | 第三层描边颜色 |
+| `:edge4` | 粗细 | 第四层描边粗细 |
+| `:edgecolor4` | R,G,B | 第四层描边颜色 |
 | `:edge_round` | - | 圆角描边 |
 | `:edge_round_off` | - | 关闭圆角描边 |
-| `:shadow` | 距离 | 阴影距离（相对于字体大小的百分比） |
+| `:shadow` | 距离 | 阴影距离 |
 | `:shadowcolor` | R,G,B | 阴影颜色 |
-| `:shadowblur` | 半径 | 阴影模糊半径 |
+| `:shadowblur` | 数值 | 阴影模糊半径 |
+| `:glow` | 数值 | 外发光半径 |
+| `:glowcolor` | R,G,B | 外发光颜色 |
+| `:glowalpha` | 0-1 | 外发光不透明度 |
+| `:edgegradient_on` |  - | 开启描边渐变 |
+| `:edgegradient_off` |  - | 关闭描边渐变 |
+| `:edgegradient` | R,G,B | 描边渐变颜色 |
+| `:textgradient_on` | - | 开启文字渐变 |
+| `:textgradient_off` | - | 关闭文字渐变 |
+| `:textgradient` | R,G,B | 文字渐变颜色 |
+| `:textgradientdir` | vertical/horizontal | 文字渐变方向，水平和垂直 |
 
 #### 画面设置
 
@@ -221,6 +237,11 @@ MMTScript 是为 MMD & MME 字幕特效生成工具「MikuMikuTelop」设计的�
 | `:get` | 名称 | 调用保存的格式（default 重置所有） |
 | `:skip` | - | 跳过下一个文本命令 |
 | `:end` | - | 脚本结束标记 |
+| `:imagepath` | path/to/image.png | 图片路径 |
+| `:imagescale` | 150,150 | 图片缩放比例 |
+| `:imagepos` | 0,0,0 | 图片位置 |
+| `:imagerotation` | 数值 | 图片旋转角度 |
+| `:imagealpha` | 0-1 | 图片透明度 |
 
 ### 注释
 
@@ -296,8 +317,9 @@ dotnet add package Avalonia.Themes.Fluent -v 11.3.4
 dotnet add package AvaloniaEdit.TextMate -v 11.4.0
 dotnet add package CommunityToolkit.Mvvm -v 8.4.2
 dotnet add package SukiUI -v 6.0.3
-dotnet add package Svg.Controls.Skia.Avalonia -v 11.3.0
+dotnet add package Svg.Controls.Skia.Avalonia -v 11.3.1
 dotnet add package System.Text.Encoding.CodePages -v 8.0.0
+dotnet add package NAudio -v 2.2.1
 ```
 
 然后直接运行 `MMT Subtitle Editor.sln` 编译即可。

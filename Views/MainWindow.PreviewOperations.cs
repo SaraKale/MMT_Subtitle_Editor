@@ -1,4 +1,6 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -16,6 +18,36 @@ namespace MMTGui;
 public partial class MainWindow
 {
     #region 预览操作
+
+    private TransformBoxManager? _transformBoxManager; // 图片缩放管理器
+    private SubtitleEntry? _selectedImageEntry; // 选中的图片字幕条目
+    private readonly Dictionary<string, Bitmap> _imageBitmapCache = new(StringComparer.OrdinalIgnoreCase); // 按路径缓存的图片位图
+
+    /// <summary>
+    /// 根据图片路径获取或创建 Bitmap，使用缓存避免重复加载和误释放。
+    /// </summary>
+    private Bitmap GetOrCreateImageBitmap(string imagePath)
+    {
+        var key = Path.GetFullPath(imagePath);
+        if (!_imageBitmapCache.TryGetValue(key, out var bitmap))
+        {
+            bitmap = new Bitmap(imagePath);
+            _imageBitmapCache[key] = bitmap;
+        }
+        return bitmap;
+    }
+
+    /// <summary>
+    /// 清空图片位图缓存，在切换文件或关闭项目时调用。
+    /// </summary>
+    private void ClearImageBitmapCache()
+    {
+        foreach (var kv in _imageBitmapCache)
+        {
+            try { kv.Value.Dispose(); } catch { }
+        }
+        _imageBitmapCache.Clear();
+    }
 
     /// <summary>
     /// 开始预览播放，根据字幕时间区间驱动预览区域刷新。
@@ -48,6 +80,19 @@ public partial class MainWindow
         _isPreviewing = true;
         _previewIndex = startIndex;
         _previewStartTime = _subtitles[startIndex].StartTime;
+        // 音频同步
+        if (_audioPlayer?.IsLoaded == true)
+        {
+            var subStart = TimeSpan.FromSeconds(_subtitles[startIndex].StartTime);
+            if (Math.Abs((_audioPlayer.CurrentTime - subStart).TotalSeconds) > 3)
+            {
+                _audioPlayer.Seek(subStart);
+            }
+            _audioPlayer.Play();
+            _audioProgressTimer?.Start();
+            UpdateAudioPlayIcon();
+        }
+
         _previewTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(33)
@@ -64,36 +109,53 @@ public partial class MainWindow
     private void OnPreviewTick(object? sender, EventArgs e)
     {
         if (!_isPreviewing) return;
-        _previewStartTime += 0.033;
 
-        SubtitleEntry? currentSub = null;
-        for (int i = 0; i < _subtitles.Count; i++)
+        if (_audioPlayer?.IsPlaying == true)
         {
-            if (_previewStartTime >= _subtitles[i].StartTime && _previewStartTime <= _subtitles[i].EndTime)
-            {
-                currentSub = _subtitles[i];
-                break;
-            }
-        }
-
-        if (currentSub != null)
-        {
-            RenderPreviewFromSubtitle(currentSub, _previewStartTime);
-
-            if (PreviewTime != null)
-                {
-                    var timeText = $"{FormatTime(_previewStartTime)} / {FormatTime(currentSub.EndTime)}";
-                    PreviewTime.Text = timeText;
-                    if (PreviewTimeShadow != null)
-                        PreviewTimeShadow.Text = timeText;
-                }
-
-            if (StatusTime != null)
-                StatusTime.Text = $"{FormatTime(_previewStartTime)} | {GetAnimationStatusText(currentSub)}";
+            _previewStartTime = _audioPlayer.CurrentTime.TotalSeconds;
         }
         else
         {
-            if (_subtitles.Count > 0 && _previewStartTime > _subtitles[^1].EndTime)
+            _previewStartTime += 0.033;
+        }
+
+        RenderPreviewAtTime(_previewStartTime);
+    }
+
+    /// <summary>
+    /// 在指定时间点渲染预览画布。
+    /// 由 OnPreviewTick 和音频拖动跳转共用。
+    /// </summary>
+    private void RenderPreviewAtTime(double currentTime)
+    {
+        var activeSubs = new List<SubtitleEntry>();
+        for (int i = 0; i < _subtitles.Count; i++)
+        {
+            if (currentTime >= _subtitles[i].StartTime && currentTime <= _subtitles[i].EndTime)
+            {
+                activeSubs.Add(_subtitles[i]);
+            }
+        }
+
+        if (activeSubs.Count > 0)
+        {
+            RenderPreviewFromSubtitles(activeSubs, currentTime);
+
+            var lastSub = activeSubs[^1];
+            if (PreviewTime != null)
+            {
+                var timeText = $"{FormatTime(currentTime)} / {FormatTime(lastSub.EndTime)}";
+                PreviewTime.Text = timeText;
+                if (PreviewTimeShadow != null)
+                    PreviewTimeShadow.Text = timeText;
+            }
+
+            if (StatusTime != null)
+                StatusTime.Text = $"{FormatTime(currentTime)} | {GetAnimationStatusText(lastSub)}";
+        }
+        else
+        {
+            if (_subtitles.Count > 0 && currentTime > _subtitles[^1].EndTime)
             {
                 OnStopPreview(this, new RoutedEventArgs());
                 return;
@@ -103,14 +165,14 @@ public partial class MainWindow
 
             if (PreviewTime != null)
             {
-                PreviewTime.Text = FormatTime(_previewStartTime);
+                PreviewTime.Text = FormatTime(currentTime);
                 if (PreviewTimeShadow != null)
-                    PreviewTimeShadow.Text = FormatTime(_previewStartTime);
+                    PreviewTimeShadow.Text = FormatTime(currentTime);
             }
         }
 
         if (StatusTime != null)
-            StatusTime.Text = FormatTime(_previewStartTime);
+            StatusTime.Text = FormatTime(currentTime);
     }
 
     /// <summary>
@@ -163,6 +225,24 @@ public partial class MainWindow
         var shadowBlur = (double)(NudShadowBlur?.Value ?? 0);
         var marginX = (double)(NudMarginX?.Value ?? 5);
         var marginY = (double)(NudMarginY?.Value ?? 5);
+
+        // 高级效果参数
+        var edge2Width = (double?)(NudEdge2?.Value) ?? 0;
+        var edge2Color = Edge2ColorPreview?.Background is SolidColorBrush e2b ? e2b.Color : Colors.White;
+        var edge3Width = 0.0; // TODO: 连接 UI 控件
+        var edge3Color = Color.FromRgb(128, 128, 128);
+        var edge4Width = 0.0; // TODO: 连接 UI 控件
+        var edge4Color = Color.FromRgb(64, 64, 64);
+        var glowRadius = (double?)(NudGlow?.Value) ?? 0;
+        var glowColor = GlowColorPreview?.Background is SolidColorBrush gcb ? gcb.Color : Color.FromRgb(255, 200, 100);
+        var glowAlpha = (double?)(NudGlowAlpha?.Value) ?? 0.8;
+        var edgeGradientEnabled = ChkEdgeGradient?.IsChecked == true;
+        var edgeGradientTop = EdgeGradientTopPreview?.Background is SolidColorBrush egt ? egt.Color : Colors.Red;
+        var edgeGradientBottom = EdgeGradientBottomPreview?.Background is SolidColorBrush egb ? egb.Color : Colors.Blue;
+        var textGradientEnabled = ChkTextGradient?.IsChecked == true;
+        var textGradientTop = TextGradientTopPreview?.Background is SolidColorBrush tgt ? tgt.Color : Colors.Red;
+        var textGradientBottom = TextGradientBottomPreview?.Background is SolidColorBrush tgb ? tgb.Color : Colors.Blue;
+        var textGradientDir = CmbTextGradientDir?.SelectedIndex == 1 ? "horizontal" : "vertical";
 
         var hAlign = RdoAlignLeft?.IsChecked == true ? 0
             : RdoAlignCenter?.IsChecked == true ? 1 : 2;
@@ -225,6 +305,121 @@ public partial class MainWindow
                 ctx.DrawText(shadowFormatted, new Point(x + shadowOffset, y + shadowOffset));
             }
 
+            // === 正确渲染顺序：从外到内 ===
+            // 1. 外发光（最底层晕染，12层叠加模拟平滑发光）
+            if (glowRadius > 0)
+            {
+                var glowFormatted = new FormattedText(
+                    text,
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    scaledFontSize,
+                    Brushes.White);
+
+                if (hAlign == 2) glowFormatted.TextAlignment = TextAlignment.Right;
+                else if (hAlign == 1) glowFormatted.TextAlignment = TextAlignment.Center;
+
+                var glowGeo = glowFormatted.BuildGeometry(new Point(x, y));
+                if (glowGeo != null)
+                {
+                    var baseAlpha = glowAlpha * 255.0;
+                    var glowRad = fsizepx * glowRadius / 100.0 * scale;
+                    // 12层叠加，指数衰减模拟 PS 外发光
+                    for (int i = 12; i >= 1; i--)
+                    {
+                        var t = (double)i / 12.0;
+                        var layerAlpha = (byte)(baseAlpha * Math.Pow(0.75, i));
+                        var layerWidth = glowRad * (1.0 + t * 1.5);
+                        var layerColor = Color.FromArgb(layerAlpha, glowColor.R, glowColor.G, glowColor.B);
+                        var layerPen = new Pen(new SolidColorBrush(layerColor), layerWidth)
+                        {
+                            LineJoin = PenLineJoin.Round
+                        };
+                        ctx.DrawGeometry(null, layerPen, glowGeo);
+                    }
+                }
+            }
+
+            // 2. 第四层描边（最外层）
+            if (edge4Width > 0)
+            {
+                var e4Formatted = new FormattedText(
+                    text,
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    scaledFontSize,
+                    Brushes.White);
+
+                if (hAlign == 2) e4Formatted.TextAlignment = TextAlignment.Right;
+                else if (hAlign == 1) e4Formatted.TextAlignment = TextAlignment.Center;
+
+                var e4Geo = e4Formatted.BuildGeometry(new Point(x, y));
+                if (e4Geo != null)
+                {
+                    var e4PenWidth = fsizepx * edge4Width * 2 / 100.0 * scale;
+                    var e4Pen = new Pen(new SolidColorBrush(edge4Color), e4PenWidth)
+                    {
+                        LineJoin = PenLineJoin.Round
+                    };
+                    ctx.DrawGeometry(null, e4Pen, e4Geo);
+                }
+            }
+
+            // 3. 第三层描边
+            if (edge3Width > 0)
+            {
+                var e3Formatted = new FormattedText(
+                    text,
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    scaledFontSize,
+                    Brushes.White);
+
+                if (hAlign == 2) e3Formatted.TextAlignment = TextAlignment.Right;
+                else if (hAlign == 1) e3Formatted.TextAlignment = TextAlignment.Center;
+
+                var e3Geo = e3Formatted.BuildGeometry(new Point(x, y));
+                if (e3Geo != null)
+                {
+                    var e3PenWidth = fsizepx * edge3Width * 2 / 100.0 * scale;
+                    var e3Pen = new Pen(new SolidColorBrush(edge3Color), e3PenWidth)
+                    {
+                        LineJoin = PenLineJoin.Round
+                    };
+                    ctx.DrawGeometry(null, e3Pen, e3Geo);
+                }
+            }
+
+            // 4. 外层描边（edge2）
+            if (edge2Width > 0)
+            {
+                var outerFormatted = new FormattedText(
+                    text,
+                    System.Globalization.CultureInfo.CurrentCulture,
+                    FlowDirection.LeftToRight,
+                    typeface,
+                    scaledFontSize,
+                    Brushes.White);
+
+                if (hAlign == 2) outerFormatted.TextAlignment = TextAlignment.Right;
+                else if (hAlign == 1) outerFormatted.TextAlignment = TextAlignment.Center;
+
+                var outerGeo = outerFormatted.BuildGeometry(new Point(x, y));
+                if (outerGeo != null)
+                {
+                    var outerPenWidth = fsizepx * edge2Width * 2 / 100.0 * scale;
+                    var outerPen = new Pen(new SolidColorBrush(edge2Color), outerPenWidth)
+                    {
+                        LineJoin = PenLineJoin.Round
+                    };
+                    ctx.DrawGeometry(null, outerPen, outerGeo);
+                }
+            }
+
+            // 5. 内层描边（edge，最细）
             if (edgeWidth > 0)
             {
                 var strokeFormatted = new FormattedText(
@@ -242,7 +437,10 @@ public partial class MainWindow
                 if (geo != null)
                 {
                     var penWidth = fsizepx * edgeWidth * 2 / 100.0 * scale;
-                    var pen = new Pen(new SolidColorBrush(strokeColor), penWidth)
+                    var edgeBrush = edgeGradientEnabled
+                        ? CreatePreviewGradientBrush(edgeGradientTop, edgeGradientBottom, textGradientDir)
+                        : (IBrush)new SolidColorBrush(strokeColor);
+                    var pen = new Pen(edgeBrush, penWidth)
                     {
                         LineJoin = PenLineJoin.Round
                     };
@@ -250,13 +448,17 @@ public partial class MainWindow
                 }
             }
 
+            // 4. 文字本体（最上层）
+            IBrush mainBrush = textGradientEnabled
+                ? CreatePreviewGradientBrush(textGradientTop, textGradientBottom, textGradientDir)
+                : new SolidColorBrush(fontColor);
             var mainFormatted = new FormattedText(
                 text,
                 System.Globalization.CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 typeface,
                 scaledFontSize,
-                new SolidColorBrush(fontColor));
+                mainBrush);
 
             if (hAlign == 2) mainFormatted.TextAlignment = TextAlignment.Right;
             else if (hAlign == 1) mainFormatted.TextAlignment = TextAlignment.Center;
@@ -274,6 +476,40 @@ public partial class MainWindow
         Canvas.SetLeft(img, 0);
         Canvas.SetTop(img, 0);
         PreviewCanvas.Children.Add(img);
+    }
+
+    /// <summary>
+    /// 创建预览用的渐变画刷（用于描边渐变和文字渐变）。
+    /// </summary>
+    private static IBrush CreatePreviewGradientBrush(Color top, Color bottom, string direction)
+    {
+        if (string.IsNullOrEmpty(direction))
+            direction = "vertical";
+
+        if (direction == "horizontal")
+        {
+            return new LinearGradientBrush
+            {
+                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(1, 0, RelativeUnit.Relative),
+                GradientStops =
+                {
+                    new GradientStop(top, 0),
+                    new GradientStop(bottom, 1)
+                }
+            };
+        }
+
+        return new LinearGradientBrush
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(top, 0),
+                new GradientStop(bottom, 1)
+            }
+        };
     }
 
     /// <summary>
@@ -297,6 +533,14 @@ public partial class MainWindow
             _previewTimer.Tick -= OnPreviewTick;
             _previewTimer = null;
         }
+        // 音频同步
+        if (_audioPlayer?.IsLoaded == true && _audioPlayer.IsPlaying)
+        {
+            _audioPlayer.Pause();
+            _audioProgressTimer?.Stop();
+            UpdateAudioPlayIcon();
+        }
+
         _previewIndex = -1;
         _previewStartTime = 0;
 
@@ -332,7 +576,7 @@ public partial class MainWindow
     /// </summary>
     private void OnZoomIn(object? sender, RoutedEventArgs e)
     {
-        _zoomLevel = Math.Min(_zoomLevel + 0.1, 3.0);
+        _zoomLevel = Math.Min(_zoomLevel + 0.1, 8.0);
         ApplyZoom();
     }
 
@@ -352,7 +596,7 @@ public partial class MainWindow
     {
         var delta = e.Delta.Y;
         if (delta > 0)
-            _zoomLevel = Math.Min(_zoomLevel + 0.1, 3.0);
+            _zoomLevel = Math.Min(_zoomLevel + 0.1, 8.0);
         else if (delta < 0)
             _zoomLevel = Math.Max(_zoomLevel - 0.1, 0.25);
 
@@ -377,8 +621,42 @@ public partial class MainWindow
                 : null;
             if (selectedSub != null)
                 RenderPreviewFromSubtitle(selectedSub, _isPreviewing ? _previewStartTime : null);
+        } 
+      }
+
+        /// <summary>
+        /// 创建线性渐变画刷（用于描边渐变和文字渐变）。
+        /// </summary>
+        private static IBrush CreateGradientBrush(Color top, Color bottom, double size, string direction = "vertical")
+        {
+            if (string.IsNullOrEmpty(direction))
+                direction = "vertical";
+
+            if (direction == "horizontal")
+            {
+                return new LinearGradientBrush
+                {
+                    StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                    EndPoint = new RelativePoint(1, 0, RelativeUnit.Relative),
+                    GradientStops =
+                    {
+                        new GradientStop(top, 0),
+                        new GradientStop(bottom, 1)
+                    }
+                };
+            }
+
+            return new LinearGradientBrush
+            {
+                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+                GradientStops =
+                {
+                    new GradientStop(top, 0),
+                    new GradientStop(bottom, 1)
+                }
+            };
         }
     }
 
     #endregion
-}

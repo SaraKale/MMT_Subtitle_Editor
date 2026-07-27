@@ -152,13 +152,29 @@ subtitle text
 
 | Command | Parameter | Description |
 |---------|-----------|-------------|
-| `:edge` | thickness | Stroke thickness (percentage relative to font size) |
+| `:edge` | Thickness | Stroke thickness |
 | `:edgecolor` | R,G,B | Stroke color |
-| `:edge_round` | - | Round stroke corners |
-| `:edge_round_off` | - | Disable round stroke corners |
-| `:shadow` | distance | Shadow distance (percentage relative to font size) |
+| `:edge2` | Thickness | Second stroke thickness <font color="green">*New Feature</font> |
+| `:edgecolor2` | R,G,B | Second stroke color <font color="green">*New Feature</font> |
+| `:edge3` | Thickness | Third stroke thickness <font color="green">*New Feature</font> |
+| `:edgecolor3` | R,G,B | Third stroke color <font color="green">*New Feature</font> |
+| `:edge4` | Thickness | Fourth stroke thickness <font color="green">*New Feature</font> |
+| `:edgecolor4` | R,G,B | Fourth stroke color <font color="green">*New Feature</font> |
+| `:edge_round` | - | Rounded stroke |
+| `:edge_round_off` | - | Disable rounded stroke |
+| `:shadow` | Distance | Shadow distance |
 | `:shadowcolor` | R,G,B | Shadow color |
-| `:shadowblur` | radius | Shadow blur radius |
+| `:shadowblur` | Value | Shadow blur radius |
+| `:glow` | Value | Outer glow radius <font color="green">*New Feature</font> |
+| `:glowcolor` | R,G,B | Outer glow color <font color="green">*New Feature</font> |
+| `:glowalpha` | 0-1 | Outer glow opacity <font color="green">*New Feature</font> |
+| `:edgegradient_on` | - | Enable stroke gradient <font color="green">*New Feature</font> |
+| `:edgegradient_off` | - | Disable stroke gradient  <font color="green">*New Feature</font>|
+| `:edgegradient` | R,G,B | Stroke gradient color  <font color="green">*New Feature</font>|
+| `:textgradient_on` | - | Enable text gradient <font color="green">*New Feature</font> |
+| `:textgradient_off` | - | Disable text gradient <font color="green">*New Feature</font> |
+| `:textgradient` | R,G,B | Text gradient color <font color="green">*New Feature</font> |
+| `:textgradientdir` | vertical/horizontal | Text gradient direction (vertical or horizontal) <font color="green">*New Feature</font> |
 
 #### Screen Settings
 
@@ -217,6 +233,11 @@ The following are new features that allow you to add various animation effects t
 | `:get` | name | Load saved format (default resets all) |
 | `:skip` | - | Skip next text command |
 | `:end` | - | Script end marker |
+| `:imagepath` | path/to/image.png | image path <font color="green">*New Feature</font> |
+| `:imagescale` | 150,150 | Image Scale <font color="green">*New Feature</font> |
+| `:imagepos` | 0,0,0 | Image Location <font color="green">*New Feature</font> |
+| `:imagerotation` | value | Image rotation angle <font color="green">*New Feature</font> |
+| `:imagealpha` | 0-1 | Transparency of image <font color="green">*New Feature</font> |
 
 ### Comments
 

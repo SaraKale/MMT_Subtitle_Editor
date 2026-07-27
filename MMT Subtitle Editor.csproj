@@ -8,9 +8,9 @@
     <AssemblyName>MMT Subtitle Editor</AssemblyName>
     <Title>MMT Subtitle Editor</Title>
     <Authors>SaraKale</Authors>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
     <ApplicationIcon>Assets\MMTicon.ico</ApplicationIcon>
     <StartupObject>MMTGui.Avalonia.Program</StartupObject>
   </PropertyGroup>
@@ -51,11 +51,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="澶氬钩鍙版鏋剁紪璇?bat" />
     <None Remove="README.md" />
     <None Remove="README_JP.md" />
     <None Remove="README_SC.md" />
     <None Remove="README_TC.md" />
     <None Remove="多平台框架编译.bat" />
+    <None Remove="批量压缩跨平台文件夹.bat" />
+    <None Remove="鎵归噺鍘嬬缉璺ㄥ钩鍙版枃浠跺す.bat" />
   </ItemGroup>
 
   <ItemGroup>
@@ -73,6 +76,7 @@
     </PackageReference>
     <PackageReference Include="AvaloniaEdit.TextMate" Version="11.4.0" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="SukiUI" Version="6.0.3" />
     <PackageReference Include="Svg.Controls.Skia.Avalonia" Version="11.3.0.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
@@ -83,6 +87,9 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OpenLRCFile.axaml.cs">
+      <DependentUpon>OpenLRCFile.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

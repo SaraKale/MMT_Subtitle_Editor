@@ -139,6 +139,15 @@ public partial class MainWindow
     }
 
     /// <summary>
+    /// 打开导入LRC文件窗口。
+    /// </summary>
+    private async void OnImportLRCFile(object? sender, RoutedEventArgs e)
+    {
+        var dialog = new OpenLRCFile(this);
+        await dialog.ShowDialog(this);
+    }
+
+    /// <summary>
     /// 将外部生成好的歌词脚本块插入到当前脚本的 <c>:end</c> 之前。
     /// </summary>
     public void InsertLyricsScriptBlock(string blockText)

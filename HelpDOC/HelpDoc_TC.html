@@ -673,8 +673,8 @@ var highlightItemOnlyInOutline = function(id) {
 </p>
 <figure><img src="image/MMT_SC.jpg" alt="" class="vx-image-view-image"></figure>
 <p align="center">
-語言：<a href="HelpDoc_EN.html">English</a> | <a href="HelpDoc_SC.html">简体中文</a> | <a href="HelpDoc_TC.html">繁體中文</a> 
- | <a href="HelpDoc_JP.html">日本語</a> 
+語言：<a href="HelpDoc_EN.md">English</a> | <a href="HelpDoc_SC.md">简体中文</a> | <a href="HelpDoc_TC.md">繁體中文</a> 
+ | <a href="HelpDoc_JP.md">日本語</a> 
 </p><h2 id="介紹" class="source-line" data-source-line="13">介紹<a class="vx-header-anchor" href="#介紹" vx-data-anchor-icon="¶"></a></h2>
 <p class="source-line" data-source-line="15">基於 そぼろ 作者 MikuMikuTelop 工具修改，MMT Subtitle Editor 是一個用於編輯、預覽和匯出MMD專用的MMTScript字幕腳本圖形化工具。方便編輯創建字幕，實現簡單化操作，參數可視化，歌詞搜尋下載、批量匯出等。</p>
 <h2 id="功能特點" class="source-line" data-source-line="17">功能特點<a class="vx-header-anchor" href="#功能特點" vx-data-anchor-icon="¶"></a></h2>
@@ -938,12 +938,42 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 <tr>
 <td><code>:edge</code></td>
 <td>粗細</td>
-<td>描邊粗細（相對於字體大小的百分比）</td>
+<td>描邊粗細</td>
 </tr>
 <tr>
 <td><code>:edgecolor</code></td>
 <td>R,G,B</td>
 <td>描邊顏色</td>
+</tr>
+<tr>
+<td><code>:edge2</code></td>
+<td>粗細</td>
+<td>第二層描邊粗細 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor2</code></td>
+<td>R,G,B</td>
+<td>第二層描邊顏色 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edge3</code></td>
+<td>粗細</td>
+<td>第三層描邊粗細 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor3</code></td>
+<td>R,G,B</td>
+<td>第三層描邊顏色 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edge4</code></td>
+<td>粗細</td>
+<td>第四層描邊粗細 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor4</code></td>
+<td>R,G,B</td>
+<td>第四層描邊顏色 <font color="green">*新增功能</font></td>
 </tr>
 <tr>
 <td><code>:edge_round</code></td>
@@ -958,7 +988,7 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 <tr>
 <td><code>:shadow</code></td>
 <td>距離</td>
-<td>陰影距離（相對於字體大小的百分比）</td>
+<td>陰影距離</td>
 </tr>
 <tr>
 <td><code>:shadowcolor</code></td>
@@ -967,13 +997,63 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 </tr>
 <tr>
 <td><code>:shadowblur</code></td>
-<td>半徑</td>
+<td>數值</td>
 <td>陰影模糊半徑</td>
+</tr>
+<tr>
+<td><code>:glow</code></td>
+<td>數值</td>
+<td>外發光半徑 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:glowcolor</code></td>
+<td>R,G,B</td>
+<td>外發光顏色 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:glowalpha</code></td>
+<td>0-1</td>
+<td>外發光不透明度 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient_on</code></td>
+<td>-</td>
+<td>開啟描邊漸變 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient_off</code></td>
+<td>-</td>
+<td>關閉描邊漸變 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient</code></td>
+<td>R,G,B</td>
+<td>描邊漸變顏色 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:textgradient_on</code></td>
+<td>-</td>
+<td>開啟文字漸變 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:textgradient_off</code></td>
+<td>-</td>
+<td>關閉文字漸變 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:textgradient</code></td>
+<td>R,G,B</td>
+<td>文字漸變顏色 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:textgradientdir</code></td>
+<td>vertical/horizontal</td>
+<td>文字漸變方向，水平和垂直 <font color="green">*新增功能</font></td>
 </tr>
 </tbody>
 </table>
-<h4 id="畫面設定" class="source-line" data-source-line="162">畫面設定<a class="vx-header-anchor" href="#畫面設定" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="164">
+<h4 id="畫面設定" class="source-line" data-source-line="178">畫面設定<a class="vx-header-anchor" href="#畫面設定" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="180">
 <thead>
 <tr>
 <th>命令</th>
@@ -1004,8 +1084,8 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="效果設定" class="source-line" data-source-line="171">效果設定<a class="vx-header-anchor" href="#效果設定" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="173">
+<h4 id="效果設定" class="source-line" data-source-line="187">效果設定<a class="vx-header-anchor" href="#效果設定" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="189">
 <thead>
 <tr>
 <th>命令</th>
@@ -1036,8 +1116,8 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="變換設定" class="source-line" data-source-line="180">變換設定<a class="vx-header-anchor" href="#變換設定" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="182">
+<h4 id="變換設定" class="source-line" data-source-line="196">變換設定<a class="vx-header-anchor" href="#變換設定" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="198">
 <thead>
 <tr>
 <th>命令</th>
@@ -1073,9 +1153,9 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="動畫效果" class="source-line" data-source-line="190">動畫效果<a class="vx-header-anchor" href="#動畫效果" vx-data-anchor-icon="¶"></a></h4>
-<p class="source-line" data-source-line="192">以下功能是新增的，可以通過這些命令為字幕添加各種動畫效果：</p>
-<table class="source-line" data-source-line="194">
+<h4 id="動畫效果" class="source-line" data-source-line="206">動畫效果<a class="vx-header-anchor" href="#動畫效果" vx-data-anchor-icon="¶"></a></h4>
+<p class="source-line" data-source-line="208">以下功能是新增的，可以通過這些命令為字幕添加各種動畫效果：</p>
+<table class="source-line" data-source-line="210">
 <thead>
 <tr>
 <th>命令</th>
@@ -1136,8 +1216,8 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="特殊功能" class="source-line" data-source-line="207">特殊功能<a class="vx-header-anchor" href="#特殊功能" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="209">
+<h4 id="特殊功能" class="source-line" data-source-line="223">特殊功能<a class="vx-header-anchor" href="#特殊功能" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="225">
 <thead>
 <tr>
 <th>命令</th>
@@ -1186,13 +1266,38 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 <td>-</td>
 <td>腳本結束標記</td>
 </tr>
+<tr>
+<td><code>:imagepath</code></td>
+<td>path/to/image.png</td>
+<td>圖片路徑 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:imagescale</code></td>
+<td>150,150</td>
+<td>圖片縮放比例 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:imagepos</code></td>
+<td>0,0,0</td>
+<td>圖片位置 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:imagerotation</code></td>
+<td>數值</td>
+<td>圖片旋轉角度 <font color="green">*新增功能</font></td>
+</tr>
+<tr>
+<td><code>:imagealpha</code></td>
+<td>0-1</td>
+<td>圖片透明度 <font color="green">*新增功能</font></td>
+</tr>
 </tbody>
 </table>
-<h3 id="註釋" class="source-line" data-source-line="220">註釋<a class="vx-header-anchor" href="#註釋" vx-data-anchor-icon="¶"></a></h3>
-<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="222">// 這是註釋行
+<h3 id="註釋" class="source-line" data-source-line="241">註釋<a class="vx-header-anchor" href="#註釋" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="243">// 這是註釋行
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div>
-<h3 id="範例腳本" class="source-line" data-source-line="226">範例腳本<a class="vx-header-anchor" href="#範例腳本" vx-data-anchor-icon="¶"></a></h3>
-<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="228">// 基本設定
+<h3 id="範例腳本" class="source-line" data-source-line="247">範例腳本<a class="vx-header-anchor" href="#範例腳本" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="249">// 基本設定
 :screen 1280,720
 :font MS Gothic
 :size 48
@@ -1219,8 +1324,8 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 // 結束
 :end
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
-<h2 id="快捷鍵" class="source-line" data-source-line="257">快捷鍵<a class="vx-header-anchor" href="#快捷鍵" vx-data-anchor-icon="¶"></a></h2>
-<table class="source-line" data-source-line="259">
+<h2 id="快捷鍵" class="source-line" data-source-line="278">快捷鍵<a class="vx-header-anchor" href="#快捷鍵" vx-data-anchor-icon="¶"></a></h2>
+<table class="source-line" data-source-line="280">
 <thead>
 <tr>
 <th>快捷鍵</th>
@@ -1258,24 +1363,24 @@ QQ音樂歌曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h2 id="使用規約" class="source-line" data-source-line="269">使用規約<a class="vx-header-anchor" href="#使用規約" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="使用規約" class="source-line" data-source-line="290">使用規約<a class="vx-header-anchor" href="#使用規約" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="271">可自由分享本程序，不能商用。</li>
-<li class="source-line" data-source-line="272">對於產生的任何問題作者不承擔責任。</li>
+<li class="source-line" data-source-line="292">可自由分享本程序，不能商用。</li>
+<li class="source-line" data-source-line="293">對於產生的任何問題作者不承擔責任。</li>
 </ul>
-<h2 id="許可證" class="source-line" data-source-line="274">許可證<a class="vx-header-anchor" href="#許可證" vx-data-anchor-icon="¶"></a></h2>
-<p class="source-line" data-source-line="276">本專案基於 MIT 許可證開源。</p>
-<h2 id="致謝" class="source-line" data-source-line="278">致謝<a class="vx-header-anchor" href="#致謝" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="許可證" class="source-line" data-source-line="295">許可證<a class="vx-header-anchor" href="#許可證" vx-data-anchor-icon="¶"></a></h2>
+<p class="source-line" data-source-line="297">本專案基於 MIT 許可證開源。</p>
+<h2 id="致謝" class="source-line" data-source-line="299">致謝<a class="vx-header-anchor" href="#致謝" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="280"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - 原始 MMTScript 規格設計者：そぼろ</li>
-<li class="source-line" data-source-line="281"><a href="https://avaloniaui.net/">Avalonia</a> - 跨平台 UI 框架</li>
-<li class="source-line" data-source-line="282"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - 現代化 UI 主題</li>
-<li class="source-line" data-source-line="283"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - 線上歌詞參考專案</li>
+<li class="source-line" data-source-line="301"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - 原始 MMTScript 規格設計者：そぼろ</li>
+<li class="source-line" data-source-line="302"><a href="https://avaloniaui.net/">Avalonia</a> - 跨平台 UI 框架</li>
+<li class="source-line" data-source-line="303"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - 現代化 UI 主題</li>
+<li class="source-line" data-source-line="304"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - 線上歌詞參考專案</li>
 </ul>
-<h2 id="ai輔助" class="source-line" data-source-line="285">AI輔助<a class="vx-header-anchor" href="#ai輔助" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="ai輔助" class="source-line" data-source-line="306">AI輔助<a class="vx-header-anchor" href="#ai輔助" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="287">GLM 5.1</li>
-<li class="source-line" data-source-line="288">GPT-5.4</li>
+<li class="source-line" data-source-line="308">GLM 5.1</li>
+<li class="source-line" data-source-line="309">GPT-5.4</li>
 </ul>
 </div>
         </div>

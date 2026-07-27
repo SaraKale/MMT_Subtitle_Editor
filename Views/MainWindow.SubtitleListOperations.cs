@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -419,6 +420,22 @@ public partial class MainWindow
                 BackColor = _subtitles[SubtitleList.SelectedIndex].BackColor,
                 EdgeWidth = _subtitles[SubtitleList.SelectedIndex].EdgeWidth,
                 EdgeRound = _subtitles[SubtitleList.SelectedIndex].EdgeRound,
+                Edge2Width = _subtitles[SubtitleList.SelectedIndex].Edge2Width,
+                Edge2Color = _subtitles[SubtitleList.SelectedIndex].Edge2Color,
+                Edge3Width = _subtitles[SubtitleList.SelectedIndex].Edge3Width,
+                Edge3Color = _subtitles[SubtitleList.SelectedIndex].Edge3Color,
+                Edge4Width = _subtitles[SubtitleList.SelectedIndex].Edge4Width,
+                Edge4Color = _subtitles[SubtitleList.SelectedIndex].Edge4Color,
+                GlowRadius = _subtitles[SubtitleList.SelectedIndex].GlowRadius,
+                GlowColor = _subtitles[SubtitleList.SelectedIndex].GlowColor,
+                GlowAlpha = _subtitles[SubtitleList.SelectedIndex].GlowAlpha,
+                EdgeGradientEnabled = _subtitles[SubtitleList.SelectedIndex].EdgeGradientEnabled,
+                EdgeGradientTop = _subtitles[SubtitleList.SelectedIndex].EdgeGradientTop,
+                EdgeGradientBottom = _subtitles[SubtitleList.SelectedIndex].EdgeGradientBottom,
+                TextGradientEnabled = _subtitles[SubtitleList.SelectedIndex].TextGradientEnabled,
+                TextGradientTop = _subtitles[SubtitleList.SelectedIndex].TextGradientTop,
+                TextGradientBottom = _subtitles[SubtitleList.SelectedIndex].TextGradientBottom,
+                TextGradientDirection = _subtitles[SubtitleList.SelectedIndex].TextGradientDirection,
                 ShadowDistance = _subtitles[SubtitleList.SelectedIndex].ShadowDistance,
                 ShadowBlur = _subtitles[SubtitleList.SelectedIndex].ShadowBlur,
                 Bold = _subtitles[SubtitleList.SelectedIndex].Bold,
@@ -489,6 +506,22 @@ public partial class MainWindow
             BackColor = _clipboardSubtitle.BackColor,
             EdgeWidth = _clipboardSubtitle.EdgeWidth,
             EdgeRound = _clipboardSubtitle.EdgeRound,
+            Edge2Width = _clipboardSubtitle.Edge2Width,
+            Edge2Color = _clipboardSubtitle.Edge2Color,
+            Edge3Width = _clipboardSubtitle.Edge3Width,
+            Edge3Color = _clipboardSubtitle.Edge3Color,
+            Edge4Width = _clipboardSubtitle.Edge4Width,
+            Edge4Color = _clipboardSubtitle.Edge4Color,
+            GlowRadius = _clipboardSubtitle.GlowRadius,
+            GlowColor = _clipboardSubtitle.GlowColor,
+            GlowAlpha = _clipboardSubtitle.GlowAlpha,
+            EdgeGradientEnabled = _clipboardSubtitle.EdgeGradientEnabled,
+            EdgeGradientTop = _clipboardSubtitle.EdgeGradientTop,
+            EdgeGradientBottom = _clipboardSubtitle.EdgeGradientBottom,
+            TextGradientEnabled = _clipboardSubtitle.TextGradientEnabled,
+            TextGradientTop = _clipboardSubtitle.TextGradientTop,
+            TextGradientBottom = _clipboardSubtitle.TextGradientBottom,
+            TextGradientDirection = _clipboardSubtitle.TextGradientDirection,
             ShadowDistance = _clipboardSubtitle.ShadowDistance,
             ShadowBlur = _clipboardSubtitle.ShadowBlur,
             Bold = _clipboardSubtitle.Bold,
@@ -579,12 +612,68 @@ public partial class MainWindow
             StatusTime.Text = $"{FormatTime(sub.StartTime)} - {FormatTime(sub.EndTime)} | {GetAnimationStatusText(sub)}";
     }
 
-    // 渲染字幕预览
-    private void RenderPreviewFromSubtitle(SubtitleEntry sub, double? currentTime = null)
+    // 渲染多个字幕叠加预览
+    private void RenderPreviewFromSubtitles(List<SubtitleEntry> subs, double? currentTime = null)
     {
         if (PreviewCanvas == null) return;
         PreviewCanvas.Children.Clear();
 
+        foreach (var sub in subs)
+        {
+            RenderSingleSubtitleToCanvas(sub, currentTime);
+        }
+    }
+
+    // 渲染字幕预览（单条目，兼容现有调用）
+    private void RenderPreviewFromSubtitle(SubtitleEntry sub, double? currentTime = null)
+    {
+        if (PreviewCanvas == null) return;
+        PreviewCanvas.Children.Clear();
+        RenderSingleSubtitleToCanvas(sub, currentTime);
+    }
+
+    // 将单个字幕渲染到画布（不清空画布，用于叠加）
+    private void RenderSingleSubtitleToCanvas(SubtitleEntry sub, double? currentTime = null)
+    {
+        if (PreviewCanvas == null) return;
+
+    // ========== 图片渲染 ==========
+    if (sub.IsImage && !string.IsNullOrEmpty(sub.ImagePath))
+    {
+        try
+        {
+            var imagePath = ResolveImagePath(sub.ImagePath);
+            if (File.Exists(imagePath))
+            {
+                var bitmap = GetOrCreateImageBitmap(imagePath);
+
+                var image = new Image
+                {
+                    Source = bitmap,
+                    Opacity = sub.ImageAlpha,
+                    RenderTransform = new RotateTransform(sub.ImageRotation),
+                    Stretch = Stretch.Uniform
+                };
+
+                var scaledWidth = bitmap.PixelSize.Width * sub.ImageScaleX / 100.0;
+                var scaledHeight = bitmap.PixelSize.Height * sub.ImageScaleY / 100.0;
+
+                image.Width = scaledWidth;
+                image.Height = scaledHeight;
+
+                Canvas.SetLeft(image, sub.PosX);
+                Canvas.SetTop(image, sub.PosY);
+
+                PreviewCanvas.Children.Add(image);
+
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            SetStatus($"图片加载失败: {ex.Message}");
+        }
+    }
         var screenWidth = sub.ScreenWidth > 0 ? sub.ScreenWidth : (double)(NudScreenWidth?.Value ?? 1280);
         var screenHeight = sub.ScreenHeight > 0 ? sub.ScreenHeight : (double)(NudScreenHeight?.Value ?? 720);
         var previewSize = UpdatePreviewFrame(screenWidth, screenHeight);
@@ -683,7 +772,23 @@ public partial class MainWindow
                 scaleX,
                 scaleY,
                 rotation,
-                animationState);
+                animationState,
+                sub.Edge2Width,
+                sub.Edge2Color,
+                sub.Edge3Width,
+                sub.Edge3Color,
+                sub.Edge4Width,
+                sub.Edge4Color,
+                sub.GlowRadius,
+                sub.GlowColor,
+                sub.GlowAlpha,
+                sub.EdgeGradientEnabled,
+                sub.EdgeGradientTop,
+                sub.EdgeGradientBottom,
+                sub.TextGradientEnabled,
+                sub.TextGradientTop,
+                sub.TextGradientBottom,
+                sub.TextGradientDirection);
         }
 
         var img = new Image
@@ -696,6 +801,23 @@ public partial class MainWindow
         Canvas.SetLeft(img, 0);
         Canvas.SetTop(img, 0);
         PreviewCanvas.Children.Add(img);
+    }
+
+    // 解析图片路径
+    private string ResolveImagePath(string path)
+    {
+        // 处理相对路径
+        if (Path.IsPathRooted(path))
+            return path;
+        
+        if (!string.IsNullOrEmpty(_currentFilePath))
+        {
+            var dir = Path.GetDirectoryName(_currentFilePath);
+            if (dir != null)
+                return Path.Combine(dir, path);
+        }
+        
+        return path;
     }
 
     // 更新预览框尺寸，并显示分辨率

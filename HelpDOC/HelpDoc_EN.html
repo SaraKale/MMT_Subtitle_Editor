@@ -673,8 +673,8 @@ var highlightItemOnlyInOutline = function(id) {
 </p>
 <figure><img src="image/MMT_EN.jpg" alt="" class="vx-image-view-image"></figure>
 <p align="center">
-Language: <a href="HelpDoc_EN.html">English</a> | <a href="HelpDoc_SC.html">简体中文</a> | <a href="HelpDoc_TC.html">繁體中文</a> 
- | <a href="HelpDoc_JP.html">日本語</a> 
+Language: <a href="HelpDoc_EN.md">English</a> | <a href="HelpDoc_SC.md">简体中文</a> | <a href="HelpDoc_TC.md">繁體中文</a> 
+ | <a href="HelpDoc_JP.md">日本語</a> 
 </p><h2 id="introduction" class="source-line" data-source-line="13">Introduction<a class="vx-header-anchor" href="#introduction" vx-data-anchor-icon="¶"></a></h2>
 <p class="source-line" data-source-line="15">Based on そぼろ's MikuMikuTelop tool, MMT Subtitle Editor is a graphical tool for editing, previewing, and exporting MMTScript subtitle scripts for MMD. It simplifies subtitle creation with visualized parameters, lyric search and download, batch export, and more.</p>
 <h2 id="features" class="source-line" data-source-line="17">Features<a class="vx-header-anchor" href="#features" vx-data-anchor-icon="¶"></a></h2>
@@ -937,8 +937,8 @@ subtitle text
 <tbody>
 <tr>
 <td><code>:edge</code></td>
-<td>thickness</td>
-<td>Stroke thickness (percentage relative to font size)</td>
+<td>Thickness</td>
+<td>Stroke thickness</td>
 </tr>
 <tr>
 <td><code>:edgecolor</code></td>
@@ -946,19 +946,49 @@ subtitle text
 <td>Stroke color</td>
 </tr>
 <tr>
+<td><code>:edge2</code></td>
+<td>Thickness</td>
+<td>Second stroke thickness <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor2</code></td>
+<td>R,G,B</td>
+<td>Second stroke color <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edge3</code></td>
+<td>Thickness</td>
+<td>Third stroke thickness <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor3</code></td>
+<td>R,G,B</td>
+<td>Third stroke color <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edge4</code></td>
+<td>Thickness</td>
+<td>Fourth stroke thickness <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor4</code></td>
+<td>R,G,B</td>
+<td>Fourth stroke color <font color="green">*New Feature</font></td>
+</tr>
+<tr>
 <td><code>:edge_round</code></td>
 <td>-</td>
-<td>Round stroke corners</td>
+<td>Rounded stroke</td>
 </tr>
 <tr>
 <td><code>:edge_round_off</code></td>
 <td>-</td>
-<td>Disable round stroke corners</td>
+<td>Disable rounded stroke</td>
 </tr>
 <tr>
 <td><code>:shadow</code></td>
-<td>distance</td>
-<td>Shadow distance (percentage relative to font size)</td>
+<td>Distance</td>
+<td>Shadow distance</td>
 </tr>
 <tr>
 <td><code>:shadowcolor</code></td>
@@ -967,13 +997,63 @@ subtitle text
 </tr>
 <tr>
 <td><code>:shadowblur</code></td>
-<td>radius</td>
+<td>Value</td>
 <td>Shadow blur radius</td>
+</tr>
+<tr>
+<td><code>:glow</code></td>
+<td>Value</td>
+<td>Outer glow radius <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:glowcolor</code></td>
+<td>R,G,B</td>
+<td>Outer glow color <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:glowalpha</code></td>
+<td>0-1</td>
+<td>Outer glow opacity <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient_on</code></td>
+<td>-</td>
+<td>Enable stroke gradient <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient_off</code></td>
+<td>-</td>
+<td>Disable stroke gradient  <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient</code></td>
+<td>R,G,B</td>
+<td>Stroke gradient color  <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:textgradient_on</code></td>
+<td>-</td>
+<td>Enable text gradient <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:textgradient_off</code></td>
+<td>-</td>
+<td>Disable text gradient <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:textgradient</code></td>
+<td>R,G,B</td>
+<td>Text gradient color <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:textgradientdir</code></td>
+<td>vertical/horizontal</td>
+<td>Text gradient direction (vertical or horizontal) <font color="green">*New Feature</font></td>
 </tr>
 </tbody>
 </table>
-<h4 id="screen-settings" class="source-line" data-source-line="162">Screen Settings<a class="vx-header-anchor" href="#screen-settings" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="164">
+<h4 id="screen-settings" class="source-line" data-source-line="178">Screen Settings<a class="vx-header-anchor" href="#screen-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="180">
 <thead>
 <tr>
 <th>Command</th>
@@ -1004,8 +1084,8 @@ subtitle text
 </tr>
 </tbody>
 </table>
-<h4 id="effect-settings" class="source-line" data-source-line="171">Effect Settings<a class="vx-header-anchor" href="#effect-settings" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="173">
+<h4 id="effect-settings" class="source-line" data-source-line="187">Effect Settings<a class="vx-header-anchor" href="#effect-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="189">
 <thead>
 <tr>
 <th>Command</th>
@@ -1036,8 +1116,8 @@ subtitle text
 </tr>
 </tbody>
 </table>
-<h4 id="transform-settings" class="source-line" data-source-line="180">Transform Settings<a class="vx-header-anchor" href="#transform-settings" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="182">
+<h4 id="transform-settings" class="source-line" data-source-line="196">Transform Settings<a class="vx-header-anchor" href="#transform-settings" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="198">
 <thead>
 <tr>
 <th>Command</th>
@@ -1073,9 +1153,9 @@ subtitle text
 </tr>
 </tbody>
 </table>
-<h4 id="animation-effects" class="source-line" data-source-line="190">Animation Effects<a class="vx-header-anchor" href="#animation-effects" vx-data-anchor-icon="¶"></a></h4>
-<p class="source-line" data-source-line="192">The following are new features that allow you to add various animation effects to subtitles:</p>
-<table class="source-line" data-source-line="194">
+<h4 id="animation-effects" class="source-line" data-source-line="206">Animation Effects<a class="vx-header-anchor" href="#animation-effects" vx-data-anchor-icon="¶"></a></h4>
+<p class="source-line" data-source-line="208">The following are new features that allow you to add various animation effects to subtitles:</p>
+<table class="source-line" data-source-line="210">
 <thead>
 <tr>
 <th>Command</th>
@@ -1136,8 +1216,8 @@ subtitle text
 </tr>
 </tbody>
 </table>
-<h4 id="special-functions" class="source-line" data-source-line="207">Special Functions<a class="vx-header-anchor" href="#special-functions" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="209">
+<h4 id="special-functions" class="source-line" data-source-line="223">Special Functions<a class="vx-header-anchor" href="#special-functions" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="225">
 <thead>
 <tr>
 <th>Command</th>
@@ -1186,13 +1266,38 @@ subtitle text
 <td>-</td>
 <td>Script end marker</td>
 </tr>
+<tr>
+<td><code>:imagepath</code></td>
+<td>path/to/image.png</td>
+<td>image path <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:imagescale</code></td>
+<td>150,150</td>
+<td>Image Scale <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:imagepos</code></td>
+<td>0,0,0</td>
+<td>Image Location <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:imagerotation</code></td>
+<td>value</td>
+<td>Image rotation angle <font color="green">*New Feature</font></td>
+</tr>
+<tr>
+<td><code>:imagealpha</code></td>
+<td>0-1</td>
+<td>Transparency of image <font color="green">*New Feature</font></td>
+</tr>
 </tbody>
 </table>
-<h3 id="comments" class="source-line" data-source-line="220">Comments<a class="vx-header-anchor" href="#comments" vx-data-anchor-icon="¶"></a></h3>
-<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="222">// This is a comment line
+<h3 id="comments" class="source-line" data-source-line="241">Comments<a class="vx-header-anchor" href="#comments" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="243">// This is a comment line
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div>
-<h3 id="example-script" class="source-line" data-source-line="226">Example Script<a class="vx-header-anchor" href="#example-script" vx-data-anchor-icon="¶"></a></h3>
-<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="228">// Basic settings
+<h3 id="example-script" class="source-line" data-source-line="247">Example Script<a class="vx-header-anchor" href="#example-script" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="249">// Basic settings
 :screen 1280,720
 :font MS Gothic
 :size 48
@@ -1219,8 +1324,8 @@ You can write multi-line subtitles
 // End
 :end
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
-<h2 id="keyboard-shortcuts" class="source-line" data-source-line="257">Keyboard Shortcuts<a class="vx-header-anchor" href="#keyboard-shortcuts" vx-data-anchor-icon="¶"></a></h2>
-<table class="source-line" data-source-line="259">
+<h2 id="keyboard-shortcuts" class="source-line" data-source-line="278">Keyboard Shortcuts<a class="vx-header-anchor" href="#keyboard-shortcuts" vx-data-anchor-icon="¶"></a></h2>
+<table class="source-line" data-source-line="280">
 <thead>
 <tr>
 <th>Shortcut</th>
@@ -1258,24 +1363,24 @@ You can write multi-line subtitles
 </tr>
 </tbody>
 </table>
-<h2 id="using-the-statute" class="source-line" data-source-line="269">using the statute<a class="vx-header-anchor" href="#using-the-statute" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="using-the-statute" class="source-line" data-source-line="290">using the statute<a class="vx-header-anchor" href="#using-the-statute" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="271">free to share, not commercial.</li>
-<li class="source-line" data-source-line="272">the author is not responsible for any problems.</li>
+<li class="source-line" data-source-line="292">free to share, not commercial.</li>
+<li class="source-line" data-source-line="293">the author is not responsible for any problems.</li>
 </ul>
-<h2 id="license" class="source-line" data-source-line="274">License<a class="vx-header-anchor" href="#license" vx-data-anchor-icon="¶"></a></h2>
-<p class="source-line" data-source-line="276">This project is open source under the MIT license.</p>
-<h2 id="acknowledgments" class="source-line" data-source-line="278">Acknowledgments<a class="vx-header-anchor" href="#acknowledgments" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="license" class="source-line" data-source-line="295">License<a class="vx-header-anchor" href="#license" vx-data-anchor-icon="¶"></a></h2>
+<p class="source-line" data-source-line="297">This project is open source under the MIT license.</p>
+<h2 id="acknowledgments" class="source-line" data-source-line="299">Acknowledgments<a class="vx-header-anchor" href="#acknowledgments" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="280"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - Original MMTScript specification designer: そぼろ</li>
-<li class="source-line" data-source-line="281"><a href="https://avaloniaui.net/">Avalonia</a> - Cross-platform UI framework</li>
-<li class="source-line" data-source-line="282"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - Modern UI theme</li>
-<li class="source-line" data-source-line="283"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - Online lyrics reference project</li>
+<li class="source-line" data-source-line="301"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - Original MMTScript specification designer: そぼろ</li>
+<li class="source-line" data-source-line="302"><a href="https://avaloniaui.net/">Avalonia</a> - Cross-platform UI framework</li>
+<li class="source-line" data-source-line="303"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - Modern UI theme</li>
+<li class="source-line" data-source-line="304"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - Online lyrics reference project</li>
 </ul>
-<h2 id="ai-assistance" class="source-line" data-source-line="285">AI Assistance<a class="vx-header-anchor" href="#ai-assistance" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="ai-assistance" class="source-line" data-source-line="306">AI Assistance<a class="vx-header-anchor" href="#ai-assistance" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="287">GLM 5.1</li>
-<li class="source-line" data-source-line="288">GPT-5.4</li>
+<li class="source-line" data-source-line="308">GLM 5.1</li>
+<li class="source-line" data-source-line="309">GPT-5.4</li>
 </ul>
 </div>
         </div>

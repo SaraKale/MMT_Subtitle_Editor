@@ -673,8 +673,8 @@ var highlightItemOnlyInOutline = function(id) {
 </p>
 <figure><img src="image/MMT_JP.jpg" alt="" class="vx-image-view-image"></figure>
 <p align="center">
-言語：<a href="HelpDoc_EN.html">English</a> | <a href="HelpDoc_SC.html">简体中文</a> | <a href="HelpDoc_TC.html">繁體中文</a> 
- | <a href="HelpDoc_JP.html">日本語</a> 
+言語：<a href="HelpDoc_EN.md">English</a> | <a href="HelpDoc_SC.md">简体中文</a> | <a href="HelpDoc_TC.md">繁體中文</a> 
+ | <a href="HelpDoc_JP.md">日本語</a> 
 </p><h2 id="紹介" class="source-line" data-source-line="13">紹介<a class="vx-header-anchor" href="#紹介" vx-data-anchor-icon="¶"></a></h2>
 <p class="source-line" data-source-line="15">そぼろ氏のMikuMikuTelopツールをベースに、MMT Subtitle EditorはMMD用MMTScript字幕スクリプトを編集、プレビュー、エクスポートするためのグラフィカルツールです。パラメータの可視化、歌詞検索・ダウンロード、一括エクスポートなど、字幕作成を簡単に行えます。</p>
 <h2 id="機能" class="source-line" data-source-line="17">機能<a class="vx-header-anchor" href="#機能" vx-data-anchor-icon="¶"></a></h2>
@@ -938,42 +938,122 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 <tr>
 <td><code>:edge</code></td>
 <td>太さ</td>
-<td>縁取りの太さ（フォントサイズに対するパーセンテージ）</td>
+<td>縁取りの太さ</td>
 </tr>
 <tr>
 <td><code>:edgecolor</code></td>
 <td>R,G,B</td>
-<td>縁取りカラー</td>
+<td>縁取りの色</td>
+</tr>
+<tr>
+<td><code>:edge2</code></td>
+<td>太さ</td>
+<td>第二層の縁取りの太さ <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor2</code></td>
+<td>R,G,B</td>
+<td>第二層の縁取りの色 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edge3</code></td>
+<td>太さ</td>
+<td>第三層の縁取りの太 <font color="green">*新機能</font>さ</td>
+</tr>
+<tr>
+<td><code>:edgecolor3</code></td>
+<td>R,G,B</td>
+<td>第三層の縁取りの色 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edge4</code></td>
+<td>太さ</td>
+<td>第四層の縁取りの太さ <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edgecolor4</code></td>
+<td>R,G,B</td>
+<td>第四層の縁取りの色 <font color="green">*新機能</font></td>
 </tr>
 <tr>
 <td><code>:edge_round</code></td>
 <td>-</td>
-<td>丸い縁取り</td>
+<td>角丸縁取り</td>
 </tr>
 <tr>
 <td><code>:edge_round_off</code></td>
 <td>-</td>
-<td>丸い縁取りを無効</td>
+<td>角丸縁取りをオフ</td>
 </tr>
 <tr>
 <td><code>:shadow</code></td>
 <td>距離</td>
-<td>シャドウ距離（フォントサイズに対するパーセンテージ）</td>
+<td>シャドウの距離</td>
 </tr>
 <tr>
 <td><code>:shadowcolor</code></td>
 <td>R,G,B</td>
-<td>シャドウカラー</td>
+<td>シャドウの色</td>
 </tr>
 <tr>
 <td><code>:shadowblur</code></td>
-<td>半径</td>
-<td>シャドウブラー半径</td>
+<td>数値</td>
+<td>シャドウのぼかし半径</td>
+</tr>
+<tr>
+<td><code>:glow</code></td>
+<td>数値</td>
+<td>外部グローの半径 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:glowcolor</code></td>
+<td>R,G,B</td>
+<td>外部グローの色 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:glowalpha</code></td>
+<td>0-1</td>
+<td>外部グローの不透明度 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient_on</code></td>
+<td>-</td>
+<td>縁取りグラデーションを有効 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient_off</code></td>
+<td>-</td>
+<td>縁取りグラデーションを無効 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:edgegradient</code></td>
+<td>R,G,B</td>
+<td>縁取りグラデーションの色 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:textgradient_on</code></td>
+<td>-</td>
+<td>テキストグラデーションを有効 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:textgradient_off</code></td>
+<td>-</td>
+<td>テキストグラデーションを無効 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:textgradient</code></td>
+<td>R,G,B</td>
+<td>テキストグラデーションの色 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:textgradientdir</code></td>
+<td>vertical/horizontal</td>
+<td>テキストグラデーションの方向（垂直または水平）<font color="green">*新機能</font></td>
 </tr>
 </tbody>
 </table>
-<h4 id="画面設定" class="source-line" data-source-line="162">画面設定<a class="vx-header-anchor" href="#画面設定" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="164">
+<h4 id="画面設定" class="source-line" data-source-line="178">画面設定<a class="vx-header-anchor" href="#画面設定" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="180">
 <thead>
 <tr>
 <th>コマンド</th>
@@ -1004,8 +1084,8 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="エフェクト設定" class="source-line" data-source-line="171">エフェクト設定<a class="vx-header-anchor" href="#エフェクト設定" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="173">
+<h4 id="エフェクト設定" class="source-line" data-source-line="187">エフェクト設定<a class="vx-header-anchor" href="#エフェクト設定" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="189">
 <thead>
 <tr>
 <th>コマンド</th>
@@ -1036,8 +1116,8 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="変形設定" class="source-line" data-source-line="180">変形設定<a class="vx-header-anchor" href="#変形設定" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="182">
+<h4 id="変形設定" class="source-line" data-source-line="196">変形設定<a class="vx-header-anchor" href="#変形設定" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="198">
 <thead>
 <tr>
 <th>コマンド</th>
@@ -1073,9 +1153,9 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="アニメーション効果" class="source-line" data-source-line="190">アニメーション効果<a class="vx-header-anchor" href="#アニメーション効果" vx-data-anchor-icon="¶"></a></h4>
-<p class="source-line" data-source-line="192">以下は新機能で、字幕に様々なアニメーション効果を追加できます：</p>
-<table class="source-line" data-source-line="194">
+<h4 id="アニメーション効果" class="source-line" data-source-line="206">アニメーション効果<a class="vx-header-anchor" href="#アニメーション効果" vx-data-anchor-icon="¶"></a></h4>
+<p class="source-line" data-source-line="208">以下は新機能で、字幕に様々なアニメーション効果を追加できます：</p>
+<table class="source-line" data-source-line="210">
 <thead>
 <tr>
 <th>コマンド</th>
@@ -1136,8 +1216,8 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h4 id="特殊機能" class="source-line" data-source-line="207">特殊機能<a class="vx-header-anchor" href="#特殊機能" vx-data-anchor-icon="¶"></a></h4>
-<table class="source-line" data-source-line="209">
+<h4 id="特殊機能" class="source-line" data-source-line="223">特殊機能<a class="vx-header-anchor" href="#特殊機能" vx-data-anchor-icon="¶"></a></h4>
+<table class="source-line" data-source-line="225">
 <thead>
 <tr>
 <th>コマンド</th>
@@ -1186,13 +1266,38 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 <td>-</td>
 <td>スクリプト終了マーク</td>
 </tr>
+<tr>
+<td><code>:imagepath</code></td>
+<td>path/to/image.png</td>
+<td>画像パス <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:imagescale</code></td>
+<td>150,150</td>
+<td>画像のスケール <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:imagepos</code></td>
+<td>0,0,0</td>
+<td>画像の位置 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:imagerotation</code></td>
+<td>バリュー</td>
+<td>イメージ回転角度 <font color="green">*新機能</font></td>
+</tr>
+<tr>
+<td><code>:imagealpha</code></td>
+<td>0-1</td>
+<td>画像の透明度 <font color="green">*新機能</font></td>
+</tr>
 </tbody>
 </table>
-<h3 id="コメント" class="source-line" data-source-line="220">コメント<a class="vx-header-anchor" href="#コメント" vx-data-anchor-icon="¶"></a></h3>
-<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="222">// これはコメント行です
+<h3 id="コメント" class="source-line" data-source-line="241">コメント<a class="vx-header-anchor" href="#コメント" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="243">// これはコメント行です
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></div>
-<h3 id="サンプルスクリプト" class="source-line" data-source-line="226">サンプルスクリプト<a class="vx-header-anchor" href="#サンプルスクリプト" vx-data-anchor-icon="¶"></a></h3>
-<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="228">// 基本設定
+<h3 id="サンプルスクリプト" class="source-line" data-source-line="247">サンプルスクリプト<a class="vx-header-anchor" href="#サンプルスクリプト" vx-data-anchor-icon="¶"></a></h3>
+<div class="code-toolbar"><pre class="language-txt line-numbers"><code class="source-line language-txt" data-source-line="249">// 基本設定
 :screen 1280,720
 :font MS Gothic
 :size 48
@@ -1219,8 +1324,8 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 // 終了
 :end
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div>
-<h2 id="キーボードショートカット" class="source-line" data-source-line="257">キーボードショートカット<a class="vx-header-anchor" href="#キーボードショートカット" vx-data-anchor-icon="¶"></a></h2>
-<table class="source-line" data-source-line="259">
+<h2 id="キーボードショートカット" class="source-line" data-source-line="278">キーボードショートカット<a class="vx-header-anchor" href="#キーボードショートカット" vx-data-anchor-icon="¶"></a></h2>
+<table class="source-line" data-source-line="280">
 <thead>
 <tr>
 <th>ショートカット</th>
@@ -1258,24 +1363,24 @@ QQ音乐の曲ID：000sjEUD2wMqNt</p>
 </tr>
 </tbody>
 </table>
-<h2 id="使用規約" class="source-line" data-source-line="269">使用規約<a class="vx-header-anchor" href="#使用規約" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="使用規約" class="source-line" data-source-line="290">使用規約<a class="vx-header-anchor" href="#使用規約" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="271">このプログラムは自由に共有でき、商用には使用できません。</li>
-<li class="source-line" data-source-line="272">作成者は、生じた問題について一切の責任を負いません。</li>
+<li class="source-line" data-source-line="292">このプログラムは自由に共有でき、商用には使用できません。</li>
+<li class="source-line" data-source-line="293">作成者は、生じた問題について一切の責任を負いません。</li>
 </ul>
-<h2 id="ライセンス" class="source-line" data-source-line="274">ライセンス<a class="vx-header-anchor" href="#ライセンス" vx-data-anchor-icon="¶"></a></h2>
-<p class="source-line" data-source-line="276">このプロジェクトはMITライセンスで公開されています。</p>
-<h2 id="謝辞" class="source-line" data-source-line="278">謝辞<a class="vx-header-anchor" href="#謝辞" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="ライセンス" class="source-line" data-source-line="295">ライセンス<a class="vx-header-anchor" href="#ライセンス" vx-data-anchor-icon="¶"></a></h2>
+<p class="source-line" data-source-line="297">このプロジェクトはMITライセンスで公開されています。</p>
+<h2 id="謝辞" class="source-line" data-source-line="299">謝辞<a class="vx-header-anchor" href="#謝辞" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="280"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - オリジナルMMTScript仕様設計者：そぼろ</li>
-<li class="source-line" data-source-line="281"><a href="https://avaloniaui.net/">Avalonia</a> - クロスプラットフォームUIフレームワーク</li>
-<li class="source-line" data-source-line="282"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - モダンUIテーマ</li>
-<li class="source-line" data-source-line="283"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - オンライン歌詞参考プロジェクト</li>
+<li class="source-line" data-source-line="301"><a href="https://www.nicovideo.jp/watch/sm15635052">MikuMikuTelop</a> - オリジナルMMTScript仕様設計者：そぼろ</li>
+<li class="source-line" data-source-line="302"><a href="https://avaloniaui.net/">Avalonia</a> - クロスプラットフォームUIフレームワーク</li>
+<li class="source-line" data-source-line="303"><a href="https://github.com/kikipoulet/SukiUI">SukiUI</a> - モダンUIテーマ</li>
+<li class="source-line" data-source-line="304"><a href="https://github.com/jitwxs/163MusicLyrics">163MusicLyrics</a> - オンライン歌詞参考プロジェクト</li>
 </ul>
-<h2 id="aiアシスタント" class="source-line" data-source-line="285">AIアシスタント<a class="vx-header-anchor" href="#aiアシスタント" vx-data-anchor-icon="¶"></a></h2>
+<h2 id="aiアシスタント" class="source-line" data-source-line="306">AIアシスタント<a class="vx-header-anchor" href="#aiアシスタント" vx-data-anchor-icon="¶"></a></h2>
 <ul>
-<li class="source-line" data-source-line="287">GLM 5.1</li>
-<li class="source-line" data-source-line="288">GPT-5.4</li>
+<li class="source-line" data-source-line="308">GLM 5.1</li>
+<li class="source-line" data-source-line="309">GPT-5.4</li>
 </ul>
 </div>
         </div>

@@ -640,7 +640,7 @@
     <value>已新增 0 個檔案</value>
   </data>
   <data name="当前版本：1.0.0" xml:space="preserve">
-    <value>目前版本：1.0.0</value>
+    <value>目前版本：1.0.1</value>
   </data>
   <data name="当前预设:" xml:space="preserve">
     <value>目前預設:</value>
@@ -875,5 +875,110 @@
   </data>
   <data name="计算" xml:space="preserve">
     <value>計算</value>
+  </data>
+  <data name="图片插入" xml:space="preserve">
+    <value>圖片插入</value>
+  </data>
+  <data name="图片路径" xml:space="preserve">
+    <value>圖片路徑</value>
+  </data>
+  <data name="图片缩放比例" xml:space="preserve">
+    <value>圖片縮放比例</value>
+  </data>
+  <data name="图片位置" xml:space="preserve">
+    <value>圖片位置</value>
+  </data>
+  <data name="图片旋转角度" xml:space="preserve">
+    <value>圖片旋轉角度</value>
+  </data>
+  <data name="图片透明度" xml:space="preserve">
+    <value>圖片透明度</value>
+  </data>
+  <data name="缩放 %" xml:space="preserve">
+    <value>縮放 %</value>
+  </data>
+  <data name="旋转_Duplicate[1]" xml:space="preserve">
+    <value>旋轉</value>
+  </data>
+  <data name="透明度_Duplicate[1]" xml:space="preserve">
+    <value>透明度</value>
+  </data>
+  <data name="位置_Duplicate[1]" xml:space="preserve">
+    <value>位置</value>
+  </data>
+  <data name="插入图片到脚本" xml:space="preserve">
+    <value>插入圖片到腳本</value>
+  </data>
+  <data name="选择图片文件..." xml:space="preserve">
+    <value>選擇圖片檔案...</value>
+  </data>
+  <data name="选择图片文件" xml:space="preserve">
+    <value>選擇圖片檔案</value>
+  </data>
+  <data name="浏览图片文件" xml:space="preserve">
+    <value>瀏覽圖片檔案</value>
+  </data>
+  <data name="请先选择图片文件" xml:space="preserve">
+    <value>請先選擇圖片檔案</value>
+  </data>
+  <data name="图片命令已插入" xml:space="preserve">
+    <value>圖片命令已插入</value>
+  </data>
+  <data name="图片{0}" xml:space="preserve">
+    <value>圖片{0}</value>
+  </data>
+  <data name="所有文件_Duplicate[1]" xml:space="preserve">
+    <value>所有檔案</value>
+  </data>
+  <data name="导入LRC/SRT/ASS文件" xml:space="preserve">
+    <value>匯入LRC/SRT/ASS檔案</value>
+  </data>
+  <data name="请打开或拖入LRC/SRT/ASS文件" xml:space="preserve">
+    <value>請開啟或拖入LRC/SRT/ASS檔案</value>
+  </data>
+  <data name="手动输入歌词" xml:space="preserve">
+    <value>手動輸入歌詞</value>
+  </data>
+  <data name="选择歌词文件" xml:space="preserve">
+    <value>選擇歌詞檔案</value>
+  </data>
+  <data name="歌词文件" xml:space="preserve">
+    <value>歌詞檔案</value>
+  </data>
+  <data name="当前环境无法打开文件对话框。" xml:space="preserve">
+    <value>目前環境無法開啟檔案對話框。</value>
+  </data>
+  <data name="文件不存在。" xml:space="preserve">
+    <value>檔案不存在。</value>
+  </data>
+  <data name="文件已加载。" xml:space="preserve">
+    <value>檔案已載入。</value>
+  </data>
+  <data name="加载文件失败: {0}" xml:space="preserve">
+    <value>載入檔案失敗: {0}</value>
+  </data>
+  <data name="请先输入或加载歌词内容。" xml:space="preserve">
+    <value>請先輸入或載入歌詞內容。</value>
+  </data>
+  <data name="未检测到有效的时间标签，请检查歌词格式。" xml:space="preserve">
+    <value>未偵測到有效的時間標籤，請檢查歌詞格式。</value>
+  </data>
+  <data name="导入LRC/SRT/ASS文件 - {0}" xml:space="preserve">
+    <value>匯入LRC/SRT/ASS檔案 - {0}</value>
+  </data>
+  <data name="选择音频文件" xml:space="preserve">
+    <value>選擇音訊檔案</value>
+  </data>
+  <data name="音频文件" xml:space="preserve">
+    <value>音訊檔案</value>
+  </data>
+  <data name="加载音频失败: {0}" xml:space="preserve">
+    <value>載入音訊失敗: {0}</value>
+  </data>
+  <data name="已加载音频: {0}" xml:space="preserve">
+    <value>已載入音訊: {0}</value>
+  </data>
+  <data name="请先加载音频文件" xml:space="preserve">
+    <value>請先載入音訊檔案</value>
   </data>
 </root>

@@ -156,13 +156,29 @@ subtitle text
 
 | Command | Parameter | Description |
 |---------|-----------|-------------|
-| `:edge` | thickness | Stroke thickness (percentage relative to font size) |
+| `:edge` | Thickness | Stroke thickness |
 | `:edgecolor` | R,G,B | Stroke color |
-| `:edge_round` | - | Round stroke corners |
-| `:edge_round_off` | - | Disable round stroke corners |
-| `:shadow` | distance | Shadow distance (percentage relative to font size) |
+| `:edge2` | Thickness | Second stroke thickness |
+| `:edgecolor2` | R,G,B | Second stroke color |
+| `:edge3` | Thickness | Third stroke thickness |
+| `:edgecolor3` | R,G,B | Third stroke color |
+| `:edge4` | Thickness | Fourth stroke thickness |
+| `:edgecolor4` | R,G,B | Fourth stroke color |
+| `:edge_round` | - | Rounded stroke |
+| `:edge_round_off` | - | Disable rounded stroke |
+| `:shadow` | Distance | Shadow distance |
 | `:shadowcolor` | R,G,B | Shadow color |
-| `:shadowblur` | radius | Shadow blur radius |
+| `:shadowblur` | Value | Shadow blur radius |
+| `:glow` | Value | Outer glow radius |
+| `:glowcolor` | R,G,B | Outer glow color |
+| `:glowalpha` | 0-1 | Outer glow opacity |
+| `:edgegradient_on` | - | Enable stroke gradient |
+| `:edgegradient_off` | - | Disable stroke gradient |
+| `:edgegradient` | R,G,B | Stroke gradient color |
+| `:textgradient_on` | - | Enable text gradient |
+| `:textgradient_off` | - | Disable text gradient |
+| `:textgradient` | R,G,B | Text gradient color |
+| `:textgradientdir` | vertical/horizontal | Text gradient direction (vertical or horizontal) |
 
 #### Screen Settings
 
@@ -221,6 +237,11 @@ The following are new features that allow you to add various animation effects t
 | `:get` | name | Load saved format (default resets all) |
 | `:skip` | - | Skip next text command |
 | `:end` | - | Script end marker |
+| `:imagepath` | path/to/image.png | image path |
+| `:imagescale` | 150,150 | Image Scale |
+| `:imagepos` | 0,0,0 | Image Location |
+| `:imagerotation` | value | Image rotation angle |
+| `:imagealpha` | 0-1 | Transparency of image |
 
 ### Comments
 
@@ -296,8 +317,9 @@ dotnet add package Avalonia.Themes.Fluent -v 11.3.4
 dotnet add package AvaloniaEdit.TextMate -v 11.4.0
 dotnet add package CommunityToolkit.Mvvm -v 8.4.2
 dotnet add package SukiUI -v 6.0.3
-dotnet add package Svg.Controls.Skia.Avalonia -v 11.3.0
+dotnet add package Svg.Controls.Skia.Avalonia -v 11.3.1
 dotnet add package System.Text.Encoding.CodePages -v 8.0.0
+dotnet add package NAudio -v 2.2.1
 ```
 
 Then open and build `MMT Subtitle Editor.sln`.

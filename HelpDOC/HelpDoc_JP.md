@@ -152,13 +152,29 @@ MMTScriptはMMD & MME字幕エフェクト生成ツール「MikuMikuTelop」用�
 
 | コマンド | パラメータ | 説明 |
 |----------|------------|------|
-| `:edge` | 太さ | 縁取りの太さ（フォントサイズに対するパーセンテージ） |
-| `:edgecolor` | R,G,B | 縁取りカラー |
-| `:edge_round` | - | 丸い縁取り |
-| `:edge_round_off` | - | 丸い縁取りを無効 |
-| `:shadow` | 距離 | シャドウ距離（フォントサイズに対するパーセンテージ） |
-| `:shadowcolor` | R,G,B | シャドウカラー |
-| `:shadowblur` | 半径 | シャドウブラー半径 |
+| `:edge` | 太さ | 縁取りの太さ |
+| `:edgecolor` | R,G,B | 縁取りの色 |
+| `:edge2` | 太さ | 第二層の縁取りの太さ <font color="green">*新機能</font> |
+| `:edgecolor2` | R,G,B | 第二層の縁取りの色 <font color="green">*新機能</font> |
+| `:edge3` | 太さ | 第三層の縁取りの太 <font color="green">*新機能</font>さ |
+| `:edgecolor3` | R,G,B | 第三層の縁取りの色 <font color="green">*新機能</font> |
+| `:edge4` | 太さ | 第四層の縁取りの太さ <font color="green">*新機能</font> |
+| `:edgecolor4` | R,G,B | 第四層の縁取りの色 <font color="green">*新機能</font> |
+| `:edge_round` | - | 角丸縁取り |
+| `:edge_round_off` | - | 角丸縁取りをオフ |
+| `:shadow` | 距離 | シャドウの距離  |
+| `:shadowcolor` | R,G,B | シャドウの色 |
+| `:shadowblur` | 数値 | シャドウのぼかし半径 |
+| `:glow` | 数値 | 外部グローの半径 <font color="green">*新機能</font> |
+| `:glowcolor` | R,G,B | 外部グローの色 <font color="green">*新機能</font> |
+| `:glowalpha` | 0-1 | 外部グローの不透明度 <font color="green">*新機能</font> |
+| `:edgegradient_on` | - | 縁取りグラデーションを有効 <font color="green">*新機能</font> |
+| `:edgegradient_off` | - | 縁取りグラデーションを無効 <font color="green">*新機能</font> |
+| `:edgegradient` | R,G,B | 縁取りグラデーションの色 <font color="green">*新機能</font> |
+| `:textgradient_on` | - | テキストグラデーションを有効 <font color="green">*新機能</font> |
+| `:textgradient_off` | - | テキストグラデーションを無効 <font color="green">*新機能</font> |
+| `:textgradient` | R,G,B | テキストグラデーションの色 <font color="green">*新機能</font> |
+| `:textgradientdir` | vertical/horizontal | テキストグラデーションの方向（垂直または水平）<font color="green">*新機能</font> |
 
 #### 画面設定
 
@@ -217,6 +233,11 @@ MMTScriptはMMD & MME字幕エフェクト生成ツール「MikuMikuTelop」用�
 | `:get` | 名前 | 保存したフォーマットを呼び出し（defaultで全リセット） |
 | `:skip` | - | 次のテキストコマンドをスキップ |
 | `:end` | - | スクリプト終了マーク |
+| `:imagepath` | path/to/image.png | 画像パス <font color="green">*新機能</font> |
+| `:imagescale` | 150,150 | 画像のスケール <font color="green">*新機能</font> |
+| `:imagepos` | 0,0,0 | 画像の位置 <font color="green">*新機能</font> |
+| `:imagerotation` | バリュー | イメージ回転角度 <font color="green">*新機能</font> |
+| `:imagealpha` | 0-1 | 画像の透明度 <font color="green">*新機能</font> |
 
 ### コメント
 

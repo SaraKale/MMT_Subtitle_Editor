@@ -27,6 +27,12 @@ public partial class MainWindow
             var sub = subtitles[i];
             var pngPath = Path.Combine(dir, $"{i}.png");
 
+        // ========== 新增：图片条目导出 ==========
+        if (sub.IsImage && !string.IsNullOrEmpty(sub.ImagePath))
+        {
+            ExportImageEntry(pngPath, sub);
+            continue;
+        }
             var screenWidth = sub.ScreenWidth;
             var screenHeight = sub.ScreenHeight;
 
@@ -132,7 +138,23 @@ public partial class MainWindow
                     isTate,
                     hAlign,
                     vAlign,
-                    spacing);
+                    spacing,
+                    sub.Edge2Width,
+                    sub.Edge2Color,
+                    sub.Edge3Width,
+                    sub.Edge3Color,
+                    sub.Edge4Width,
+                    sub.Edge4Color,
+                    sub.GlowRadius,
+                    sub.GlowColor,
+                    sub.GlowAlpha,
+                    sub.EdgeGradientEnabled,
+                    sub.EdgeGradientTop,
+                    sub.EdgeGradientBottom,
+                    sub.TextGradientEnabled,
+                    sub.TextGradientTop,
+                    sub.TextGradientBottom,
+                    sub.TextGradientDirection);
             }
 
             using (var stream = File.Create(pngPath))
@@ -398,6 +420,68 @@ public partial class MainWindow
             Math.Max(1.0, Math.Ceiling(tateMaxHeight)));
     }
 
+    // 导出图片条目
+    private void ExportImageEntry(string outputPath, SubtitleEntry sub)
+    {
+        var imagePath = ResolveImagePath(sub.ImagePath);
+        if (!File.Exists(imagePath)) return;
+        
+        using var srcBitmap = new Bitmap(imagePath);
+        
+        var scaledWidth = (int)(srcBitmap.PixelSize.Width * sub.ImageScaleX / 100.0);
+        var scaledHeight = (int)(srcBitmap.PixelSize.Height * sub.ImageScaleY / 100.0);
+        
+        // 考虑旋转后的边界
+        var rotation = sub.ImageRotation;
+        var radians = rotation * Math.PI / 180.0;
+        var cos = Math.Abs(Math.Cos(radians));
+        var sin = Math.Abs(Math.Sin(radians));
+        
+        var rotatedWidth = (int)(scaledWidth * cos + scaledHeight * sin);
+        var rotatedHeight = (int)(scaledWidth * sin + scaledHeight * cos);
+        
+        // 添加安全边距
+        var safetyPadding = 20;
+        var texW = rotatedWidth + safetyPadding * 2;
+        var texH = rotatedHeight + safetyPadding * 2;
+        
+        if (texW < 1) texW = 1;
+        if (texH < 1) texH = 1;
+        
+        sub.TextureWidth = texW;
+        sub.TextureHeight = texH;
+        
+        using var renderBitmap = new RenderTargetBitmap(
+            new PixelSize(texW, texH),
+            new Vector(96, 96));
+        
+        using (var ctx = renderBitmap.CreateDrawingContext())
+        {
+            // 绘制透明背景
+            ctx.DrawRectangle(Brushes.Transparent, null, new Rect(0, 0, texW, texH));
+            
+            // 应用变换
+            var scaleTransform = new ScaleTransform(sub.ImageScaleX / 100.0, sub.ImageScaleY / 100.0);
+            var rotateTransform = new RotateTransform(sub.ImageRotation);
+            var translateTransform = new TranslateTransform(safetyPadding, safetyPadding);
+            
+            var transformMatrix = scaleTransform.Value * rotateTransform.Value * translateTransform.Value;
+            
+            using var transformDisposable = ctx.PushTransform(transformMatrix);
+            
+            // 绘制图片
+            ctx.DrawImage(
+                srcBitmap,
+                new Rect(0, 0, srcBitmap.PixelSize.Width, srcBitmap.PixelSize.Height),
+                new Rect(0, 0, srcBitmap.PixelSize.Width, srcBitmap.PixelSize.Height)
+            );
+        }
+        
+        using (var stream = File.Create(outputPath))
+        {
+            renderBitmap.Save(stream);
+        }
+    }
     // 渲染文本到上下文
     private void RenderTextToContext(
         DrawingContext ctx,
@@ -421,7 +505,23 @@ public partial class MainWindow
         double scaleX = 100,
         double scaleY = 100,
         double rotation = 0,
-        PreviewAnimationState? animationState = null)
+        PreviewAnimationState? animationState = null,
+        double edge2Width = 0,
+        Color edge2Color = default,
+        double edge3Width = 0,
+        Color edge3Color = default,
+        double edge4Width = 0,
+        Color edge4Color = default,
+        double glowRadius = 0,
+        Color glowColor = default,
+        double glowAlpha = 0.8,
+        bool edgeGradientEnabled = false,
+        Color edgeGradientTop = default,
+        Color edgeGradientBottom = default,
+        bool textGradientEnabled = false,
+        Color textGradientTop = default,
+        Color textGradientBottom = default,
+        string textGradientDirection = "vertical")
     {
         var anim = animationState ?? PreviewAnimationState.Default;
         var effectiveOrigin = new Point(originPoint.X + anim.OffsetX, originPoint.Y + anim.OffsetY);
@@ -453,11 +553,11 @@ public partial class MainWindow
                 using var transformDisposable = ctx.PushTransform(combinedMatrix);
                 var renderOrigin = new Point(-textCenterX, -textCenterY);
 
-                RenderTextCore(ctx, adjustedOrigin, renderOrigin, text, typeface, fontSize, fontColor, strokeColor, shadowColor, edgeWidth, shadowDistance, shadowBlur, underline, strikeout, edgeRound, isTate, hAlign, vAlign, spacing);
+                RenderTextCore(ctx, adjustedOrigin, renderOrigin, text, typeface, fontSize, fontColor, strokeColor, shadowColor, edgeWidth, shadowDistance, shadowBlur, underline, strikeout, edgeRound, isTate, hAlign, vAlign, spacing, edge2Width, edge2Color, edge3Width, edge3Color, edge4Width, edge4Color, glowRadius, glowColor, glowAlpha, edgeGradientEnabled, edgeGradientTop, edgeGradientBottom, textGradientEnabled, textGradientTop, textGradientBottom, textGradientDirection);
             }
             else
             {
-                RenderTextCore(ctx, layerOrigin, new Point(0, 0), text, typeface, fontSize, fontColor, strokeColor, shadowColor, edgeWidth, shadowDistance, shadowBlur, underline, strikeout, edgeRound, isTate, hAlign, vAlign, spacing);
+                RenderTextCore(ctx, layerOrigin, new Point(0, 0), text, typeface, fontSize, fontColor, strokeColor, shadowColor, edgeWidth, shadowDistance, shadowBlur, underline, strikeout, edgeRound, isTate, hAlign, vAlign, spacing, edge2Width, edge2Color, edge3Width, edge3Color, edge4Width, edge4Color, glowRadius, glowColor, glowAlpha, edgeGradientEnabled, edgeGradientTop, edgeGradientBottom, textGradientEnabled, textGradientTop, textGradientBottom, textGradientDirection);
             }
         }
 
@@ -560,7 +660,23 @@ public partial class MainWindow
         bool isTate,
         int hAlign,
         int vAlign,
-        double spacing)
+        double spacing,
+        double edge2Width,
+        Color edge2Color,
+        double edge3Width,
+        Color edge3Color,
+        double edge4Width,
+        Color edge4Color,
+        double glowRadius,
+        Color glowColor,
+        double glowAlpha,
+        bool edgeGradientEnabled,
+        Color edgeGradientTop,
+        Color edgeGradientBottom,
+        bool textGradientEnabled,
+        Color textGradientTop,
+        Color textGradientBottom,
+        string textGradientDirection)
     {
         var actualOrigin = new Point(originPoint.X + renderOffset.X, originPoint.Y + renderOffset.Y);
 
@@ -586,6 +702,121 @@ public partial class MainWindow
                     ctx.DrawText(shadowFormatted, new Point(actualOrigin.X + shadowOffset, actualOrigin.Y + shadowOffset));
                 }
 
+                // === 正确渲染顺序：从外到内 ===
+                // 1. 外发光（最底层晕染，12层叠加模拟平滑发光）
+                if (glowRadius > 0)
+                {
+                    var glowFormatted = new FormattedText(
+                        text,
+                        System.Globalization.CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        Brushes.White);
+
+                    if (hAlign == 2) glowFormatted.TextAlignment = TextAlignment.Right;
+                    else if (hAlign == 1) glowFormatted.TextAlignment = TextAlignment.Center;
+
+                    var glowGeo = glowFormatted.BuildGeometry(actualOrigin);
+                    if (glowGeo != null)
+                    {
+                        var baseAlpha = glowAlpha * 255.0;
+                        var glowRad = fontSize * glowRadius / 100.0;
+                        // 12层叠加，指数衰减模拟 PS 外发光
+                        for (int i = 12; i >= 1; i--)
+                        {
+                            var t = (double)i / 12.0;
+                            var layerAlpha = (byte)(baseAlpha * Math.Pow(0.75, i));
+                            var layerWidth = glowRad * (1.0 + t * 1.5);
+                            var layerColor = Color.FromArgb(layerAlpha, glowColor.R, glowColor.G, glowColor.B);
+                            var layerPen = new Pen(new SolidColorBrush(layerColor), layerWidth)
+                            {
+                                LineJoin = PenLineJoin.Round
+                            };
+                            ctx.DrawGeometry(null, layerPen, glowGeo);
+                        }
+                    }
+                }
+
+                // 2. 第四层描边（最外层）
+                if (edge4Width > 0)
+                {
+                    var e4Formatted = new FormattedText(
+                        text,
+                        System.Globalization.CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        Brushes.White);
+
+                    if (hAlign == 2) e4Formatted.TextAlignment = TextAlignment.Right;
+                    else if (hAlign == 1) e4Formatted.TextAlignment = TextAlignment.Center;
+
+                    var e4Geo = e4Formatted.BuildGeometry(actualOrigin);
+                    if (e4Geo != null)
+                    {
+                        var e4PenWidth = fontSize * edge4Width * 2 / 100.0;
+                        var e4Pen = new Pen(new SolidColorBrush(edge4Color), e4PenWidth)
+                        {
+                            LineJoin = PenLineJoin.Round
+                        };
+                        ctx.DrawGeometry(null, e4Pen, e4Geo);
+                    }
+                }
+
+                // 3. 第三层描边
+                if (edge3Width > 0)
+                {
+                    var e3Formatted = new FormattedText(
+                        text,
+                        System.Globalization.CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        Brushes.White);
+
+                    if (hAlign == 2) e3Formatted.TextAlignment = TextAlignment.Right;
+                    else if (hAlign == 1) e3Formatted.TextAlignment = TextAlignment.Center;
+
+                    var e3Geo = e3Formatted.BuildGeometry(actualOrigin);
+                    if (e3Geo != null)
+                    {
+                        var e3PenWidth = fontSize * edge3Width * 2 / 100.0;
+                        var e3Pen = new Pen(new SolidColorBrush(edge3Color), e3PenWidth)
+                        {
+                            LineJoin = PenLineJoin.Round
+                        };
+                        ctx.DrawGeometry(null, e3Pen, e3Geo);
+                    }
+                }
+
+                // 4. 外层描边（edge2）
+                if (edge2Width > 0)
+                {
+                    var outerFormatted = new FormattedText(
+                        text,
+                        System.Globalization.CultureInfo.CurrentCulture,
+                        FlowDirection.LeftToRight,
+                        typeface,
+                        fontSize,
+                        Brushes.White);
+
+                    if (hAlign == 2) outerFormatted.TextAlignment = TextAlignment.Right;
+                    else if (hAlign == 1) outerFormatted.TextAlignment = TextAlignment.Center;
+
+                    var outerGeo = outerFormatted.BuildGeometry(actualOrigin);
+                    if (outerGeo != null)
+                    {
+                        var outerPenWidth = fontSize * edge2Width * 2 / 100.0;
+                        var outerPen = new Pen(new SolidColorBrush(edge2Color), outerPenWidth)
+                        {
+                            LineJoin = PenLineJoin.Round
+                        };
+                        ctx.DrawGeometry(null, outerPen, outerGeo);
+                    }
+                }
+
+                // 5. 内层描边（edge，最细）
                 if (edgeWidth > 0)
                 {
                     var strokeFormatted = new FormattedText(
@@ -603,7 +834,10 @@ public partial class MainWindow
                     if (geo != null)
                     {
                         var penWidth = fontSize * edgeWidth * 2 / 100.0;
-                        var pen = new Pen(new SolidColorBrush(strokeColor), penWidth)
+                        var edgeBrush = edgeGradientEnabled
+                            ? CreateExportGradientBrush(edgeGradientTop, edgeGradientBottom, textGradientDirection)
+                            : (IBrush)new SolidColorBrush(strokeColor);
+                        var pen = new Pen(edgeBrush, penWidth)
                         {
                             LineJoin = edgeRound ? PenLineJoin.Round : PenLineJoin.Miter
                         };
@@ -611,13 +845,16 @@ public partial class MainWindow
                     }
                 }
 
+                // 4. 文字本体（最上层）
                 var mainFormatted = new FormattedText(
                     text,
                     System.Globalization.CultureInfo.CurrentCulture,
                     FlowDirection.LeftToRight,
                     typeface,
                     fontSize,
-                    new SolidColorBrush(fontColor));
+                    textGradientEnabled
+                        ? CreateExportGradientBrush(textGradientTop, textGradientBottom, textGradientDirection)
+                        : new SolidColorBrush(fontColor));
 
                 if (hAlign == 2) mainFormatted.TextAlignment = TextAlignment.Right;
                 else if (hAlign == 1) mainFormatted.TextAlignment = TextAlignment.Center;
@@ -813,6 +1050,38 @@ public partial class MainWindow
 
             tateX += columnWidth + columnGap;
         }
+    }
+
+    // 创建渐变画刷（用于导出渲染的描边渐变和文字渐变）
+    private static IBrush CreateExportGradientBrush(Color top, Color bottom, string direction)
+    {
+        if (string.IsNullOrEmpty(direction))
+            direction = "vertical";
+
+        if (direction == "horizontal")
+        {
+            return new LinearGradientBrush
+            {
+                StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+                EndPoint = new RelativePoint(1, 0, RelativeUnit.Relative),
+                GradientStops =
+                {
+                    new GradientStop(top, 0),
+                    new GradientStop(bottom, 1)
+                }
+            };
+        }
+
+        return new LinearGradientBrush
+        {
+            StartPoint = new RelativePoint(0, 0, RelativeUnit.Relative),
+            EndPoint = new RelativePoint(0, 1, RelativeUnit.Relative),
+            GradientStops =
+            {
+                new GradientStop(top, 0),
+                new GradientStop(bottom, 1)
+            }
+        };
     }
 
     // 绘制下划线和删除线
@@ -1030,7 +1299,7 @@ public partial class MainWindow
                     var etime = sub.EndTime;
                     var fade = sub.Fade;
                     var billboard = sub.Billboard ? "true" : "false";
-                    var malpha = sub.Alpha.ToString("F4");
+                    var malpha = sub.IsImage ? sub.ImageAlpha.ToString("F4") : sub.Alpha.ToString("F4");
                     var animType = GetAnimationTypeId(sub.AnimationType);
                     var animTime = sub.AnimationDuration > 0 ? sub.AnimationDuration : sub.Fade;
                     var animParam1 = GetAnimationParam1(sub);
@@ -1061,7 +1330,7 @@ public partial class MainWindow
                     var etime = sub.EndTime;
                     var fade = sub.Fade;
                     var billboard = sub.Billboard ? "true" : "false";
-                    var malpha = sub.Alpha.ToString("F4");
+                    var malpha = sub.IsImage ? sub.ImageAlpha.ToString("F4") : sub.Alpha.ToString("F4");
                     var animType = GetAnimationTypeId(sub.AnimationType);
                     var animTime = sub.AnimationDuration > 0 ? sub.AnimationDuration : sub.Fade;
                     var animParam1 = GetAnimationParam1(sub);

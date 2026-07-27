@@ -1,0 +1,110 @@
+﻿<suki:SukiWindow
+    x:Class="MMTGui.OpenLRCFile"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:suki="https://github.com/kikipoulet/SukiUI"
+    x:CompileBindings="False"
+    Title="导入LRC/SRT/ASS文件"
+    Width="720"
+    Height="700"
+    MinWidth="500"
+    MinHeight="400"
+    CanFullScreen="False"
+    WindowStartupLocation="CenterOwner"
+    SizeToContent="Width">
+
+    <!-- 导入LRC/SRT/ASS文件界面 -->
+    <suki:SukiWindow.Styles>
+        <Style Selector="TextBlock.section-title">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="#0F172A" />
+        </Style>
+    </suki:SukiWindow.Styles>
+
+    <Border Padding="20">
+        <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="16">
+             <!-- 边框 -->
+            <Border Grid.Row="0"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+
+                <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="12">
+                     <!-- 文件对话框 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="*,120" ColumnSpacing="12">
+                         <!-- 请打开或拖入LRC/SRT/ASS文件 -->
+                        <TextBox x:Name="LRCFileTextTip"
+                                 Watermark="请打开或拖入LRC/SRT/ASS文件"
+                                 DragDrop.AllowDrop="True"
+                                 DragDrop.DragOver="OnDragOver"
+                                 DragDrop.Drop="OnFileDrop" />
+                         <!-- 打开按钮 -->
+                        <Button Grid.Column="1"
+                                Content="打开文件"
+                                Classes="Outlined"
+                                Click="OpenLRCFileButton" />
+                    </Grid>
+                </Grid>
+            </Border>
+
+
+             <!-- 歌词面板 -->
+            <Border Grid.Row="2"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10" >
+                <Grid RowDefinitions="Auto,*" RowSpacing="10">
+                    
+                    <TextBlock Text="手动输入歌词"
+                               Classes="section-title" />
+                     
+                    <TextBox x:Name="LRCInputs"
+                             Grid.Row="1"
+                             MinHeight="180"
+                             FontSize="14"
+                             IsReadOnly="False"
+                             AcceptsReturn="True"
+                             TextWrapping="Wrap"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" />
+                </Grid>
+            </Border>
+
+            <Border Grid.Row="3"
+                    Padding="15,5,15,5"
+                    BorderBrush="#334155"
+                    BorderThickness="1"
+                    CornerRadius="10">
+                <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="12">
+                     <!-- 时间码格式 -->
+                        <TextBlock Grid.Column="1" Text="MMT时间码格式"
+                                   Classes="section-title"  VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbTimeCodeFormat" Grid.Column="2"
+                                  SelectedIndex="0">
+                            <!-- 标准时间 -->
+                            <ComboBoxItem Content="标准时间" />
+                            <!-- 秒数 -->
+                            <ComboBoxItem Content="秒数" />
+                        </ComboBox>
+
+                    <!-- 保存Lrc歌词按钮 
+                    <Button Grid.Column="3" 
+                            Content="保存Lrc歌词" 
+                            Classes="Outlined"
+                            VerticalAlignment="Center"
+                            Click="" />
+                     -->
+                     <!-- 插入到脚本按钮 -->
+                    <Button Grid.Column="4" 
+                            Content="插入到脚本"
+                            Classes="Outlined"
+                            VerticalAlignment="Center"
+                            Click="INLRCTextScript" />
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</suki:SukiWindow>

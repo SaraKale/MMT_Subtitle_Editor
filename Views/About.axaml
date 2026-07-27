@@ -1,4 +1,4 @@
-<suki:SukiWindow
+﻿<suki:SukiWindow
     x:Class="MMTGui.About"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -48,8 +48,8 @@
                             <TextBlock Text="用于编辑、预览和导出 MMTScript 字幕脚本。"
                                        TextWrapping="Wrap" 
                                        HorizontalAlignment="Center"/>
-                             <!-- 当前版本：1.0.0 -->
-                            <TextBlock Text="当前版本：1.0.0" HorizontalAlignment="Center"/>
+                             <!-- 当前版本：1.0.1 -->
+                            <TextBlock Text="当前版本：1.0.1" HorizontalAlignment="Center"/>
                              <!-- 作者：SaraKale -->
                             <TextBlock Text="作者：SaraKale" HorizontalAlignment="Center"/>
                         </StackPanel>

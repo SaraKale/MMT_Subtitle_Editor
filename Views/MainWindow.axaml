@@ -110,6 +110,7 @@
                 <MenuItem Header="时间换算" Click="OnOpenTimeConversion"/> <!-- 时间换算 -->
                 <MenuItem Header="批量导出" Click="OnBatchExport" /> <!-- 批量导出 -->
                 <MenuItem Header="在线歌词搜索" Click="OnOpenLyricsOnline" /> <!-- 在线歌词搜索 -->
+                <MenuItem Header="导入LRC/SRT/ASS文件" Click="OnImportLRCFile" /> <!-- 导入LRC文件 -->
                 <MenuItem Header="选项" Click="OnOpenOptions" /> <!-- 选项 -->
             </MenuItem>
             <!-- 工具菜单：批量导出/选项 -->
@@ -179,7 +180,7 @@
                 <!-- 停止 -->
                 <Button Classes="Outlined" Click="OnStopPreview" ToolTip.Tip="停止">
                     <StackPanel Orientation="Horizontal" Spacing="4">
-                        <Image Source="{svg:SvgImage /Assets/stop.svg}" Width="14" Height="14" />
+                        <Image Source="{svg:SvgImage /Assets/stop.svg}" Width="16" Height="16" />
                         <TextBlock Text="停止" VerticalAlignment="Center" />
                     </StackPanel>
                 </Button>
@@ -562,6 +563,128 @@
                         </StackPanel>
                     </Expander>
 
+                    <!-- ===== 高级效果设置区 ===== -->
+                    <!-- 包含：双层描边、外发光、描边渐变、文字渐变 -->
+                    <Expander IsExpanded="False" Margin="10">
+                        <Expander.Header>
+                            <TextBlock Text="高级效果" FontWeight="Bold" FontSize="14" />
+                        </Expander.Header>
+                        <StackPanel Spacing="10" Margin="8,4">
+                            <!-- 双层描边 -->
+                            <TextBlock Text="双层描边（外层）" FontWeight="Bold" FontSize="13" Foreground="#94A3B8" />
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6" Margin="0,0,0,4">
+                                <TextBlock Grid.Column="0" Text="外层粗细" VerticalAlignment="Center" FontSize="13" />
+                                <NumericUpDown x:Name="NudEdge2" Grid.Column="1" Value="0" Minimum="0"
+                                               Maximum="50" Increment="1" FormatString="0"
+                                               ValueChanged="OnPropertyValueChanged" Tag="edge2" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined" FontSize="13"
+                                        Click="OnInsertNudValue" Tag="NudEdge2" Margin="4,0,0,0" 
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+                            <!-- 外层颜色 -->
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6">
+                                <TextBlock Grid.Column="0" Text="外层颜色" VerticalAlignment="Center" FontSize="13" />
+                                <Border x:Name="Edge2ColorPreview" Grid.Column="1" Width="28" Height="22"
+                                        CornerRadius="4" Background="White"
+                                        PointerPressed="OnColorPreviewClick" Tag="edgecolor2" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnPickColor" Tag="edgecolor2" Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+
+                            <!-- 外发光 -->
+                            <TextBlock Text="外发光" FontWeight="Bold" FontSize="13" Foreground="#94A3B8" Margin="0,8,0,0" />
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6" Margin="0,0,0,4">
+                                <TextBlock Grid.Column="0" Text="发光半径" VerticalAlignment="Center" FontSize="13" />
+                                <NumericUpDown x:Name="NudGlow" Grid.Column="1" Value="0" Minimum="0"
+                                               Maximum="50" Increment="1" FormatString="0"
+                                               ValueChanged="OnPropertyValueChanged" Tag="glow" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnInsertNudValue" Tag="NudGlow" Margin="4,0,0,0" 
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+                            <!-- 不透明度（0-1） -->
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6" Margin="0,0,0,4">
+                                <TextBlock Grid.Column="0" Text="不透明度（0-1）" VerticalAlignment="Center" FontSize="13" />
+                                <NumericUpDown x:Name="NudGlowAlpha" Grid.Column="1" Value="0.8" Minimum="0"
+                                               Maximum="1" Increment="0.1" FormatString="0.0"
+                                               ValueChanged="OnPropertyValueChanged" Tag="glowalpha" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnInsertNudValue" Tag="NudGlowAlpha" Margin="4,0,0,0" 
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+                            <!-- 发光颜色 -->
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6">
+                                <TextBlock Grid.Column="0" Text="发光颜色" VerticalAlignment="Center" FontSize="13" />
+                                <Border x:Name="GlowColorPreview" Grid.Column="1" Width="28" Height="22"
+                                        CornerRadius="4" Background="#FFC864"
+                                        PointerPressed="OnColorPreviewClick" Tag="glowcolor" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnPickColor" Tag="glowcolor" 
+                                        Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+
+                            <!-- 描边渐变 -->
+                            <TextBlock Text="描边渐变色" FontWeight="Bold" FontSize="13" Foreground="#94A3B8" Margin="0,8,0,0" />
+                            <CheckBox x:Name="ChkEdgeGradient" Content="启用描边渐变" IsChecked="False" FontSize="13"
+                                      IsCheckedChanged="OnCheckBoxChanged" Tag="edgegradient" />
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6" Margin="0,4,0,0">
+                                <TextBlock Grid.Column="0" Text="顶部颜色" VerticalAlignment="Center" FontSize="13" />
+                                <Border x:Name="EdgeGradientTopPreview" Grid.Column="1" Width="28" Height="22"
+                                        CornerRadius="4" Background="Red"
+                                        PointerPressed="OnColorPreviewClick" Tag="edgegradienttop" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnPickColor" Tag="edgegradienttop" Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+                             <!-- 底部颜色 -->
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6">
+                                <TextBlock Grid.Column="0" Text="底部颜色" VerticalAlignment="Center" FontSize="13" />
+                                <Border x:Name="EdgeGradientBottomPreview" Grid.Column="1" Width="28" Height="22"
+                                        CornerRadius="4" Background="Blue"
+                                        PointerPressed="OnColorPreviewClick" Tag="edgegradientbottom" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnPickColor" Tag="edgegradientbottom" Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+
+                            <!-- 文字渐变 -->
+                            <TextBlock Text="文字渐变色" FontWeight="Bold" FontSize="13" Foreground="#94A3B8" Margin="0,8,0,0" />
+                            <CheckBox x:Name="ChkTextGradient" Content="启用文字渐变" IsChecked="False" FontSize="13"
+                                      IsCheckedChanged="OnCheckBoxChanged" Tag="textgradient" />
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6" Margin="0,4,0,0">
+                                <TextBlock Grid.Column="0" Text="顶部颜色" VerticalAlignment="Center" FontSize="13" />
+                                <Border x:Name="TextGradientTopPreview" Grid.Column="1" Width="28" Height="22"
+                                        CornerRadius="4" Background="Red"
+                                        PointerPressed="OnColorPreviewClick" Tag="textgradienttop" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnPickColor" Tag="textgradienttop" Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6">
+                                <TextBlock Grid.Column="0" Text="底部颜色" VerticalAlignment="Center" FontSize="13" />
+                                <Border x:Name="TextGradientBottomPreview" Grid.Column="1" Width="28" Height="22"
+                                        CornerRadius="4" Background="Blue"
+                                        PointerPressed="OnColorPreviewClick" Tag="textgradientbottom" />
+                                <Button Grid.Column="2" Content="写入" Classes="Outlined"
+                                        Click="OnPickColor" Tag="textgradientbottom" Background="Transparent" Foreground="#94A3B8"
+                                        BorderBrush="#334155" BorderThickness="1"/>
+                            </Grid>
+                            <Grid ColumnDefinitions="50, *, Auto" ColumnSpacing="6" Margin="0,4,0,0">
+                                <TextBlock Grid.Column="0" Text="渐变方向" VerticalAlignment="Center" FontSize="13" />
+                                <ComboBox x:Name="CmbTextGradientDir" Grid.Column="1" SelectedIndex="0"
+                                          SelectionChanged="OnAdvancedComboBoxChanged" Tag="textgradientdir">
+                                    <ComboBoxItem Content="垂直" />
+                                    <ComboBoxItem Content="水平" />
+                                </ComboBox>
+                            </Grid>
+                        </StackPanel>
+                    </Expander>
+
                     <!-- ===== 对齐设置区 ===== -->
                     <!-- 包含：水平对齐（左/中/右）、垂直对齐（顶部/居中/底部），使用SVG图标 -->
                      <!-- ==================== -->
@@ -789,6 +912,88 @@
                             <TextBlock Text="额外功能" FontWeight="SemiBold" FontSize="14" />
                         </Expander.Header>
                         <StackPanel Spacing="6" Margin="8,4">
+
+                        <!-- ========== 新增：图片功能区 ========== -->
+                        <Border BorderBrush="{DynamicResource SukiLightBorderBrush}" 
+                                BorderThickness="0,1,0,0" Padding="0,8,0,0" Margin="0,8,0,0">
+                            <StackPanel Spacing="6">
+                                <TextBlock Text="图片插入" FontWeight="Bold" FontSize="13" 
+                                        Foreground="{DynamicResource SukiAccentColor}" />
+                                
+                                <!-- 图片路径 -->
+                                <Grid ColumnDefinitions="60, *, Auto">
+                                    <TextBlock Grid.Column="0" Text="图片路径" FontSize="13"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource SukiLowText}" />
+                                    <TextBox x:Name="TxtImagePath" Grid.Column="1" 
+                                            Watermark="选择图片文件..." FontSize="11" 
+                                            IsReadOnly="True" />
+                                    <Button Grid.Column="2" Content="..." Width="30"
+                                            Click="OnBrowseImage" 
+                                            ToolTip.Tip="浏览图片文件" Margin="4,0,0,0" />
+                                </Grid>
+                                <!-- 图片缩放 -->
+                                <Grid ColumnDefinitions="60, *, *">
+                                    <TextBlock Grid.Column="0" Text="缩放 %" FontSize="13"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource SukiLowText}" />
+                                    <NumericUpDown x:Name="NudImageScaleX" Grid.Column="1" 
+                                                Value="100" Minimum="1" Maximum="500" 
+                                                Increment="5" Width="80"
+                                                ValueChanged="OnImageScaleChanged" 
+                                                Margin="0,0,4,0" />
+                                    <NumericUpDown x:Name="NudImageScaleY" Grid.Column="2" 
+                                                Value="100" Minimum="1" Maximum="500" 
+                                                Increment="5" Width="80"
+                                                ValueChanged="OnImageScaleChanged" />
+                                </Grid>
+                                <!-- 图片位置 -->
+                                <Grid ColumnDefinitions="60, *, *, *">
+                                    <TextBlock Grid.Column="0" Text="位置" FontSize="13"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource SukiLowText}" />
+                                    <NumericUpDown x:Name="NudImagePosX" Grid.Column="1" 
+                                                Value="0" Increment="10" Width="60"
+                                                ValueChanged="OnImagePosChanged" 
+                                                Margin="0,0,4,0" />
+                                    <NumericUpDown x:Name="NudImagePosY" Grid.Column="2" 
+                                                Value="0" Increment="10" Width="60"
+                                                ValueChanged="OnImagePosChanged" 
+                                                Margin="0,0,4,0" />
+                                    <NumericUpDown x:Name="NudImagePosZ" Grid.Column="3" 
+                                                Value="0" Increment="0.1" Width="60"
+                                                ValueChanged="OnImagePosChanged" />
+                                </Grid>
+                                <!-- 图片旋转 -->
+                                <Grid ColumnDefinitions="60, *, Auto">
+                                    <TextBlock Grid.Column="0" Text="旋转" FontSize="13"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource SukiLowText}" />
+                                    <NumericUpDown x:Name="NudImageRotation" Grid.Column="1" 
+                                                Value="0" Minimum="-360" Maximum="360" 
+                                                Increment="5" Width="80"
+                                                ValueChanged="OnImageRotationChanged" />
+                                    <TextBlock Grid.Column="2" Text="°" FontSize="13"
+                                            Foreground="{DynamicResource SukiLowText}"
+                                            VerticalAlignment="Center" Margin="4,0,0,0" />
+                                </Grid>
+                                <!-- 图片透明度 -->
+                                <Grid ColumnDefinitions="60, *">
+                                    <TextBlock Grid.Column="0" Text="透明度" FontSize="13"
+                                            VerticalAlignment="Center"
+                                            Foreground="{DynamicResource SukiLowText}" />
+                                    <Slider x:Name="SliderImageAlpha" Grid.Column="1" 
+                                            Value="100" Minimum="0" Maximum="100"
+                                            ValueChanged="OnImageAlphaChanged" />
+                                </Grid>
+                                <!-- 插入图片按钮 -->
+                                <Button Content="插入图片到脚本" HorizontalAlignment="Stretch"
+                                        Click="OnInsertImage" FontWeight="SemiBold"
+                                        Background="{DynamicResource SukiPrimaryColor}"
+                                        Foreground="White" Margin="0,4,0,0" />
+                            </StackPanel>
+                        </Border>
+
                             <!-- :set 记录格式 -->
                             <Grid ColumnDefinitions="60, *, Auto">
                                 <TextBlock Grid.Column="0" Text="记录格式" FontSize="14"
@@ -850,7 +1055,7 @@
             <!-- ========== Column 2: 中央区域（预览+字幕列表） ========== -->
             <Grid Grid.Column="2" RowDefinitions="*, Auto, *">
 
-                <Grid Grid.Row="0" RowDefinitions="Auto, *">
+                <Grid Grid.Row="0" RowDefinitions="Auto, Auto, *">
 
                     <Border Grid.Row="0" Padding="8,6"
                             Background="#0F172A"
@@ -888,8 +1093,53 @@
                         </Grid>
                     </Border>
 
+                    <!-- 音频控制条 -->
+                    <Border Grid.Row="1" Padding="8,6"
+                            Background="#E0E0E0"
+                            BorderThickness="0,0,0,1" BorderBrush="#000">
+                        <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto,Auto,Auto" ColumnSpacing="6">
+                            <!-- 加载音频 -->
+                            <Button Grid.Column="0" Classes="Outlined" Click="OnLoadAudio"
+                                    ToolTip.Tip="加载音频" >
+                                <TextBlock Text="📂" FontSize="16" />
+                            </Button>
+                            <!-- 播放/暂停 -->
+                            <Button Grid.Column="1" Classes="Outlined" Click="OnPlayPauseAudio"
+                                    ToolTip.Tip="播放/暂停">
+                                <TextBlock x:Name="AudioPlayIcon" Text="▶" FontSize="16" />
+                            </Button>
+                            <!-- 停止 -->
+                            <Button Grid.Column="2" Classes="Outlined" Click="OnStopAudio"
+                                    ToolTip.Tip="停止"  Foreground="#000">
+                                <TextBlock Text="◉" FontSize="16" />
+                            </Button>
+                            <!-- 卸载音频 -->
+                            <Button Grid.Column="3" Classes="Outlined" Click="OnUnloadAudio"
+                                    ToolTip.Tip="卸载音频">
+                                <TextBlock Text="✖" FontSize="16" />
+                            </Button>
+                            <!-- 进度条 -->
+                            <Slider Grid.Column="4" x:Name="AudioProgressSlider"
+                                    Minimum="0" Maximum="1000" Value="0"
+                                    TickFrequency="1" IsSnapToTickEnabled="False"
+                                    PointerReleased="OnAudioSeek"
+                                    KeyUp="OnAudioSeekKey"  Foreground="#000"/>
+                            <!-- 时间显示 -->
+                            <TextBlock Grid.Column="5" x:Name="AudioTimeText" Text="00:00 / 00:00"
+                                       VerticalAlignment="Center" Foreground="#000"
+                                       FontFamily="Consolas" FontSize="15" MinWidth="110"  />
+                            <!-- 音量图标 -->
+                            <TextBlock Grid.Column="6" Text="🔊" VerticalAlignment="Center"
+                                       FontSize="14" />
+                            <!-- 音量滑块 -->
+                            <Slider Grid.Column="7" x:Name="AudioVolumeSlider" Width="90"
+                                    Minimum="0" Maximum="1" Value="1"
+                                    ValueChanged="OnAudioVolumeChanged" />
+                        </Grid>
+                    </Border>
+
                     <!-- 预览区域 -->
-                    <Border Grid.Row="1" Background="#1E293B" ClipToBounds="True"
+                    <Border Grid.Row="2" Background="#1E293B" ClipToBounds="True"
                             PointerWheelChanged="OnPreviewMouseWheel">
                         <ScrollViewer x:Name="PreviewScrollViewer"
                                       HorizontalScrollBarVisibility="Auto"
