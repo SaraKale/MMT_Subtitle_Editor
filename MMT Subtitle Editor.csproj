@@ -8,11 +8,32 @@
     <AssemblyName>MMT Subtitle Editor</AssemblyName>
     <Title>MMT Subtitle Editor</Title>
     <Authors>SaraKale</Authors>
-    <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1</AssemblyVersion>
-    <FileVersion>1.0.1</FileVersion>
+    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <FileVersion>1.0.2</FileVersion>
     <ApplicationIcon>Assets\MMTicon.ico</ApplicationIcon>
     <StartupObject>MMTGui.Avalonia.Program</StartupObject>
+  </PropertyGroup>
+
+  <!--
+    单文件发布（PublishSingleFile）时的原生库处理。
+
+    背景：单文件 exe 默认会把原生 DLL 一并塞进 bundle，启动时再解压到
+    %TEMP%\.net\... 才能加载。若该目录被拒（杀软拦截、ACL 损坏、权限不足），
+    apphost 会在进入 Main 之前就失败，表现为「双击没反应、无窗口、无报错」：
+
+        Failed to create default extraction directory [%TEMP%\.net]. error code: 5
+        Failure processing application bundle.
+
+    这里把原生库排除在 bundle 之外（IncludeNativeLibrariesForSelfExtract=false），
+    让 libSkiaSharp / libHarfBuzzSharp / av_libglesv2 / libonigwrap 等
+    与 exe 并列放置，从而**完全不再触发解压**。
+
+    代价：发布产物中除主 exe 外会多出几个原生 dll，需与 exe 放在同一目录。
+  -->
+  <PropertyGroup Condition="'$(PublishSingleFile)' == 'true'">
+    <IncludeNativeLibrariesForSelfExtract>false</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>false</EnableCompressionInSingleFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugType>none</DebugType>

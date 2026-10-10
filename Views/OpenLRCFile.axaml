@@ -1,4 +1,4 @@
-﻿<suki:SukiWindow
+<suki:SukiWindow
     x:Class="MMTGui.OpenLRCFile"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,7 +6,7 @@
     x:CompileBindings="False"
     Title="导入LRC/SRT/ASS文件"
     Width="720"
-    Height="700"
+    Height="760"
     MinWidth="500"
     MinHeight="400"
     CanFullScreen="False"
@@ -78,31 +78,60 @@
                     BorderBrush="#334155"
                     BorderThickness="1"
                     CornerRadius="10">
-                <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="12">
-                     <!-- 时间码格式 -->
-                        <TextBlock Grid.Column="1" Text="MMT时间码格式"
-                                   Classes="section-title"  VerticalAlignment="Center"/>
-                        <ComboBox x:Name="CmbTimeCodeFormat" Grid.Column="2"
-                                  SelectedIndex="0">
+                <Grid RowDefinitions="Auto,Auto" RowSpacing="12">
+
+                    <!-- 模式 / 格式 -->
+                    <Grid Grid.Row="0" ColumnDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="12">
+                        <!-- 模式 -->
+                        <TextBlock Grid.Column="0" Text="模式"
+                                   Classes="section-title" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbDisplayMode" Grid.Column="1"
+                                  SelectedIndex="0"
+                                  MinWidth="120"
+                                  SelectionChanged="OnDisplayModeChanged">
+                            <!-- 原文+译文 -->
+                            <ComboBoxItem Content="原文+译文" />
+                            <!-- 独立 -->
+                            <ComboBoxItem Content="独立" />
+                        </ComboBox>
+
+                        <!-- 格式 -->
+                        <TextBlock Grid.Column="2" Text="格式"
+                                   Classes="section-title" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="LrcAnalysis" Grid.Column="3"
+                                  SelectedIndex="0"
+                                  MinWidth="120"
+                                  SelectionChanged="OnLyricsFormatChanged">
+                            <!-- 混合 -->
+                            <ComboBoxItem Content="混合" />
+                            <!-- 合并 -->
+                            <ComboBoxItem Content="合并" />
+                            <!-- 独立 -->
+                            <ComboBoxItem Content="独立" />
+                        </ComboBox>
+                    </Grid>
+
+                    <!-- 时间码格式 / 插入 -->
+                    <Grid Grid.Row="1" ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="12">
+                        <!-- 时间码格式 -->
+                        <TextBlock Grid.Column="0" Text="MMT时间码格式"
+                                   Classes="section-title" VerticalAlignment="Center"/>
+                        <ComboBox x:Name="CmbTimeCodeFormat" Grid.Column="1"
+                                  SelectedIndex="0"
+                                  MinWidth="120">
                             <!-- 标准时间 -->
                             <ComboBoxItem Content="标准时间" />
                             <!-- 秒数 -->
                             <ComboBoxItem Content="秒数" />
                         </ComboBox>
 
-                    <!-- 保存Lrc歌词按钮 
-                    <Button Grid.Column="3" 
-                            Content="保存Lrc歌词" 
-                            Classes="Outlined"
-                            VerticalAlignment="Center"
-                            Click="" />
-                     -->
-                     <!-- 插入到脚本按钮 -->
-                    <Button Grid.Column="4" 
-                            Content="插入到脚本"
-                            Classes="Outlined"
-                            VerticalAlignment="Center"
-                            Click="INLRCTextScript" />
+                        <!-- 插入到脚本按钮 -->
+                        <Button Grid.Column="3"
+                                Content="插入到脚本"
+                                Classes="Outlined"
+                                VerticalAlignment="Center"
+                                Click="INLRCTextScript" />
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>

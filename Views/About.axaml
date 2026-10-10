@@ -48,8 +48,8 @@
                             <TextBlock Text="用于编辑、预览和导出 MMTScript 字幕脚本。"
                                        TextWrapping="Wrap" 
                                        HorizontalAlignment="Center"/>
-                             <!-- 当前版本：1.0.1 -->
-                            <TextBlock Text="当前版本：1.0.1" HorizontalAlignment="Center"/>
+                             <!-- 当前版本：1.0.2 -->
+                            <TextBlock Text="当前版本：1.0.2" HorizontalAlignment="Center"/>
                              <!-- 作者：SaraKale -->
                             <TextBlock Text="作者：SaraKale" HorizontalAlignment="Center"/>
                         </StackPanel>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -22,6 +22,10 @@ namespace MMTGui;
 /// 导入LRC歌词文件的窗口。
 /// 负责加载歌曲文件，或者手动输入歌词文本插入主脚本。
 /// 支持 LRC、SRT、ASS 三种歌词/字幕格式。
+///
+/// 支持双语场景：同一时间戳下的多行文本，第一行作原文、其余作译文，
+/// 再按「模式」（原文+译文 / 独立）与「格式」（混合 / 合并 / 独立）组合，
+/// 语义与在线歌词功能保持一致。
 /// </summary>
 public partial class OpenLRCFile : SukiWindow
 {
@@ -156,37 +160,15 @@ public partial class OpenLRCFile : SukiWindow
             return;
         }
 
-        var timedLines = lrcLines.Where(l => l.IsTimed)
-            .OrderBy(l => l.TimeSeconds ?? 0)
-            .ToList();
-
-        var blocks = new List<LyricScriptBlock>();
-        for (int i = 0; i < timedLines.Count; i++)
+        // 按时间戳分组：同一时间戳的第一行=原文，其余=译文。
+        var groups = LocalLyricsSupport.GroupByTimestamp(lrcLines);
+        if (groups.Count == 0)
         {
-            var start = timedLines[i].TimeSeconds ?? 0;
-            var end = i + 1 < timedLines.Count
-                ? timedLines[i + 1].TimeSeconds ?? (start + 3.0)
-                : start + 3.0;
-
-            if (end <= start)
-                end = start + 3.0;
-
-            var textLines = timedLines[i].Text.Split('\n')
-                .Where(s => !string.IsNullOrWhiteSpace(s))
-                .Select(s => s.Trim())
-                .ToList();
-
-            if (textLines.Count == 0)
-                continue;
-
-            blocks.Add(new LyricScriptBlock
-            {
-                StartSeconds = start,
-                EndSeconds = end,
-                TextLines = textLines
-            });
+            await ShowMessageDialogAsync(LocalizationService.T("当前歌词中没有可插入脚本的时间标签。"), false);
+            return;
         }
 
+        var blocks = LocalLyricsSupport.BuildBlocks(groups, GetDisplayMode(), GetCombineMode());
         if (blocks.Count == 0)
         {
             await ShowMessageDialogAsync(LocalizationService.T("当前歌词中没有可插入脚本的时间标签。"), false);
@@ -198,6 +180,46 @@ public partial class OpenLRCFile : SukiWindow
         _ownerWindow.InsertLyricsScriptBlock(scriptText);
 
         await ShowMessageDialogAsync(LocalizationService.T("歌词已插入到脚本的 :end 之前。"), true);
+    }
+
+    /// <summary>模式切换时，根据是否需要双语来决定「格式」是否可用。</summary>
+    private void OnDisplayModeChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        UpdateFormatAvailability();
+    }
+
+    /// <summary>格式切换事件（当前无需额外处理，保留以便后续扩展）。</summary>
+    private void OnLyricsFormatChanged(object? sender, SelectionChangedEventArgs e)
+    {
+    }
+
+    /// <summary>
+    /// 「格式」仅在「原文+译文」模式下有意义；「独立」模式下应禁用。
+    /// </summary>
+    private void UpdateFormatAvailability()
+    {
+        if (LrcAnalysis == null)
+            return;
+
+        var enable = GetDisplayMode() == LocalLyricsMode.OriginalAndTranslation;
+        LrcAnalysis.IsEnabled = enable;
+
+        if (!enable)
+            LrcAnalysis.SelectedIndex = 0;
+    }
+
+    /// <summary>读取当前模式。</summary>
+    private LocalLyricsMode GetDisplayMode()
+    {
+        return (LocalLyricsMode)(CmbDisplayMode?.SelectedIndex ?? 0);
+    }
+
+    /// <summary>读取当前格式；「独立」模式下格式不生效，统一按「混合」处理。</summary>
+    private LyricsCombineMode GetCombineMode()
+    {
+        return GetDisplayMode() == LocalLyricsMode.OriginalAndTranslation
+            ? (LyricsCombineMode)(LrcAnalysis?.SelectedIndex ?? 0)
+            : LyricsCombineMode.Mixed;
     }
 
     private const string MetaTagPattern = @"^\[[a-zA-Z]+:";
@@ -249,7 +271,7 @@ public partial class OpenLRCFile : SukiWindow
             {
                 if (currentTimeTag != null && textBuffer.Count > 0)
                 {
-                    output.Add($"[{currentTimeTag}]{string.Join(" ", textBuffer)}");
+                    output.AddRange(BuildTimedLines(currentTimeTag, textBuffer));
                     textBuffer.Clear();
                 }
 
@@ -267,7 +289,7 @@ public partial class OpenLRCFile : SukiWindow
             {
                 if (currentTimeTag != null && textBuffer.Count > 0)
                 {
-                    output.Add($"[{currentTimeTag}]{string.Join(" ", textBuffer)}");
+                    output.AddRange(BuildTimedLines(currentTimeTag, textBuffer));
                     textBuffer.Clear();
                 }
                 currentTimeTag = null;
@@ -279,9 +301,29 @@ public partial class OpenLRCFile : SukiWindow
         }
 
         if (currentTimeTag != null && textBuffer.Count > 0)
-            output.Add($"[{currentTimeTag}]{string.Join(" ", textBuffer)}");
+            output.AddRange(BuildTimedLines(currentTimeTag, textBuffer));
 
         return string.Join("\n", output).Trim();
+    }
+
+    /// <summary>
+    /// 把同一时间轴的多个文本行展开为多条带相同时间标签的 LRC 行。
+    ///
+    /// 这是 LRC 表达「同一时刻多行」的标准写法，也让
+    /// <see cref="OnlineLyricsFormatter.ParseLrc"/> 能把它们解析成
+    /// 时间戳相同、可被 <see cref="LocalLyricsSupport.GroupByTimestamp"/>
+    /// 正确归并到一组的多个 <see cref="LrcLine"/>。
+    ///
+    /// 注意：不能写成 <c>[tag]原文\n译文</c> —— ParseLrc 是先按换行切分的，
+    /// 无时间标签的「译文」会退化成未经计时的行，从而丢失配对关系。
+    /// </summary>
+    private static IEnumerable<string> BuildTimedLines(string timeTag, IEnumerable<string> textLines)
+    {
+        foreach (var textLine in textLines)
+        {
+            if (!string.IsNullOrWhiteSpace(textLine))
+                yield return $"[{timeTag}]{textLine.Trim()}";
+        }
     }
 
     /// 将ASS文件转换为LRC文件。
@@ -317,8 +359,10 @@ public partial class OpenLRCFile : SukiWindow
             if (string.IsNullOrEmpty(textPart))
                 continue;
 
+            // ASS 用 \N 表示硬换行，双语字幕常写成「原文\N译文」。
+            // 这里展开为多条同时间标签的 LRC 行，保留原文/译文的配对关系。
             var timeTag = FormatLrcTimeTag(startSeconds);
-            output.Add($"[{timeTag}]{textPart}");
+            output.AddRange(BuildTimedLines(timeTag, textPart.Split('\n')));
         }
 
         return string.Join("\n", output).Trim();

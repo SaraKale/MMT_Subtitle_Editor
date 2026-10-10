@@ -39,7 +39,7 @@ public partial class MainWindow
             var fontFamily = sub.FontName;
             var fontSize = sub.FontSize;
             var edgeWidth = sub.EdgeWidth;
-            var fsizepx = screenHeight * fontSize / 200.0;
+            var fsizepx = TextureMetrics.GetFontSizeInPixels(screenHeight, fontSize);
 
             var fontColor = sub.FontColor;
             var strokeColor = sub.EdgeColor;
@@ -54,8 +54,8 @@ public partial class MainWindow
             var underline = sub.Underline;
             var strikeout = sub.Strikeout;
 
-            var hAlign = sub.HAlign;
-            var vAlign = sub.VAlign;
+            // 注：贴图紧贴墨水盒，对齐不再影响贴图尺寸与文本落点，
+            // 因此这里不再取 sub.HAlign / sub.VAlign。
             var isTate = sub.Tate;
 
             var scaleX = sub.ScaleX;
@@ -69,20 +69,35 @@ public partial class MainWindow
                 sub.Bold ? FontWeight.Bold : FontWeight.Normal);
 
             var measured = MeasureRenderedText(text, typeface, fsizepx, isTate, spacing);
-            var marginPxX = fsizepx * marginX / 100.0;
-            var marginPxY = fsizepx * marginY / 100.0;
-            var layerWidth = Math.Max(1.0, measured.Width + marginPxX * 2.0);
-            var layerHeight = Math.Max(1.0, measured.Height + marginPxY * 2.0);
 
-            var baseSafePad = GetRenderSafetyPadding(fsizepx, edgeWidth, shadowDist, shadowBlur);
-            var scaledSafePad = Math.Ceiling(baseSafePad * GetTransformPaddingScale(scaleX, scaleY));
-            var transformedLayer = CreateLayerTransform(layerWidth, layerHeight, scaleX, scaleY, rotation);
+            // 尺寸口径唯一来源：解析阶段（MeasureTextureSize）与导出阶段共用同一算法，
+            // 保证 :pos_next / :pos_nextline 的前进量与磁盘上 PNG 的真实宽度一致。
+            // 内部按真实墨水包围盒（BuildGeometry）计算四向安全边距，
+            // 描边/发光/斜体/圆体字的外扩都会被容纳，不再被纹理边界裁掉。
+            var layout = TextureMetrics.ComputeTextureLayout(
+                text,
+                typeface,
+                isTate,
+                spacing,
+                measured.Width,
+                measured.Height,
+                fsizepx,
+                marginX,
+                marginY,
+                scaleX,
+                scaleY,
+                rotation,
+                edgeWidth,
+                shadowDist,
+                shadowBlur,
+                sub.Edge2Width,
+                sub.Edge3Width,
+                sub.Edge4Width,
+                sub.GlowRadius,
+                edgeRound);
 
-            var texW = (int)Math.Ceiling(transformedLayer.Width + scaledSafePad * 2.0);
-            var texH = (int)Math.Ceiling(transformedLayer.Height + scaledSafePad * 2.0);
-
-            if (texW < 1) texW = 1;
-            if (texH < 1) texH = 1;
+            var texW = layout.TextureWidth;
+            var texH = layout.TextureHeight;
 
             sub.TextureWidth = texW;
             sub.TextureHeight = texH;
@@ -96,32 +111,24 @@ public partial class MainWindow
                 ctx.DrawRectangle(new SolidColorBrush(bgColor), null,
                     new Rect(0, 0, texW, texH));
 
-                var transform = CreateLayerTransform(
-                    layerWidth,
-                    layerHeight,
+                var transform = TextureMetrics.CreateLayerTransform(
+                    layout.ContentWidth,
+                    layout.ContentHeight,
                     scaleX,
                     scaleY,
                     rotation,
-                    scaledSafePad,
-                    scaledSafePad);
+                    layout.OffsetX,
+                    layout.OffsetY);
 
-                var origin = ComputeRenderOrigin(
-                    layerWidth,
-                    layerHeight,
-                    measured.Width,
-                    measured.Height,
-                    fsizepx,
-                    marginX,
-                    marginY,
-                    0,
-                    isTate,
-                    hAlign,
-                    vAlign);
+                // 文本排版原点：内容盒左上角相对排版原点(0,0)的偏移取反。
+                // 例如墨水左溢出 3px、margin 2px 时，原点要右移 5px 才能让墨水落进内容盒。
+                var originX = -layout.ContentLeft;
+                var originY = -layout.ContentTop;
 
                 using var transformDisposable = ctx.PushTransform(transform.Matrix);
                 RenderTextCore(
                     ctx,
-                    new Point(origin.X, origin.Y),
+                    new Point(originX, originY),
                     new Point(0, 0),
                     text,
                     typeface,
@@ -136,8 +143,10 @@ public partial class MainWindow
                     strikeout,
                     edgeRound,
                     isTate,
-                    hAlign,
-                    vAlign,
+                    // 水平/垂直对齐都已由墨水包围盒布局决定，这里传 0，
+                    // 否则 RenderTextCore 内的对齐处理会再套一次，造成双重偏移。
+                    0,
+                    0,
                     spacing,
                     sub.Edge2Width,
                     sub.Edge2Color,
@@ -178,19 +187,13 @@ public partial class MainWindow
         return string.Join(Environment.NewLine, lines);
     }
 
-    // 计算渲染安全边距
+    // 计算渲染安全边距（转发到 TextureMetrics，保持预览调用点不变）
     private static double GetRenderSafetyPadding(double fontSize, double edgeWidth, double shadowDistance, double shadowBlur)
-    {
-        var edgePad = fontSize * edgeWidth * 2 / 100.0;
-        var shadowPad = fontSize * Math.Max(shadowDistance, shadowBlur) / 100.0;
-        return Math.Ceiling(Math.Max(edgePad, shadowPad) + 16.0);
-    }
+        => TextureMetrics.GetRenderSafetyPadding(fontSize, edgeWidth, shadowDistance, shadowBlur);
 
     // 计算变换边距缩放比例
     private static double GetTransformPaddingScale(double scaleX, double scaleY)
-    {
-        return Math.Max(Math.Abs(scaleX), Math.Abs(scaleY)) / 100.0;
-    }
+        => TextureMetrics.GetTransformPaddingScale(scaleX, scaleY);
 
     // 创建层变换矩阵
     private static (Matrix Matrix, double Width, double Height) CreateLayerTransform(
@@ -201,36 +204,7 @@ public partial class MainWindow
         double rotation,
         double offsetX = 0,
         double offsetY = 0)
-    {
-        var centerX = width / 2.0;
-        var centerY = height / 2.0;
-
-        var scaleMatrix = Matrix.CreateScale(scaleX / 100.0, scaleY / 100.0);
-        var rotationMatrix = Matrix.CreateRotation(Math.PI * rotation / 180.0);
-        var centeredMatrix =
-            Matrix.CreateTranslation(-centerX, -centerY) *
-            scaleMatrix *
-            rotationMatrix *
-            Matrix.CreateTranslation(centerX, centerY);
-
-        var corners = new[]
-        {
-            new Point(0, 0),
-            new Point(width, 0),
-            new Point(width, height),
-            new Point(0, height)
-        };
-
-        var transformedCorners = corners.Select(c => c.Transform(centeredMatrix)).ToArray();
-        var minX = transformedCorners.Min(c => c.X);
-        var maxX = transformedCorners.Max(c => c.X);
-        var minY = transformedCorners.Min(c => c.Y);
-        var maxY = transformedCorners.Max(c => c.Y);
-
-        var positionedMatrix = centeredMatrix * Matrix.CreateTranslation(offsetX - minX, offsetY - minY);
-
-        return (positionedMatrix, maxX - minX, maxY - minY);
-    }
+        => TextureMetrics.CreateLayerTransform(width, height, scaleX, scaleY, rotation, offsetX, offsetY);
 
     // 计算渲染原点
     private static (double X, double Y) ComputeRenderOrigin(

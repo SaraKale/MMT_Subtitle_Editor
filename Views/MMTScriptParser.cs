@@ -1056,21 +1056,46 @@ public static class MmtScriptParser
     }
 
     /// <summary>
-    /// 估算字幕贴图尺寸。
+    /// 计算字幕贴图尺寸。
+    ///
+    /// 必须与导出阶段（MainWindow.ExportImageSequence）使用完全相同的算法，
+    /// 否则 <c>:pos_next</c> / <c>:pos_nextline</c> 的前进量会与磁盘上 PNG
+    /// 的实际尺寸对不上，相邻字幕在 MMD 中互相重叠（表现为"字幕缺失"）。
+    /// 算法统一收敛在 <see cref="TextureMetrics.ComputeTextureLayout"/>。
     /// </summary>
     private static Size MeasureTextureSize(SubtitleEntry entry)
     {
-        var fontSizePx = entry.ScreenHeight * entry.FontSize / 200.0;
+        var fontSizePx = TextureMetrics.GetFontSizeInPixels(entry.ScreenHeight, entry.FontSize);
         var typeface = new Typeface(
             entry.FontName,
             entry.Italic ? FontStyle.Italic : FontStyle.Normal,
             entry.Bold ? FontWeight.Bold : FontWeight.Normal);
 
         var measured = MeasureRenderedText(entry.Text, typeface, fontSizePx, entry.Tate, entry.Spacing);
-        var textureWidth = Math.Max(1, (int)Math.Ceiling(measured.Width + fontSizePx * entry.MarginX / 50.0));
-        var textureHeight = Math.Max(1, (int)Math.Ceiling(measured.Height + fontSizePx * entry.MarginY / 50.0));
 
-        return new Size(textureWidth, textureHeight);
+        var layout = TextureMetrics.ComputeTextureLayout(
+            entry.Text,
+            typeface,
+            entry.Tate,
+            entry.Spacing,
+            measured.Width,
+            measured.Height,
+            fontSizePx,
+            entry.MarginX,
+            entry.MarginY,
+            entry.ScaleX,
+            entry.ScaleY,
+            entry.Rotation,
+            entry.EdgeWidth,
+            entry.ShadowDistance,
+            entry.ShadowBlur,
+            entry.Edge2Width,
+            entry.Edge3Width,
+            entry.Edge4Width,
+            entry.GlowRadius,
+            entry.EdgeRound);
+
+        return new Size(layout.TextureWidth, layout.TextureHeight);
     }
 
     /// <summary>
@@ -1207,12 +1232,10 @@ public static class MmtScriptParser
     }
 
     /// <summary>
-    /// 计算画面宽高比。
+    /// 计算画面宽高比（转发到 TextureMetrics，保证与导出阶段口径一致）。
     /// </summary>
     private static double GetScreenAspect(double width, double height)
-    {
-        return height <= 0 ? 1.0 : width / height;
-    }
+        => TextureMetrics.GetScreenAspect(width, height);
 
     /// <summary>
     /// 从字符串解析颜色值，失败时使用回退颜色。
